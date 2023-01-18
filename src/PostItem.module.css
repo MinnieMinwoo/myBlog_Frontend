@@ -1,0 +1,46 @@
+.PostItem {
+    display: flex;
+    margin-bottom: 28px;
+}
+
+.post_title, .post_content, .post_date {
+    cursor: pointer;
+}
+
+.post_content, .post_date{
+    color: #999;
+}
+
+.post_image {
+    margin-left: 25px;
+    width: 100px;
+    height: 100%;
+    object-fit: cover;
+    border: 1px solid #f1f1f1;
+}
+
+.post_title {
+    margin-bottom: 9px;
+    padding-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    font-size: 1.125em;
+    color: #555;
+}
+
+.post_content {
+    margin-bottom: 11px;
+    height: 3.75rem;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    font-size: 0.875em;
+    line-height: 1.25rem;
+}
+
+.post_data {
+    font-size: 0.75em;
+}
