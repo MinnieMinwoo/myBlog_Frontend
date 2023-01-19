@@ -1,0 +1,23 @@
+.post_header {
+    margin-bottom: 28px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #eee;
+}
+
+.post_header_container {
+    font-size: 17px;
+    line-height: 1.375;
+    border: 0;
+    margin: 0;
+}
+
+.post_header_title {
+    font-weight: bold;
+    color: #555;
+}
+
+.post_header_number {
+    margin-left: 7px;
+    font-style: normal;
+    color: #04beb8;
+}

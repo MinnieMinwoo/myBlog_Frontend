@@ -1,5 +1,5 @@
 import "./App.css";
-import PostItem from "./PostItem";
+import PostContainer from "./components/PostContainer";
 
 function App() {
     const id = 1; //게시글 id 확인용
@@ -22,11 +22,7 @@ function App() {
 
     return (
         <div className="App">
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
+            <PostContainer />
         </div>
     );
 }

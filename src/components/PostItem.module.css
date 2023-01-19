@@ -1,6 +1,7 @@
-.PostItem {
+.post_item {
     display: flex;
     margin-bottom: 28px;
+    text-decoration-line: none;
 }
 
 .post_title, .post_content, .post_date {
@@ -26,7 +27,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.4;
-    font-size: 1.125em;
+    font-size: 18px;
     color: #555;
 }
 
@@ -37,7 +38,7 @@
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
-    font-size: 0.875em;
+    font-size: 14px;
     line-height: 1.25rem;
 }
 

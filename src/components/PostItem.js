@@ -1,7 +1,9 @@
 import styles from "./PostItem.module.css";
 
 function PostItem() {
+    // 실제 들어갈 데이터들
     const id = 1; //게시글 id 확인용
+    const title = "안녕하세요, 리액트 블로그 테스트용 메세지입니다.";
     const testText = `동해물과 백두산이 마르고 닳도록
   하느님이 보우하사 우리나라 만세
   무궁화 삼천리 화려 강산
@@ -22,11 +24,9 @@ function PostItem() {
         "https://velog.velcdn.com/images/lacomaco/post/9f912ca9-98a9-432f-9285-d6fe65b0cd6c/9d0a6780-394a-11eb-9fd1-6296a684b124.jpeg";
 
     return (
-        <div className={styles.PostItem}>
+        <a href={`/${id}`} className={`PostItem ${styles.post_item}`}>
             <div className={styles.post_dataDiv}>
-                <div className={styles.post_title}>
-                    안녕하세요, 리액트 블로그 테스트용 메세지입니다.
-                </div>
+                <div className={styles.post_title}>{title}</div>
                 <p className={styles.post_content}>{testText}</p>
                 <span className={styles.post_date}>2023. 01. 18</span>
             </div>
@@ -39,7 +39,7 @@ function PostItem() {
                     />
                 </div>
             ) : null}
-        </div>
+        </a>
     );
 }
 
