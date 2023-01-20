@@ -1,5 +1,7 @@
 import "./App.css";
+import styles from "./App.module.css";
 import PostContainer from "./components/PostContainer";
+import CategorySideBar from "./components/CategorySideBar";
 
 function App() {
     const id = 1; //게시글 id 확인용
@@ -21,8 +23,9 @@ function App() {
   대한 사람 대한으로 길이 보전하세`; // 실험용 텍스트, 삭제필요
 
     return (
-        <div className="App">
+        <div className={`App ${styles.App}`}>
             <PostContainer />
+            <CategorySideBar />
         </div>
     );
 }

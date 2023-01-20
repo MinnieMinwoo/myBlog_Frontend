@@ -1,0 +1,13 @@
+.CategorySideBar {
+    flex-basis: 230px;
+    flex-grow: 1;
+    flex-shrink: 0;
+    padding: 75px 50px 32px;
+}
+
+.category_title {
+    color: #555;
+    font-weight: bold;
+    font-size: 15px;
+    text-decoration: none;
+}

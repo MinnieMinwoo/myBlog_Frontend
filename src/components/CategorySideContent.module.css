@@ -1,0 +1,15 @@
+.content_title, .content_data {
+    text-decoration: none;
+    font-size: 15px;
+}
+.content_title {
+    color: #555;
+}
+.content_list {
+    list-style: none;
+    padding: 3px 0 3px 9px;
+}
+.content_data {
+    color: #777;
+    position: relative;
+}
