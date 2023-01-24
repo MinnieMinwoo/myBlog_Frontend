@@ -1,0 +1,16 @@
+.HomeHeader {
+  border-bottom: 1px solid #eee;
+}
+.home_top {
+  display: flex;
+  justify-content: space-between;
+}
+@media (min-width: 1080px) {
+  .home_top {
+    width: 80%;
+    margin-left: 10%;
+  }
+}
+.home_title {
+  color: #333;
+}

@@ -1,6 +1,6 @@
 import styles from "./CategorySideContent.module.css";
 
-function CategorySideContent({ data }) {
+const CategorySideContent = ({ data }) => {
   return (
     <div className={`CategorySideContent ${styles.CategorySideContent}`}>
       <a href="/" className={styles.content_title}>
@@ -19,6 +19,6 @@ function CategorySideContent({ data }) {
       )}
     </div>
   );
-}
+};
 
 export default CategorySideContent;

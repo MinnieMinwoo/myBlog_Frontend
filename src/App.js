@@ -1,11 +1,9 @@
 import "./App.css";
-import styles from "./App.module.css";
-import PostContainer from "./components/PostContainer";
-import CategorySideBar from "./components/CategorySideBar";
+import Home from "./routes/Home";
 
-function App() {
-    const id = 1; //게시글 id 확인용
-    const testText = `동해물과 백두산이 마르고 닳도록
+const App = () => {
+  const id = 1; //게시글 id 확인용
+  const testText = `동해물과 백두산이 마르고 닳도록
   하느님이 보우하사 우리나라 만세
   무궁화 삼천리 화려 강산
   대한 사람 대한으로 길이 보전하세
@@ -22,12 +20,11 @@ function App() {
   무궁화 삼천리 화려 강산
   대한 사람 대한으로 길이 보전하세`; // 실험용 텍스트, 삭제필요
 
-    return (
-        <div className={`App ${styles.App}`}>
-            <PostContainer />
-            <CategorySideBar />
-        </div>
-    );
-}
+  return (
+    <div className={`App`}>
+      <Home />
+    </div>
+  );
+};
 
 export default App;

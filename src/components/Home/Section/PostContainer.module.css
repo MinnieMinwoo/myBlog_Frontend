@@ -1,0 +1,10 @@
+.PostContainer {
+  padding: 30px 0;
+}
+
+@media (min-width: 1080px) {
+  .PostContainer {
+    padding: 72px 50px 60px 0;
+    flex-grow: 3;
+  }
+}
