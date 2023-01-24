@@ -1,15 +1,29 @@
-.content_title, .content_data {
-    text-decoration: none;
-    font-size: 15px;
+.CategorySideContent {
+  margin-top: 10px;
 }
+.content_title,
+.content_data {
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.content_title:hover,
+.content_data:hover {
+  text-decoration: underline;
+}
+
 .content_title {
-    color: #555;
+  color: #555;
 }
 .content_list {
-    list-style: none;
-    padding: 3px 0 3px 9px;
+  list-style: none;
+  padding: 5px 0 3px 0;
+  margin: 0;
+}
+.content_dataContainer {
+  border-left: 2px solid #eee;
+  padding-left: 9px;
 }
 .content_data {
-    color: #777;
-    position: relative;
+  color: #777;
 }

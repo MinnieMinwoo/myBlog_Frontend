@@ -1,13 +1,18 @@
 .CategorySideBar {
-    flex-basis: 230px;
-    flex-grow: 1;
-    flex-shrink: 0;
-    padding: 75px 50px 32px;
+  flex-basis: 230px;
+  flex-grow: 1;
+  flex-shrink: 0;
+  padding: 75px 50px 32px;
+  border-left: 1px solid #eee;
 }
 
 .category_title {
-    color: #555;
-    font-weight: bold;
-    font-size: 15px;
-    text-decoration: none;
+  color: #555;
+  font-weight: bold;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.category_title:hover {
+  text-decoration: underline;
 }
