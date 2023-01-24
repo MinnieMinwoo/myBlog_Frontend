@@ -2,6 +2,7 @@ import styles from "./Home.module.css";
 import HomeHeader from "../components/Home/Header/HomeHeader";
 import CategorySideBar from "../components/Home/Section/CategorySideBar";
 import PostContainer from "../components/Home/Section/PostContainer";
+import HomeFooter from "../components/Home/Footer/HomeFooter";
 
 const Home = () => {
   return (
@@ -13,6 +14,9 @@ const Home = () => {
         <PostContainer />
         <CategorySideBar />
       </section>
+      <footer className="home_footer">
+        <HomeFooter />
+      </footer>
     </>
   );
 };
