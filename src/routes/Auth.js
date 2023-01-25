@@ -34,8 +34,8 @@ const Auth = () => {
         setSignIn((prev) => !prev);
     };
     return (
-        <div className="Auth">
-            <h1>MyBlog</h1>
+        <div className={`Auth ${styles.Auth}`}>
+            <h1 className={styles.auth_title}>MyBlog</h1>
             <form onSubmit={onSubmit}>
                 <input
                     name="email"
@@ -56,9 +56,15 @@ const Auth = () => {
                     onChange={onChange}
                     className={styles.auth_input}
                 />
-                <input type="submit" value={signIn ? "Sign In" : "Create Account"}></input>
+                <input
+                    type="submit"
+                    value={signIn ? "Sign In" : "Create Account"}
+                    className={styles.auth_loginBtn}
+                ></input>
             </form>
-            <span onClick={toggleAccount}>{signIn ? "Create Account" : "Sign In"}</span>
+            <span onClick={toggleAccount} className={styles.toggleSpan}>
+                {signIn ? "Create Account" : "Sign In"}
+            </span>
         </div>
     );
 };

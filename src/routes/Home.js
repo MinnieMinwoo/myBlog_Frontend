@@ -5,20 +5,20 @@ import PostContainer from "../components/Home/Section/PostContainer";
 import HomeFooter from "../components/Home/Footer/HomeFooter";
 
 const Home = () => {
-  return (
-    <>
-      <header className="home_header">
-        <HomeHeader />
-      </header>
-      <section className={`home_container ${styles.home_container}`}>
-        <PostContainer />
-        <CategorySideBar />
-      </section>
-      <footer className="home_footer">
-        <HomeFooter />
-      </footer>
-    </>
-  );
+    return (
+        <div className="Home">
+            <header className="home_header">
+                <HomeHeader />
+            </header>
+            <section className={`home_container ${styles.home_container}`}>
+                <PostContainer />
+                <CategorySideBar />
+            </section>
+            <footer className="home_footer">
+                <HomeFooter />
+            </footer>
+        </div>
+    );
 };
 
 export default Home;
