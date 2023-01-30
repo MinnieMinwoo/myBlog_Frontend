@@ -15,5 +15,7 @@ Make my own blog project.
 -   Recoil
 -   Toast UI Editor
 -   Firebase
+    -   Authentication
+    -   Firestore Database
 
 ## demonstration
