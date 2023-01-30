@@ -1,11 +1,19 @@
 import PostHeader from "./PostHeader";
 import PostItem from "./PostItem";
 import PostPagination from "./PostPagination";
-import styles from "./PostContainer.module.css";
+import styled from "styled-components";
+
+const PostArticle = styled.article`
+  padding: 30px 0;
+  @media (min-width: 1080px) {
+    padding: 72px 50px 60px 0;
+    flex-grow: 3;
+  }
+`;
 
 const PostContainer = () => {
   return (
-    <article className={`PostContainer ${styles.PostContainer}`}>
+    <PostArticle className="PostContainer">
       <PostHeader />
       <div className="PostItemList">
         <PostItem />
@@ -15,7 +23,7 @@ const PostContainer = () => {
         <PostItem />
       </div>
       <PostPagination />
-    </article>
+    </PostArticle>
   );
 };
 export default PostContainer;

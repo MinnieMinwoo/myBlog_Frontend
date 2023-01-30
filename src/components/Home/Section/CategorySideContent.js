@@ -1,23 +1,51 @@
-import styles from "./CategorySideContent.module.css";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+const CategoryContent = styled.div`
+  margin-top: 10px;
+`;
+
+const RouteContent = styled(Link)`
+  text-decoration: none;
+  font-size: 15px;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const Title = styled(RouteContent)`
+  color: #555;
+`;
+
+const DetailData = styled(RouteContent)`
+  color: #777;
+`;
+
+const ListBox = styled.ul`
+  list-style: none;
+  padding: 5px 0 3px 0;
+  margin: 0;
+`;
+
+const ListData = styled.li`
+  border-left: 2px solid #eee;
+  padding-left: 9px;
+`;
 
 const CategorySideContent = ({ data }) => {
   return (
-    <div className={`CategorySideContent ${styles.CategorySideContent}`}>
-      <a href="/" className={styles.content_title}>
-        {data.title}
-      </a>
+    <CategoryContent className="CategorySideContent">
+      <Title to="/">{data.title}</Title>
       {data.content && (
-        <ul className={styles.content_list}>
+        <ListBox>
           {data.content.map((content, id) => (
-            <li key={id} className={styles.content_dataContainer}>
-              <a href="/" className={styles.content_data}>
-                {content}
-              </a>
-            </li>
+            <ListData key={id}>
+              <DetailData to="/">{content}</DetailData>
+            </ListData>
           ))}
-        </ul>
+        </ListBox>
       )}
-    </div>
+    </CategoryContent>
   );
 };
 
