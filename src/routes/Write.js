@@ -10,6 +10,8 @@ import "prismjs/components/prism-clojure.js";
 import { dbService } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
 
+//toast ui 다른 마크다운 에디터로 변경 필요 (react18 호환성 문제 발생)
+
 const Write = () => {
     const [title, setTitle] = useState("Title");
     const editorRef = useRef();

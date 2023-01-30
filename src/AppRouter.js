@@ -3,11 +3,15 @@ import Auth from "./routes/Auth.js";
 import Home from "./routes/Home.js";
 import Write from "./routes/Write.js";
 
-const AppRouter = ({ isLoggedIn }) => {
+import { loginData } from "./states/LoginState";
+import { useRecoilValue } from "recoil";
+
+const AppRouter = () => {
+    const userData = useRecoilValue(loginData);
     return (
         <Router>
             <Routes>
-                {isLoggedIn ? (
+                {userData.isLoggedIn ? (
                     <>
                         <Route path="/" element={<Home />} />
                     </>
