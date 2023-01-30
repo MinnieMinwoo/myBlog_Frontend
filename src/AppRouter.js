@@ -1,6 +1,7 @@
-import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Auth from "./routes/Auth.js";
 import Home from "./routes/Home.js";
+import Write from "./routes/Write.js";
 
 const AppRouter = ({ isLoggedIn }) => {
     return (
@@ -15,6 +16,7 @@ const AppRouter = ({ isLoggedIn }) => {
                         <Route path="/" element={<Auth />} />
                     </>
                 )}
+                <Route path="/write" element={<Write />} />
             </Routes>
         </Router>
     );
