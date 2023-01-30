@@ -13,6 +13,7 @@ Make my own blog project.
 -   React
 -   React Router
 -   Recoil
+-   styled-components
 -   Toast UI Editor
 -   Firebase
     -   Authentication

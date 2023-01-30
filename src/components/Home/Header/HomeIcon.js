@@ -1,10 +1,9 @@
-import styles from "./HomeIcon.module.css";
 import HomeSearch from "./HomeSearch";
 import HomeProfile from "./HomeProfile";
 
 const HomeIcon = () => {
     return (
-        <div className={`HomeIcon ${styles.HomeIcon}`}>
+        <div className="HomeIcon">
             <HomeSearch />
             <HomeProfile />
         </div>
