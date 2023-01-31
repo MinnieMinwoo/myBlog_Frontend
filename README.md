@@ -14,7 +14,7 @@ Make my own blog project.
 -   React Router
 -   Recoil
 -   styled-components
--   Toast UI Editor
+-   react-md-editor
 -   Firebase
     -   Authentication
     -   Firestore Database

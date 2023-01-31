@@ -1,21 +1,16 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Editor } from "@toast-ui/react-editor";
-import "@toast-ui/editor/dist/toastui-editor.css";
-import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
-import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
-import Prism from "prismjs";
-import "prismjs/themes/prism.css";
-import "prismjs/components/prism-clojure.js";
+import MDEditor from "@uiw/react-md-editor";
 import { dbService } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
-
-//toast ui 다른 마크다운 에디터로 변경 필요 (react18 호환성 문제 발생)
+import { useRecoilState } from "recoil";
+import { loginData } from "../states/LoginState";
 
 const Write = () => {
     const [title, setTitle] = useState("Title");
-    const editorRef = useRef();
+    const [postData, setPostData] = useState("**Write your post**");
     const navigate = useNavigate();
+    const userData = useRecoilState(loginData);
     const onChange = (event) => {
         const {
             target: { value },
@@ -26,10 +21,19 @@ const Write = () => {
         event.preventDefault();
         const postObj = {
             title: title,
-            detail: editorRef.current.getInstance().getMarkdown(),
+            createdBy: userData.uid,
+            createdAt: Date.now(),
+            tag: "",
+            category: [],
+            thumbnailData: "",
+            thumbnailImageURL: "",
+            detail: postData,
+            likes: 0,
+            comments: [],
         };
-        await addDoc(collection(dbService, "posts"), postObj);
-        navigate("/");
+        console.log(postObj);
+        //await addDoc(collection(dbService, "posts"), postObj);
+        //navigate("/");
     };
     return (
         <div>
@@ -42,22 +46,7 @@ const Write = () => {
                     onChange={onChange}
                     required
                 />
-                <Editor
-                    ref={editorRef}
-                    initialValue="Write your story."
-                    previewStyle="vertical"
-                    height="80vh"
-                    initialEditType="markdown"
-                    hideModeSwitch="true"
-                    toolbarItems={[
-                        ["heading", "bold", "italic", "strike"],
-                        ["hr", "quote"],
-                        ["ul", "ol", "task"],
-                        ["table", "image", "link"],
-                        ["code", "codeblock"],
-                    ]}
-                    plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
-                ></Editor>
+                <MDEditor data-color-mode="light" value={postData} onChange={setPostData} />
                 <input type="submit" value="Write up" />
             </form>
         </div>
