@@ -26,7 +26,7 @@ const Write = () => {
             createdAt: Date.now(),
             tag: "",
             category: [],
-            thumbnailData: postData.replace(reg, ""),
+            thumbnailData: postData.replace(reg, "").substring(0, 151),
             thumbnailImageURL: "",
             detail: postData,
             likes: 0,
