@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
 import { dbService } from "../firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { doc, addDoc, setDoc, collection } from "firebase/firestore";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../states/LoginState";
 import styled from "styled-components";
@@ -61,7 +61,7 @@ const Write = () => {
     const onSubmit = async (event) => {
         const reg = /[`\n|\r|~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gim;
         event.preventDefault();
-        const postObj = {
+        const thumbnailObj = {
             title: title,
             createdBy: userData.uid,
             createdAt: Date.now(),
@@ -69,11 +69,13 @@ const Write = () => {
             category: [],
             thumbnailData: postData.replace(reg, "").substring(0, 151),
             thumbnailImageURL: "",
+        };
+        const dataObj = {
             detail: postData,
             likes: 0,
-            comments: [],
         };
-        await addDoc(collection(dbService, "posts"), postObj);
+        const docs = await addDoc(collection(dbService, "posts"), thumbnailObj);
+        await setDoc(doc(dbService, `posts/${docs.id}/detail`, docs.id), dataObj);
         navigate("/");
     };
     return (
