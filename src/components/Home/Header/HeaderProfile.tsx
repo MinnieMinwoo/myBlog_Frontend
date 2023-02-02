@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -55,9 +56,10 @@ const HomeProfile = () => {
     const onLogout = async () => {
         try {
             await signOut(authService);
-            setUserData({
+            setUserData((prev) => ({
+                ...prev,
                 isLoggedIn: false,
-            });
+            }));
             navigate("/");
         } catch (error) {
             console.log(error);

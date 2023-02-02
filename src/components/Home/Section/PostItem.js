@@ -1,10 +1,12 @@
+import React from "react";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import getDate from "../../../getDate";
 import styled from "styled-components";
 
 const PostBox = styled(Link)`
     display: flex;
-    margin-bottom: 28px;
+    margin-bottom: 10px;
     text-decoration-line: none;
 `;
 
@@ -52,10 +54,10 @@ const ImageData = styled.img`
         width: 100px;
     }
 `;
-
 const PostItem = ({ postItem }) => {
+    const params = useParams();
     return (
-        <PostBox className="PostItem" to={`/${postItem.id}`}>
+        <PostBox className="PostItem" to={`/home/${params.userID}/${postItem.id}`}>
             <div>
                 <Title>{postItem.title}</Title>
                 <TextData>{postItem.thumbnailData}</TextData>

@@ -1,13 +1,14 @@
-import HomeHeader from "../components/Home/Header/HomeHeader";
-import CategorySideBar from "../components/Home/Section/CategorySideBar";
-import PostContainer from "../components/Home/Section/PostContainer";
-import HomeFooter from "../components/Home/Footer/HomeFooter";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { dbService } from "../firebase";
 import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
 import styled from "styled-components";
+
+import Header from "../components/Home/Header/Header";
+import CategorySideBar from "../components/Home/Section/CategorySideBar";
+import PostContainer from "../components/Home/Section/PostContainer";
+import HomeFooter from "../components/Home/Footer/Footer";
 
 const HomeContainer = styled.div`
     @media (min-width: 1080px) {
@@ -17,16 +18,6 @@ const HomeContainer = styled.div`
         justify-content: space-around;
     }
 `;
-
-type PostData = {
-    id: string;
-    createdAt: number;
-    createdBy: string;
-    tag: string;
-    thumbnailData: string;
-    thumbnailImageURL: string;
-    title: string;
-};
 
 const Home = () => {
     const [postList, setPostList] = useState<PostData[]>([]);
@@ -53,7 +44,7 @@ const Home = () => {
     return (
         <div className="Home">
             <header className="home_header">
-                <HomeHeader />
+                <Header />
             </header>
             <HomeContainer>
                 <PostContainer postList={postList} types="posts" />

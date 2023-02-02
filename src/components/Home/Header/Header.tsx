@@ -1,8 +1,9 @@
-import HomeIcon from "./HomeIcon";
-import HomeNavigation from "./HomeNavigation";
-import styled from "styled-components";
+import React from "react";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../../states/LoginState";
+import HomeIcon from "./HeaderIcon";
+import HomeNavigation from "./HeaderNavigation";
+import styled from "styled-components";
 
 const MainHeader = styled.div`
     border-bottom: 1px solid #eee;
@@ -21,10 +22,10 @@ const Title = styled.h1`
     color: #333;
 `;
 
-const HomeHeader = () => {
+const Header = () => {
     const userData = useRecoilValue(loginData);
     return (
-        <MainHeader className="HomeHeader">
+        <MainHeader className="Header">
             <TopDivision>
                 <Title>{`${userData.nickname ? userData.nickname : ""} Blog`}</Title>
                 <HomeIcon />
@@ -33,4 +34,4 @@ const HomeHeader = () => {
     );
 };
 
-export default HomeHeader;
+export default Header;
