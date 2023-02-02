@@ -12,6 +12,7 @@ Make my own blog project.
 
 -   React
 -   React Router
+-   Typescript
 -   Recoil
 -   styled-components
 -   react-md-editor
