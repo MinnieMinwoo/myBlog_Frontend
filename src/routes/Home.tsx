@@ -2,11 +2,11 @@ import HomeHeader from "../components/Home/Header/HomeHeader";
 import CategorySideBar from "../components/Home/Section/CategorySideBar";
 import PostContainer from "../components/Home/Section/PostContainer";
 import HomeFooter from "../components/Home/Footer/HomeFooter";
+import React from "react";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { dbService } from "../firebase";
 import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
-import { useRecoilValue } from "recoil";
-import { loginData } from "../states/LoginState";
 import styled from "styled-components";
 
 const HomeContainer = styled.div`
@@ -18,19 +18,34 @@ const HomeContainer = styled.div`
     }
 `;
 
+type PostData = {
+    id: string;
+    createdAt: number;
+    createdBy: string;
+    tag: string;
+    thumbnailData: string;
+    thumbnailImageURL: string;
+    title: string;
+};
+
 const Home = () => {
-    const userData = useRecoilValue(loginData);
-    const [postList, setPostList] = useState([]);
+    const [postList, setPostList] = useState<PostData[]>([]);
+    const params = useParams();
     useEffect(() => {
         const q = query(
             collection(dbService, "posts"),
-            where("createdBy", "==", userData.uid),
+            where("createdBy", "==", params.userID),
             orderBy("createdAt", "desc")
         );
         onSnapshot(q, (snapshot) => {
             const docList = snapshot.docs.map((doc) => ({
                 id: doc.id,
-                ...doc.data(),
+                createdAt: doc.data().createdAt,
+                createdBy: doc.data().createdBy,
+                tag: doc.data().tag,
+                thumbnailData: doc.data().thumbnailData,
+                thumbnailImageURL: doc.data().thumbnailImageURL,
+                title: doc.data().title,
             }));
             setPostList(docList);
         });

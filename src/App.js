@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AppRouter from "./AppRouter";
+import AppRouter from "./AppRouter.tsx";
 import { authService } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useSetRecoilState } from "recoil";
