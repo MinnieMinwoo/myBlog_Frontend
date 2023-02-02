@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import AppRouter from "./AppRouter.tsx";
+import React, { useEffect, useState } from "react";
+import AppRouter from "./AppRouter";
 import { authService } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useSetRecoilState } from "recoil";
@@ -10,19 +10,22 @@ const App = () => {
     const setUserData = useSetRecoilState(loginData);
 
     useEffect(() => {
-        onAuthStateChanged(authService, (user) => {
+        onAuthStateChanged(authService, async (user) => {
             if (user) {
-                setUserData({
+                const token = await user.getIdToken();
+                setUserData((prev) => ({
+                    ...prev,
                     isLoggedIn: true,
-                    accessToken: user.accessToken,
                     email: user.email,
                     photoURL: user.photoURL,
                     uid: user.uid,
-                });
+                    accessToken: token,
+                }));
             } else {
-                setUserData({
+                setUserData((prev) => ({
+                    ...prev,
                     isLoggedIn: false,
-                });
+                }));
             }
             setInit(true);
         });

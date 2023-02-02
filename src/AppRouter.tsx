@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Main from "./routes/Main";
-import Auth from "./routes/Auth.js";
+import Auth from "./routes/Auth";
 import Home from "./routes/Home";
 import Read from "./routes/Read";
-import Write from "./routes/Write.js";
+import Write from "./routes/Write";
 
 const AppRouter = () => {
     return (

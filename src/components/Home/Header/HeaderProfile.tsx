@@ -70,10 +70,10 @@ const HomeProfile = () => {
             <ProfileButton onClick={onToggle} />
             {isHidden ? null : (
                 <ButtonContainer>
-                    <RouteButton as={Link} to="write">
+                    <RouteButton as={Link} to="/write">
                         글쓰기
                     </RouteButton>
-                    <RouteButton as={Link} to="write">
+                    <RouteButton as={Link} to="/write">
                         설정
                     </RouteButton>
                     <RouteButton onClick={onLogout}>로그아웃</RouteButton>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
 import { dbService } from "../firebase";
@@ -47,18 +47,22 @@ const Submit = styled.input`
     border: 1px solid #000;
 `;
 
+const Editor = styled(MDEditor)`
+    height: calc(100vh - 260px);
+`;
+
 const Write = () => {
     const [title, setTitle] = useState("");
     const [postData, setPostData] = useState("**Write your post**");
     const navigate = useNavigate();
     const userData = useRecoilValue(loginData);
-    const onChange = (event) => {
+    const onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {
             target: { value },
         } = event;
         setTitle(value);
     };
-    const onSubmit = async (event) => {
+    const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         const reg = /[`\n|\r|~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gim;
         event.preventDefault();
         const thumbnailObj = {
@@ -89,14 +93,15 @@ const Write = () => {
                         type="text"
                         placeholder="Write post title"
                         value={title}
-                        onChange={onChange}
+                        onChange={onTitleChange}
                         required
                     />
-                    <MDEditor
+                    <Editor
                         data-color-mode="light"
-                        height="calc(100vh - 260px)"
                         value={postData}
-                        onChange={setPostData}
+                        onChange={(value = "") => {
+                            setPostData(value);
+                        }}
                     />
                     <Submit type="submit" value="Write up" />
                 </form>

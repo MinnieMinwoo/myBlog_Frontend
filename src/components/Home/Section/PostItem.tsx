@@ -54,7 +54,12 @@ const ImageData = styled.img`
         width: 100px;
     }
 `;
-const PostItem = ({ postItem }) => {
+
+interface Props {
+    postItem: PostData;
+}
+
+const PostItem = ({ postItem }: Props) => {
     const params = useParams();
     return (
         <PostBox className="PostItem" to={`/home/${params.userID}/${postItem.id}`}>

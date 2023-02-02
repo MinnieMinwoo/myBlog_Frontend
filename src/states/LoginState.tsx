@@ -6,6 +6,8 @@ export const loginData = atom({
         isLoggedIn: false,
         uid: null as string | null,
         email: null as string | null,
+        photoURL: null as string | null,
         nickname: null as string | null,
+        accessToken: null as string | null,
     },
 });

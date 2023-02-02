@@ -1,4 +1,4 @@
-const getDate = (timestamp) => {
+const getDate = (timestamp: number) => {
     var date = new window.Date(timestamp);
     var year = date.getFullYear();
     var month = ("0" + (1 + date.getMonth())).slice(-2);

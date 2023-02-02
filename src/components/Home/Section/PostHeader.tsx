@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 const HeaderBox = styled.div`
@@ -24,7 +25,12 @@ const Number = styled.span`
     color: #04beb8;
 `;
 
-const PostHeader = ({ title, postNumber }) => {
+interface Props {
+    title: string;
+    postNumber: number;
+}
+
+const PostHeader = ({ title, postNumber }: Props) => {
     return (
         <>
             <HeaderBox className="PostHeader">

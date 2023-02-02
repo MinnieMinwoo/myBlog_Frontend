@@ -1,3 +1,4 @@
+import React from "react";
 import PostHeader from "./PostHeader";
 import PostItem from "./PostItem";
 import PostPagination from "./PostPagination";
@@ -11,7 +12,12 @@ const PostArticle = styled.article`
     }
 `;
 
-const PostContainer = ({ postList, types }) => {
+interface Props {
+    postList: PostData[];
+    types: string;
+}
+
+const PostContainer = ({ postList, types }: Props) => {
     let title = "";
     switch (types) {
         case "posts":
