@@ -10,6 +10,7 @@ import CategorySideBar from "../components/Home/Section/CategorySideBar";
 import PostContainer from "../components/Home/Section/PostContainer";
 import HomeFooter from "../components/Home/Footer/Footer";
 
+//중복!
 const HomeContainer = styled.div`
     @media (min-width: 1080px) {
         display: flex;

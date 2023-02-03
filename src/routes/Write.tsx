@@ -48,7 +48,7 @@ const Submit = styled.input`
 `;
 
 const Editor = styled(MDEditor)`
-    height: calc(100vh - 260px);
+    height: calc(100vh - 260px) !important;
 `;
 
 const Write = () => {
