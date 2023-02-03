@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { getPostData } from "../../../post";
-import MDEditor, { MarkdownUtil } from "@uiw/react-md-editor";
+import MDEditor from "@uiw/react-md-editor";
 import styled from "styled-components";
 const Editor = styled(MDEditor)`
     width: 800px;
@@ -24,7 +24,7 @@ const PostDetail = () => {
                     editor.current?.children[0]?.children[0]?.children[0]?.children[0];
                 setHeight((innerDataNode as HTMLElement).offsetHeight + 20);
             });
-    }, [value]);
+    }, [value, window.innerWidth]);
     return (
         <div ref={editor}>
             <Editor
