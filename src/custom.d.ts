@@ -4,16 +4,16 @@ declare module "*.jpeg";
 declare module "*.gif";
 
 interface PostData {
-    id: string;
-    createdAt: number;
-    createdBy: string;
-    tag: string;
-    thumbnailData: string;
-    thumbnailImageURL: string;
-    title: string;
+  id: string;
+  createdAt: number;
+  createdBy: string;
+  tag: string;
+  thumbnailData: string;
+  thumbnailImageURL: string;
+  title: string;
 }
 
 interface PostDetail extends PostData {
-    likes: number;
-    detail: string;
+  likes: number;
+  detail: string;
 }
