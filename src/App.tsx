@@ -4,6 +4,7 @@ import { useSetRecoilState } from "recoil";
 import { loginData } from "./states/LoginState";
 import { authService } from "./logic/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import "./App.css";
 
 const App = () => {
   const [init, setInit] = useState(false);
