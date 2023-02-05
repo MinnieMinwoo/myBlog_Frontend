@@ -4,21 +4,24 @@ Make my own blog project.
 
 ## features
 
-- Login
-  - Email Login
-- CRUD posts using markdown
+-   Login
+    -   Email Login
+-   Create and Read posts using markdown
 
 ## project stack
 
-- React
-- React Router
-- Typescript
-- Recoil
-- styled-components
-- react-md-editor
-- Firebase
-  - Authentication
-  - Firestore Database
+-   React
+-   React Router
+-   Typescript
+-   Recoil
+-   styled-components
+-   react-md-editor
+-   Jest
+-   React Testing Library
+-   Firebase
+    -   Authentication
+    -   Firestore Database
+-   Github Pages
 
 ## demonstration
 
