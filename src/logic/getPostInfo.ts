@@ -30,7 +30,6 @@ export const getUserPostList = async (uid: string): Promise<PostData[]> => {
   const querySnapshot = await getDocs(q);
   let docList: PostData[] = [];
   querySnapshot.forEach((doc) => {
-    console.log(doc.data());
     docList.push({
       id: doc.id,
       createdAt: doc.data().createdAt,

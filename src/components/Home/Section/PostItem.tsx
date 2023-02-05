@@ -61,7 +61,6 @@ interface Props {
 
 const PostItem = ({ postItem }: Props) => {
   const params = useParams();
-  console.log(postItem);
   return (
     <PostBox className="PostItem" to={`/home/${params.userID}/${postItem.id}`}>
       <div>

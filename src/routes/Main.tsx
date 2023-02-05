@@ -7,7 +7,7 @@ import { FooterAlign } from "../styles/PageView";
 import MainHeader from "../components/Main/MainHeader";
 import HomeFooter from "../components/Share/Footer";
 import MainSection from "../components/Main/MainSection";
-import image from "../assets/Background.jpg";
+import image from "../assets/images/Background.jpg";
 
 const MainContainer = styled(FooterAlign)`
   background-image: url(${image});

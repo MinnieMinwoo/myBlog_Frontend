@@ -45,6 +45,7 @@ const Submit = styled.input`
   background-color: #000;
   color: #fff;
   border: 1px solid #000;
+  cursor: pointer;
 `;
 
 const Editor = styled(MDEditor)`
@@ -84,7 +85,7 @@ const Write = () => {
     try {
       const docs = await addDoc(collection(dbService, "posts"), thumbnailObj);
       await setDoc(doc(dbService, `posts/${docs.id}/detail`, docs.id), dataObj);
-      navigate("/");
+      navigate(`/home/${userData.uid}`);
     } catch (error) {
       console.log(error);
     }
