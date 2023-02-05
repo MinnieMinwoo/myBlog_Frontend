@@ -10,25 +10,29 @@ const App = () => {
   const setUserData = useSetRecoilState(loginData);
 
   useEffect(() => {
-    onAuthStateChanged(authService, async (user) => {
-      if (user) {
-        const token = await user.getIdToken();
-        setUserData((prev) => ({
-          ...prev,
-          isLoggedIn: true,
-          email: user.email,
-          photoURL: user.photoURL,
-          uid: user.uid,
-          accessToken: token,
-        }));
-      } else {
-        setUserData((prev) => ({
-          ...prev,
-          isLoggedIn: false,
-        }));
-      }
-      setInit(true);
-    });
+    try {
+      onAuthStateChanged(authService, async (user) => {
+        if (user) {
+          const token = await user.getIdToken();
+          setUserData((prev) => ({
+            ...prev,
+            isLoggedIn: true,
+            email: user.email,
+            photoURL: user.photoURL,
+            uid: user.uid,
+            accessToken: token,
+          }));
+        } else {
+          setUserData((prev) => ({
+            ...prev,
+            isLoggedIn: false,
+          }));
+        }
+        setInit(true);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
   return (
     <div className={`App`}>
