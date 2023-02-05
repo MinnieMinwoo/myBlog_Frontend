@@ -73,9 +73,7 @@ const HomeProfile = () => {
           <RouteButton as={Link} to="/write">
             글쓰기
           </RouteButton>
-          <RouteButton as={Link} to="/write">
-            설정
-          </RouteButton>
+          <RouteButton as={"div"}>설정</RouteButton>
           <RouteButton onClick={onLogout}>로그아웃</RouteButton>
         </ButtonContainer>
       )}

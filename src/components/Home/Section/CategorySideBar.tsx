@@ -27,6 +27,9 @@ const Title = styled(Link)`
 const CategorySideBar = () => {
   let categoryData = [
     {
+      title: "This is Dummy Data",
+    },
+    {
       title: "Program",
       content: ["HTML", "CSS", "JavaScript", "TypeScript", "Python"],
     },
@@ -46,7 +49,7 @@ const CategorySideBar = () => {
   return (
     <AsideTab className="CategorySideBar">
       <nav className="category_navigation">
-        <Title to="/">분류 전체보기</Title>
+        <Title as="p">Display all categories</Title>
         {categoryData.map((element, id) => (
           <CategorySideContent key={id} data={element} />
         ))}

@@ -1,23 +1,30 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../states/LoginState";
+import styled from "styled-components";
+
+import { FooterAlign } from "../styles/PageView";
+import MainHeader from "../components/Main/MainHeader";
+import HomeFooter from "../components/Share/Footer";
+import MainSection from "../components/Main/MainSection";
+import image from "../assets/Background.jpg";
+
+const MainContainer = styled(FooterAlign)`
+  background-image: url(${image});
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+`;
 
 const Main = () => {
-    const navigate = useNavigate();
-    const userData = useRecoilValue(loginData);
-    const onClick = () => {
-        if (userData.isLoggedIn === true) {
-            navigate(`/home/${userData.uid}`);
-        } else {
-            navigate("/auth");
-        }
-    };
-    return (
-        <div>
-            <button onClick={onClick}>Start</button>
-        </div>
-    );
+  const userData = useRecoilValue(loginData);
+  return (
+    <MainContainer className="Main">
+      <MainHeader />
+      <MainSection isLoggedIn={userData.isLoggedIn} uid={userData.uid} />
+      <HomeFooter />
+    </MainContainer>
+  );
 };
 
 export default Main;

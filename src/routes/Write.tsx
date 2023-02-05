@@ -91,7 +91,7 @@ const Write = () => {
   };
 
   return (
-    <Container>
+    <Container className="Write">
       <header>
         <DocTitle>Write your Story</DocTitle>
       </header>

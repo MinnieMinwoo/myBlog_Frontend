@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { getPostData } from "../logic/getPostInfo";
-import { BlogContainer } from "../styles/Blogview";
+import { BlogContainer, FooterAlign } from "../styles/PageView";
 
 import Header from "../components/Home/Header/Header";
 import PostTitle from "../components/Home/Section/PostTitle";
 import PostDetail from "../components/Home/Section/PostDetail";
 import CategorySideBar from "../components/Home/Section/CategorySideBar";
-import HomeFooter from "../components/Home/Footer/Footer";
+import HomeFooter from "../components/Share/Footer";
 
 const Read = () => {
   const [value, setValue] = useState<PostDetail>();
@@ -22,21 +22,25 @@ const Read = () => {
   }, []);
 
   return (
-    <div className="Home">
-      <header className="home_header">
+    <FooterAlign className="Read">
+      <header className="read_header">
         <Header />
       </header>
-      <section>
-        <PostTitle />
+      <section className="read_section">
+        <PostTitle
+          title={value?.title}
+          createdBy={value?.createdBy}
+          createdAt={value?.createdAt}
+        />
         <BlogContainer>
           <PostDetail postData={value} />
           <CategorySideBar />
         </BlogContainer>
       </section>
-      <footer className="home_footer">
+      <footer className="read_footer">
         <HomeFooter />
       </footer>
-    </div>
+    </FooterAlign>
   );
 };
 

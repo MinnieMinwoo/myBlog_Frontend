@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getUserPostList } from "../logic/getPostInfo";
-import { BlogContainer } from "../styles/Blogview";
+import { BlogContainer, FooterAlign } from "../styles/PageView";
 
 import Header from "../components/Home/Header/Header";
 import CategorySideBar from "../components/Home/Section/CategorySideBar";
 import PostContainer from "../components/Home/Section/PostContainer";
-import HomeFooter from "../components/Home/Footer/Footer";
+import HomeFooter from "../components/Share/Footer";
 
 const Home = () => {
   const [postList, setPostList] = useState<PostData[]>([]);
@@ -22,7 +22,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="Home">
+    <FooterAlign className="Home">
       <header className="home_header">
         <Header />
       </header>
@@ -33,7 +33,7 @@ const Home = () => {
       <footer className="home_footer">
         <HomeFooter />
       </footer>
-    </div>
+    </FooterAlign>
   );
 };
 

@@ -18,6 +18,7 @@ const AuthBox = styled.div`
 
 const Title = styled.h1`
   font-size: 40px;
+  margin-bottom: 20px;
 `;
 
 const Input = styled.input`
@@ -38,12 +39,14 @@ const SignIn = styled.input`
   font-size: 16px;
   color: #fff;
   background-color: #000;
+  cursor: pointer;
 `;
 
 const Toggle = styled.span`
   margin-top: 10px;
   color: #555;
   align-self: flex-start;
+  cursor: pointer;
 `;
 
 const Auth = () => {

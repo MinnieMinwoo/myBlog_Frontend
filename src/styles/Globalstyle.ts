@@ -5,6 +5,8 @@ const GlobalStyle = createGlobalStyle`
 
 * {
     font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 `;
 

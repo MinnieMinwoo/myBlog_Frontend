@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
 import styled from "styled-components";
 
@@ -40,7 +39,7 @@ const PostDetail = ({ postData }: Props) => {
   });
 
   return (
-    <PostBox ref={editor}>
+    <PostBox ref={editor} className="PostDetail">
       <Editor
         data-color-mode="light"
         visibleDragbar={false}
