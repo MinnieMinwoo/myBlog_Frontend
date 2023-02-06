@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { loginData } from "../../../states/LoginState";
 import { authService } from "../../../logic/firebase";
 import { signOut } from "firebase/auth";
@@ -12,14 +12,17 @@ const ProfileBox = styled.div`
   display: inline-block;
 `;
 
-const ProfileButton = styled.button`
+const ProfileButton = styled.div<{ url: string | null }>`
   width: 30px;
   height: 30px;
   border-radius: 50%;
   border: 1px solid #eee;
+  background-image: url(${(props) => (props.url ? props.url : "")});
   background-color: #fff;
   background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
+  cursor: Pointer;
 `;
 
 const ButtonContainer = styled.div`
@@ -48,7 +51,7 @@ const RouteButton = styled.button`
 const HomeProfile = () => {
   const [isHidden, setIsHidden] = useState(true);
   const navigate = useNavigate();
-  const setUserData = useSetRecoilState(loginData);
+  const [userData, setUserData] = useRecoilState(loginData);
   const onToggle = () => {
     setIsHidden((prev) => !prev);
   };
@@ -56,24 +59,32 @@ const HomeProfile = () => {
   const onLogout = async () => {
     try {
       await signOut(authService);
-      setUserData((prev) => ({
-        ...prev,
+      setUserData({
         isLoggedIn: false,
-      }));
+        uid: null,
+        email: null,
+        photoURL: null,
+        nickname: null,
+        description: null,
+        accessToken: null,
+      });
       navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
-    <ProfileBox className="HomeProfile">
-      <ProfileButton onClick={onToggle} />
+    <ProfileBox className="HeaderProfile">
+      <ProfileButton url={userData.photoURL} onClick={onToggle} />
       {isHidden ? null : (
         <ButtonContainer>
           <RouteButton as={Link} to="/write">
             글쓰기
           </RouteButton>
-          <RouteButton as={"div"}>설정</RouteButton>
+          <RouteButton as={Link} to="/setting">
+            설정
+          </RouteButton>
           <RouteButton onClick={onLogout}>로그아웃</RouteButton>
         </ButtonContainer>
       )}
