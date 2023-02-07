@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getUserPostList } from "../logic/getPostInfo";
+import { getUserPostList } from "../logic/getSetPostInfo";
 import { getUserUID } from "../logic/getUserInfo";
 import { BlogContainer, FooterAlign } from "../styles/PageView";
 

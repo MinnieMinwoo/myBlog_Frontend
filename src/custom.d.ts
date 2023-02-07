@@ -17,6 +17,7 @@ interface PostData {
 interface PostDetail extends PostData {
   likes: number;
   detail: string;
+  nickname: string;
 }
 
 interface UserData {

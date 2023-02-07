@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { getPostData } from "../logic/getPostInfo";
+import { getPostData } from "../logic/getSetPostInfo";
 import { getUserNickname } from "../logic/getUserInfo";
 import { BlogContainer, FooterAlign } from "../styles/PageView";
 
@@ -19,9 +19,8 @@ const Read = () => {
   useEffect(() => {
     if (!param.docID) throw console.log("wrong url data");
     const docID = param.docID;
-    getPostData(docID).then(async (postDetail) => {
-      const nickname = await getUserNickname(postDetail.createdBy);
-      setValue({ ...postDetail, createdBy: nickname });
+    getPostData(docID).then((postDetail) => {
+      setValue(postDetail);
     });
   }, []);
 
@@ -31,7 +30,12 @@ const Read = () => {
         <Header />
       </header>
       <section className="read_section">
-        <PostTitle title={value?.title} createdBy={value?.createdBy} createdAt={value?.createdAt} />
+        <PostTitle
+          title={value?.title}
+          createdBy={value?.createdBy}
+          createdAt={value?.createdAt}
+          nickname={value?.nickname}
+        />
         <BlogContainer>
           <PostDetail postData={value} />
           <CategorySideBar />
