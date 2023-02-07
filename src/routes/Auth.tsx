@@ -2,10 +2,7 @@ import React, { ChangeEvent } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../logic/firebase";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import styled from "styled-components";
 
 const AuthBox = styled.div`
@@ -62,11 +59,7 @@ const Auth = () => {
       if (signIn) {
         data = await signInWithEmailAndPassword(authService, email, password);
       } else {
-        data = await createUserWithEmailAndPassword(
-          authService,
-          email,
-          password
-        );
+        data = await createUserWithEmailAndPassword(authService, email, password);
       }
       navigate(`/home/${data.user.uid}`);
     } catch (error) {
@@ -112,9 +105,7 @@ const Auth = () => {
         />
         <SignIn type="submit" value={signIn ? "Sign In" : "Create Account"} />
       </form>
-      <Toggle onClick={toggleAccount}>
-        {signIn ? "Create Account" : "Sign In"}
-      </Toggle>
+      <Toggle onClick={toggleAccount}>{signIn ? "Create Account" : "Sign In"}</Toggle>
     </AuthBox>
   );
 };

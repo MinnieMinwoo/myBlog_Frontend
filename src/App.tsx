@@ -5,6 +5,7 @@ import { loginData } from "./states/LoginState";
 import { authService } from "./logic/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import "./App.css";
+import { getUserData } from "./logic/getUserInfo";
 
 const App = () => {
   const [init, setInit] = useState(false);
@@ -14,20 +15,12 @@ const App = () => {
     try {
       onAuthStateChanged(authService, async (user) => {
         if (user) {
-          const token = await user.getIdToken();
-          setUserData((prev) => ({
-            ...prev,
-            isLoggedIn: true,
-            email: user.email,
-            photoURL: user.photoURL,
-            uid: user.uid,
-            accessToken: token,
-          }));
+          const userData = await getUserData(user);
+          setUserData(userData);
         } else {
-          setUserData((prev) => ({
-            ...prev,
+          setUserData({
             isLoggedIn: false,
-          }));
+          });
         }
         setInit(true);
       });
@@ -35,11 +28,7 @@ const App = () => {
       console.log(error);
     }
   }, []);
-  return (
-    <div className={`App`}>
-      {init ? <AppRouter /> : <div>initializing...</div>}
-    </div>
-  );
+  return <div className={`App`}>{init ? <AppRouter /> : <div>initializing...</div>}</div>;
 };
 
 export default App;

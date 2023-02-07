@@ -27,11 +27,7 @@ const Read = () => {
         <Header />
       </header>
       <section className="read_section">
-        <PostTitle
-          title={value?.title}
-          createdBy={value?.createdBy}
-          createdAt={value?.createdAt}
-        />
+        <PostTitle title={value?.title} createdBy={value?.createdBy} createdAt={value?.createdAt} />
         <BlogContainer>
           <PostDetail postData={value} />
           <CategorySideBar />

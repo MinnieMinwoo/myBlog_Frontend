@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getUserPostList } from "../logic/getPostInfo";
+import { getUserUID } from "../logic/getUserInfo";
 import { BlogContainer, FooterAlign } from "../styles/PageView";
 
 import Header from "../components/Home/Header/Header";
@@ -15,10 +16,14 @@ const Home = () => {
   const params = useParams();
 
   useEffect(() => {
-    if (!params.userID) throw console.log("do not have uid");
-    getUserPostList(params?.userID).then((docList) => {
-      setPostList(docList);
-    });
+    if (!params.userID) throw console.log("no name data");
+    getUserUID(params.userID)
+      .then((uid) => {
+        return getUserPostList(uid);
+      })
+      .then((docList) => {
+        setPostList(docList);
+      });
   }, []);
 
   return (

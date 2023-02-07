@@ -61,12 +61,6 @@ const HomeProfile = () => {
       await signOut(authService);
       setUserData({
         isLoggedIn: false,
-        uid: null,
-        email: null,
-        photoURL: null,
-        nickname: null,
-        description: null,
-        accessToken: null,
       });
       navigate("/");
     } catch (error) {
@@ -76,7 +70,7 @@ const HomeProfile = () => {
 
   return (
     <ProfileBox className="HeaderProfile">
-      <ProfileButton url={userData.photoURL} onClick={onToggle} />
+      <ProfileButton url={userData.photoURL ?? ""} onClick={onToggle} />
       {isHidden ? null : (
         <ButtonContainer>
           <RouteButton as={Link} to="/write">

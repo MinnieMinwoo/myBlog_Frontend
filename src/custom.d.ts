@@ -18,3 +18,13 @@ interface PostDetail extends PostData {
   likes: number;
   detail: string;
 }
+
+interface UserData {
+  isLoggedIn: boolean;
+  uid?: string;
+  email?: string;
+  photoURL?: string;
+  nickname?: string;
+  description?: string;
+  accessToken?: string;
+}

@@ -1,6 +1,8 @@
-import ProfileImageEdit from "../components/EditProfile/ProfileImageEdit";
 import React from "react";
+
 import Header from "../components/Home/Header/Header";
+import ProfileImageEdit from "../components/Setting/ProfileImageEdit";
+import ProfileInfoEdit from "../components/Setting/ProfileInfoEdit";
 
 const Setting = () => {
   return (
@@ -8,7 +10,7 @@ const Setting = () => {
       <Header />
       <section>
         <ProfileImageEdit />
-        <div></div>
+        <ProfileInfoEdit />
       </section>
       <section>
         <div></div>

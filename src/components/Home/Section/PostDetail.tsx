@@ -33,8 +33,7 @@ const PostDetail = ({ postData }: Props) => {
     if (postData) {
       setValue(postData.detail);
     }
-    const innerDataNode =
-      editor.current?.children[0]?.children[0]?.children[0]?.children[0];
+    const innerDataNode = editor.current?.children[0]?.children[0]?.children[0]?.children[0];
     setHeight((innerDataNode as HTMLElement).offsetHeight + 50);
   });
 

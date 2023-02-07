@@ -21,7 +21,7 @@ const Main = () => {
   return (
     <MainContainer className="Main">
       <MainHeader />
-      <MainSection isLoggedIn={userData.isLoggedIn} uid={userData.uid} />
+      <MainSection isLoggedIn={userData.isLoggedIn} uid={userData.nickname ?? ""} />
       <HomeFooter />
     </MainContainer>
   );
