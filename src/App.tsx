@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import AppRouter from "./AppRouter";
 import { useSetRecoilState } from "recoil";

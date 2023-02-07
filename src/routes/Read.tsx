@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { getPostData } from "../logic/getPostInfo";
+import { getUserNickname } from "../logic/getUserInfo";
 import { BlogContainer, FooterAlign } from "../styles/PageView";
 
 import Header from "../components/Home/Header/Header";
@@ -15,9 +17,11 @@ const Read = () => {
   const param = useParams();
 
   useEffect(() => {
-    if (typeof param.docID !== "string") return;
-    getPostData(param.docID).then((postDetail) => {
-      setValue(postDetail);
+    if (!param.docID) throw console.log("wrong url data");
+    const docID = param.docID;
+    getPostData(docID).then(async (postDetail) => {
+      const nickname = await getUserNickname(postDetail.createdBy);
+      setValue({ ...postDetail, createdBy: nickname });
     });
   }, []);
 

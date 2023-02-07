@@ -10,8 +10,6 @@ interface DocData {
 export const getUserData = async (user: User): Promise<UserData> => {
   const userDocRef = doc(dbService, `users`, user.uid);
   const userDocData = (await getDoc(userDocRef)).data() as DocData;
-  const testData = (await getDoc(userDocRef)).data();
-  console.log(testData);
   const token = await user.getIdToken();
   return {
     isLoggedIn: true,
@@ -28,4 +26,10 @@ export const getUserUID = async (nickname: string): Promise<string> => {
   const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs[0].id;
+};
+
+export const getUserNickname = async (uid: string): Promise<string> => {
+  const userDocRef = doc(dbService, `users`, uid);
+  const userDocData = (await getDoc(userDocRef)).data() as DocData;
+  return userDocData?.nickname ?? "";
 };

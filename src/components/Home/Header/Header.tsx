@@ -31,8 +31,8 @@ const Header = () => {
   return (
     <MainHeader className="Header">
       <TopDivision>
-        <Title to={`/home/${userData.uid}`}>{`${
-          userData.nickname ? userData.nickname : ""
+        <Title to={`/home/${userData.nickname}`}>{`${
+          userData.nickname ? `${userData.nickname}'s` : ""
         } Blog`}</Title>
         <HomeIcon />
       </TopDivision>

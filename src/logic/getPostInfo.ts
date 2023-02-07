@@ -1,13 +1,5 @@
 import { dbService } from "./firebase";
-import {
-  doc,
-  getDoc,
-  getDocs,
-  collection,
-  query,
-  where,
-  orderBy,
-} from "firebase/firestore";
+import { doc, getDoc, getDocs, collection, query, where, orderBy } from "firebase/firestore";
 
 export const getPostData = async (docId: string): Promise<PostDetail> => {
   const docRefPre = doc(dbService, `posts`, docId);
