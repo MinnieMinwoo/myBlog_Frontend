@@ -12,7 +12,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 
-import { getUserNickname } from "./getUserInfo";
+import { getUserNickname } from "./getSetUserInfo";
 
 export const getUserPostList = async (uid: string): Promise<PostData[]> => {
   const q = query(

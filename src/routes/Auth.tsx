@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { authService } from "../logic/firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import styled from "styled-components";
-import { addUserData, getUserNickname } from "../logic/getUserInfo";
+import { addUserData, getUserNickname } from "../logic/getSetUserInfo";
 
 const AuthBox = styled.div`
   display: flex;

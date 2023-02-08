@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <MainHeader className="Header">
       <TopDivision>
-        <Title to={`/home/${params.userID}`}>{`${
+        <Title to={`/${params.userID ? `home/${params.userID}` : ""}`}>{`${
           params.userID ? `${params.userID}'s` : ""
         } Blog`}</Title>
         <HomeIcon />

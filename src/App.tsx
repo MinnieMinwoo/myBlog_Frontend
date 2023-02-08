@@ -6,7 +6,7 @@ import { loginData } from "./states/LoginState";
 import { authService } from "./logic/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import "./App.css";
-import { getUserData } from "./logic/getUserInfo";
+import { getUserData } from "./logic/getSetUserInfo";
 
 const App = () => {
   const [init, setInit] = useState(false);

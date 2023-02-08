@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { loginData } from "../../states/LoginState";
-import { authService } from "../../logic/firebase";
-import { updateProfile } from "firebase/auth";
-import { deleteImg, uploadImg } from "../../logic/getSetImage";
+import { setUserImage } from "../../logic/getSetUserInfo";
 
 const ProfileImageEdit = () => {
   const [userData, setUserData] = useRecoilState(loginData);
@@ -15,21 +13,17 @@ const ProfileImageEdit = () => {
   }, [userData.photoURL]);
 
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (userData.photoURL) deleteImg(`$profile/${userData.uid}`);
-    if (event.target.files && authService.currentUser)
-      try {
-        const imageURL = await uploadImg(event.target.files[0], `$profile/${userData.uid}`);
-        if (!imageURL) throw console.log("no image data");
-        await updateProfile(authService.currentUser, {
-          photoURL: imageURL,
-        });
-        setUserData((prev) => ({
-          ...prev,
-          photoURL: imageURL,
-        }));
-      } catch (error) {
-        console.log(error);
-      }
+    if (!userData.uid) throw window.alert("no user uid data");
+    if (!event.target.files) throw window.alert("no files exist");
+    const imageURL = await setUserImage(
+      Boolean(userData.photoURL),
+      userData.uid,
+      event.target.files[0]
+    );
+    setUserData((prev) => ({
+      ...prev,
+      photoURL: imageURL,
+    }));
   };
   const onClick = () => {
     if (inputRef.current?.value) inputRef.current.value = "";
