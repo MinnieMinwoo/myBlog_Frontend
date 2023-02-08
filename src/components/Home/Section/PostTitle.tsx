@@ -4,7 +4,7 @@ import { loginData } from "../../../states/LoginState";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
-import { deleteUserPost } from "../../../logic/getSetPostInfo";
+import { deletePost } from "../../../logic/getSetPostInfo";
 import getDate from "../../../logic/getDate";
 import { CenterAlign } from "../../../styles/PageView";
 
@@ -58,7 +58,7 @@ const PostTitle = ({ title, createdBy, createdAt, nickname }: Props) => {
   const onDelete = () => {
     if (!params.docID) throw window.alert("wrong url data");
     if (window.confirm("Do you really want delete This post?")) {
-      deleteUserPost(params.docID).then(() => {
+      deletePost(params.docID).then(() => {
         window.alert("Post has been deleted");
         navigate(-1);
       });

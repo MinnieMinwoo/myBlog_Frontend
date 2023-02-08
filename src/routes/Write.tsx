@@ -68,7 +68,7 @@ const Write = () => {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await addPost(title, postData, userData);
-    navigate(`/home/${userData.uid}`);
+    navigate(`/home/${userData.nickname}`);
   };
 
   return (

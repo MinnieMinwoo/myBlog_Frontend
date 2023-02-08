@@ -74,7 +74,7 @@ export const addPost = async (title: string, postData: string, userData: UserDat
   }
 };
 
-export const deleteUserPost = async (docId: string): Promise<void> => {
+export const deletePost = async (docId: string): Promise<void> => {
   const docRefPre = doc(dbService, `posts`, docId);
   const docRefDetail = doc(dbService, `posts/${docId}/detail`, docId);
   await deleteDoc(docRefDetail);

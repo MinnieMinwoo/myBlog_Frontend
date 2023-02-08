@@ -1,4 +1,4 @@
-import { dbService } from "./firebase";
+import { authService, dbService } from "./firebase";
 import {
   query,
   collection,
@@ -8,11 +8,19 @@ import {
   setDoc,
   getDocs,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
-import { authService } from "./firebase";
-import { User, updateProfile } from "firebase/auth";
+import {
+  User,
+  updateProfile,
+  deleteUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  signInWithEmailLink,
+} from "firebase/auth";
 
 import { deleteImg, uploadImg } from "./getSetImage";
+import { getUserPostList, deletePost } from "./getSetPostInfo";
 
 interface DocData {
   nickname?: string;
@@ -78,11 +86,35 @@ export const updateUserImage = async (
 export const updateUserProfile = async (uid: string, nickname: string, description: string) => {
   const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
   const querySnapshot = await getDocs(q);
-  if (querySnapshot.docs) throw window.alert("Duplicate nickname");
+  if (querySnapshot.docs[0]) throw window.alert("Profile update error: Duplicate nickname");
   const userDocRef = doc(dbService, "users", uid);
   const profile = {
     nickname: nickname,
     description: description,
   };
   await updateDoc(userDocRef, profile);
+};
+
+export const deleteUserData = async (uid: string) => {
+  const user = authService.currentUser;
+  if (!user || user.uid !== uid) throw window.alert("Withdrawal error: wrong uid data");
+  if (!user.email) throw window.alert("Withdrawal error: wrong email data");
+  let password = "";
+  while (password === "") {
+    password = window.prompt("Enter your account password") ?? "";
+  }
+  const credential = EmailAuthProvider.credential(user.email, password);
+  try {
+    await reauthenticateWithCredential(user, credential);
+  } catch {
+    throw window.alert("Withdrawal error: wrong password");
+  }
+  const docList = await getUserPostList(uid);
+  docList.forEach((doc) => {
+    deletePost(doc.id);
+  });
+  const userDocRef = doc(dbService, "users", uid);
+  await deleteDoc(userDocRef);
+  if (user.photoURL) deleteImg(user.photoURL);
+  await deleteUser(user);
 };
