@@ -3,12 +3,13 @@ import {
   doc,
   getDoc,
   getDocs,
+  addDoc,
+  setDoc,
   deleteDoc,
   collection,
   query,
   where,
   orderBy,
-  deleteField,
 } from "firebase/firestore";
 
 import { getUserNickname } from "./getUserInfo";
@@ -47,6 +48,30 @@ export const getPostData = async (docId: string): Promise<PostDetail> => {
     detail: postDetail?.detail ?? "",
     nickname: nickname,
   };
+};
+
+export const addPost = async (title: string, postData: string, userData: UserData) => {
+  // eslint-disable-next-line no-useless-escape
+  const reg = /[`\n|\r|~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gim;
+  const thumbnailObj = {
+    title: title,
+    createdBy: userData.uid,
+    createdAt: Date.now(),
+    tag: "",
+    category: [],
+    thumbnailData: postData.replace(reg, "").substring(0, 151),
+    thumbnailImageURL: "",
+  };
+  const dataObj = {
+    detail: postData,
+    likes: 0,
+  };
+  try {
+    const docs = await addDoc(collection(dbService, "posts"), thumbnailObj);
+    await setDoc(doc(dbService, `posts/${docs.id}/detail`, docs.id), dataObj);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const deleteUserPost = async (docId: string): Promise<void> => {

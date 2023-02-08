@@ -39,14 +39,14 @@ const StartButton = styled.button`
 
 interface Props {
   isLoggedIn: boolean;
-  uid: string | null;
+  nickname: string;
 }
 
-const MainSection = ({ isLoggedIn, uid }: Props) => {
+const MainSection = ({ isLoggedIn, nickname }: Props) => {
   const navigate = useNavigate();
   const onClick = () => {
     if (isLoggedIn === true) {
-      navigate(`/home/${uid}`);
+      navigate(`/home/${nickname}`);
     } else {
       navigate("/auth");
     }

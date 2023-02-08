@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { authService } from "../logic/firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import styled from "styled-components";
+import { addUserData, getUserNickname } from "../logic/getUserInfo";
 
 const AuthBox = styled.div`
   display: flex;
@@ -58,10 +59,13 @@ const Auth = () => {
     try {
       if (signIn) {
         data = await signInWithEmailAndPassword(authService, email, password);
+        const nickname = await getUserNickname(data.user.uid);
+        navigate(`/home/${nickname}`);
       } else {
         data = await createUserWithEmailAndPassword(authService, email, password);
+        await addUserData(data.user.uid);
+        navigate(`/home/${data.user.uid}`);
       }
-      navigate(`/home/${data.user.uid}`);
     } catch (error) {
       console.log(error);
     }

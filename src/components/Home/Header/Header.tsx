@@ -1,7 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { loginData } from "../../../states/LoginState";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import HomeIcon from "./HeaderIcon";
@@ -27,12 +25,12 @@ const Title = styled(Link)`
 `;
 
 const Header = () => {
-  const userData = useRecoilValue(loginData);
+  const params = useParams();
   return (
     <MainHeader className="Header">
       <TopDivision>
-        <Title to={`/home/${userData.nickname}`}>{`${
-          userData.nickname ? `${userData.nickname}'s` : ""
+        <Title to={`/home/${params.userID}`}>{`${
+          params.userID ? `${params.userID}'s` : ""
         } Blog`}</Title>
         <HomeIcon />
       </TopDivision>

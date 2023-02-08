@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../states/LoginState";
 import MDEditor from "@uiw/react-md-editor";
-import { dbService } from "../logic/firebase";
-import { doc, addDoc, setDoc, collection } from "firebase/firestore";
 import styled from "styled-components";
+
+import { addPost } from "../logic/getSetPostInfo";
 
 const Container = styled.div`
   display: flex;
@@ -67,28 +67,8 @@ const Write = () => {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // eslint-disable-next-line no-useless-escape
-    const reg = /[`\n|\r|~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gim;
-    const thumbnailObj = {
-      title: title,
-      createdBy: userData.uid,
-      createdAt: Date.now(),
-      tag: "",
-      category: [],
-      thumbnailData: postData.replace(reg, "").substring(0, 151),
-      thumbnailImageURL: "",
-    };
-    const dataObj = {
-      detail: postData,
-      likes: 0,
-    };
-    try {
-      const docs = await addDoc(collection(dbService, "posts"), thumbnailObj);
-      await setDoc(doc(dbService, `posts/${docs.id}/detail`, docs.id), dataObj);
-      navigate(`/home/${userData.uid}`);
-    } catch (error) {
-      console.log(error);
-    }
+    await addPost(title, postData, userData);
+    navigate(`/home/${userData.uid}`);
   };
 
   return (

@@ -1,5 +1,5 @@
 import { dbService } from "./firebase";
-import { query, collection, where, doc, getDoc, getDocs } from "firebase/firestore";
+import { query, collection, where, doc, getDoc, setDoc, getDocs } from "firebase/firestore";
 import { User } from "firebase/auth";
 
 interface DocData {
@@ -22,9 +22,18 @@ export const getUserData = async (user: User): Promise<UserData> => {
   };
 };
 
+export const addUserData = async (uid: string) => {
+  const userDetail: DocData = {
+    nickname: uid,
+    description: "Hello",
+  };
+  await setDoc(doc(dbService, "users", uid), userDetail);
+};
+
 export const getUserUID = async (nickname: string): Promise<string> => {
   const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
   const querySnapshot = await getDocs(q);
+  console.log(querySnapshot.docs[0]);
   return querySnapshot.docs[0].id;
 };
 
