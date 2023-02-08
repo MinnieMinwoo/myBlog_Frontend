@@ -1,5 +1,14 @@
 import { dbService } from "./firebase";
-import { query, collection, where, doc, getDoc, setDoc, getDocs } from "firebase/firestore";
+import {
+  query,
+  collection,
+  where,
+  doc,
+  getDoc,
+  setDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { authService } from "./firebase";
 import { User, updateProfile } from "firebase/auth";
 
@@ -36,17 +45,16 @@ export const getUserData = async (user: User): Promise<UserData> => {
 export const getUserUID = async (nickname: string): Promise<string> => {
   const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
   const querySnapshot = await getDocs(q);
-  console.log(querySnapshot.docs[0]);
   return querySnapshot.docs[0].id;
 };
 
 export const getUserNickname = async (uid: string): Promise<string> => {
-  const userDocRef = doc(dbService, `users`, uid);
+  const userDocRef = doc(dbService, "users", uid);
   const userDocData = (await getDoc(userDocRef)).data() as DocData;
   return userDocData?.nickname ?? "";
 };
 
-export const setUserImage = async (
+export const updateUserImage = async (
   isOwnImage: boolean,
   uid: string,
   file: File
@@ -65,4 +73,16 @@ export const setUserImage = async (
         reject(error);
       }
   });
+};
+
+export const updateUserProfile = async (uid: string, nickname: string, description: string) => {
+  const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
+  const querySnapshot = await getDocs(q);
+  if (querySnapshot.docs) throw window.alert("Duplicate nickname");
+  const userDocRef = doc(dbService, "users", uid);
+  const profile = {
+    nickname: nickname,
+    description: description,
+  };
+  await updateDoc(userDocRef, profile);
 };

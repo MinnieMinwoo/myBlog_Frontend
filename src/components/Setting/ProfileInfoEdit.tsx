@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+import { updateUserProfile } from "../../logic/getSetUserInfo";
 import { loginData } from "../../states/LoginState";
 
 const ProfileInfoEdit = () => {
@@ -16,7 +17,26 @@ const ProfileInfoEdit = () => {
     setHidden((prev) => !prev);
   };
 
-  const onSubmit = () => {};
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name, value },
+    } = event;
+    if (name === "nickname") setNickname(value);
+    else if (name === "description") setDescription(value);
+  };
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!userData.uid) throw window.alert("no user uid data");
+    await updateUserProfile(userData.uid, nickname, description);
+    setUserData((prev) => ({
+      ...prev,
+      nickname: nickname,
+      description: description,
+    }));
+    setHidden(true);
+    console.log("success");
+  };
 
   return (
     <div>
@@ -24,8 +44,21 @@ const ProfileInfoEdit = () => {
       <div>{userData.description}</div>
       <button onClick={onToggle}>Edit</button>
       <form hidden={hidden} onSubmit={onSubmit}>
-        <input type="text" placeholder="NickName" value={nickname} required />
-        <input type="text" placeholder="Description" value={description} />
+        <input
+          type="text"
+          name="nickname"
+          placeholder="nickname"
+          value={nickname}
+          onChange={onChange}
+          required
+        />
+        <input
+          type="text"
+          name="description"
+          placeholder="description"
+          value={description}
+          onChange={onChange}
+        />
         <input type="submit" value="Save" />
       </form>
     </div>

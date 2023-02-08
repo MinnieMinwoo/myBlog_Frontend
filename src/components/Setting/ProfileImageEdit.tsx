@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { loginData } from "../../states/LoginState";
-import { setUserImage } from "../../logic/getSetUserInfo";
+import { updateUserImage } from "../../logic/getSetUserInfo";
 
 const ProfileImageEdit = () => {
   const [userData, setUserData] = useRecoilState(loginData);
@@ -15,7 +15,7 @@ const ProfileImageEdit = () => {
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!userData.uid) throw window.alert("no user uid data");
     if (!event.target.files) throw window.alert("no files exist");
-    const imageURL = await setUserImage(
+    const imageURL = await updateUserImage(
       Boolean(userData.photoURL),
       userData.uid,
       event.target.files[0]
