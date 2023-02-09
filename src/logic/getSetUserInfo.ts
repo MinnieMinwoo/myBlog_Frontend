@@ -85,7 +85,8 @@ export const updateUserImage = async (
 export const updateUserProfile = async (uid: string, nickname: string, description: string) => {
   const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
   const querySnapshot = await getDocs(q);
-  if (querySnapshot.docs[0]) throw window.alert("Profile update error: Duplicate nickname");
+  if (querySnapshot.docs[0] && querySnapshot.docs[0].id !== uid)
+    throw window.alert("Profile update error: Duplicate nickname");
   const userDocRef = doc(dbService, "users", uid);
   const profile = {
     nickname: nickname,
