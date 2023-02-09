@@ -16,7 +16,6 @@ import {
   deleteUser,
   reauthenticateWithCredential,
   EmailAuthProvider,
-  signInWithEmailLink,
 } from "firebase/auth";
 
 import { deleteImg, uploadImg } from "./getSetImage";

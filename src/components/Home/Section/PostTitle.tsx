@@ -35,25 +35,27 @@ const EditData = styled.span`
 `;
 
 interface Props {
-  title?: string;
-  createdBy?: string;
-  createdAt?: number;
-  nickname?: string;
+  postData?: PostDetail;
+  nickname: string;
 }
 
-const PostTitle = ({ title, createdBy, createdAt, nickname }: Props) => {
+const PostTitle = ({ postData, nickname }: Props) => {
   const params = useParams();
   const [hidden, setHidden] = useState(true);
   const userData = useRecoilValue(loginData);
   const navigate = useNavigate();
   // category div자리에 넣기
   useEffect(() => {
-    if (userData.uid && createdBy === userData.uid) {
+    if (userData.uid && postData?.createdBy === userData.uid) {
       setHidden(false);
     } else {
       setHidden(true);
     }
-  }, [userData.uid, createdBy]);
+  }, [userData.uid, postData?.createdBy]);
+
+  const onEdit = () => {
+    navigate("/edit", { state: { postInfo: postData } });
+  };
 
   const onDelete = () => {
     if (!params.docID) throw window.alert("wrong url data");
@@ -69,10 +71,15 @@ const PostTitle = ({ title, createdBy, createdAt, nickname }: Props) => {
     <PostTitleBackground>
       <PostTitleContainer>
         <Category></Category>
-        {title ? <Title>{title}</Title> : null}
+        {postData?.title ? <Title>{postData?.title}</Title> : null}
         {nickname ? <CreateData>{`by ${nickname}`}</CreateData> : null}
-        {createdAt ? <CreateData>{` ∙  ${getDate(createdAt)}`}</CreateData> : null}
-        <EditData hidden={hidden}> ∙ 수정</EditData>
+        {postData?.createdAt ? (
+          <CreateData>{` ∙  ${getDate(postData?.createdAt)}`}</CreateData>
+        ) : null}
+        <EditData hidden={hidden} onClick={onEdit}>
+          {" "}
+          ∙ 수정
+        </EditData>
         <EditData hidden={hidden} onClick={onDelete}>
           {" "}
           ∙ 삭제

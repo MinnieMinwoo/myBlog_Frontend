@@ -10,6 +10,7 @@ import {
   query,
   where,
   orderBy,
+  updateDoc,
 } from "firebase/firestore";
 
 import { getUserNickname } from "./getSetUserInfo";
@@ -44,6 +45,7 @@ export const getPostData = async (docId: string): Promise<PostDetail> => {
   const nickname = await getUserNickname(postPreview.createdBy);
   return {
     ...postPreview,
+    id: docId,
     likes: postDetail?.likes ?? 0,
     detail: postDetail?.detail ?? "",
     nickname: nickname,
@@ -69,6 +71,25 @@ export const addPost = async (title: string, postData: string, userData: UserDat
   try {
     const docs = await addDoc(collection(dbService, "posts"), thumbnailObj);
     await setDoc(doc(dbService, `posts/${docs.id}/detail`, docs.id), dataObj);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updatePost = async (id: string, title: string, postData: string) => {
+  const thumbnailObj = {
+    title: title,
+    tag: "",
+    category: [],
+  };
+  const dataObj = {
+    detail: postData,
+  };
+  try {
+    const thumbnailRef = doc(dbService, "posts", id);
+    const dataRef = doc(dbService, `posts/${id}/detail`, id);
+    await updateDoc(thumbnailRef, thumbnailObj);
+    await updateDoc(dataRef, dataObj);
   } catch (error) {
     console.log(error);
   }
