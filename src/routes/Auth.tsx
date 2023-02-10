@@ -2,10 +2,8 @@ import React, { ChangeEvent } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInEmail, signUpEmail } from "../logic/authSetting";
-import { authService } from "../logic/firebase";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import styled from "styled-components";
-import { addUserData, getUserNickname } from "../logic/getSetUserInfo";
+import { FirebaseError } from "firebase/app";
 
 const AuthBox = styled.div`
   display: flex;
@@ -59,28 +57,34 @@ const Auth = () => {
     try {
       const nickname = await (signIn ? signInEmail(email, password) : signUpEmail(email, password));
       navigate(`/home/${nickname}`);
-    } catch (error: any) {
-      switch (error.code) {
-        //login failed
-        case "auth/invalid-email":
-          console.log("The email address you entered does not exist.");
-          break;
-        case "auth/wrong-password":
-          console.log("Password do not match.");
-          break;
-
-        //sign up failed
-        case "auth/weak-password":
-          console.log("Password must be at least 6 characters long.");
-          break;
-        case "auth/email-already-in-use":
-          console.log("The email address you entered already exists.");
-          break;
-        default:
-          console.log("Something wrong. Please try again later.");
-          break;
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          //common login & sign in
+          case "auth/invalid-email":
+            console.log("You entered wrong email address.");
+            break;
+          //login failed
+          case "auth/user-not-found":
+            console.log("The email address you entered does not exist.");
+            break;
+          case "auth/wrong-password":
+            console.log("Password do not match.");
+            break;
+          //login failed
+          case "auth/weak-password":
+            console.log("Password must be at least 6 characters long.");
+            break;
+          case "auth/email-already-in-use":
+            console.log("The email address you entered already exists.");
+            break;
+          default:
+            console.log("Server does not work properly. Please try again later.");
+            break;
+        }
+      } else {
+        console.log("Something wrong. Please try again later.");
       }
-      console.log(error.code);
     }
   };
 
