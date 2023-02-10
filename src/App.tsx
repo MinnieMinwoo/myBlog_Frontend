@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useAuthObserver } from "./logic/authHook";
+import { useAuthObserver } from "./logic/authSetting";
 
 import Loading from "./components/Share/Loading";
 import AppRouter from "./AppRouter";

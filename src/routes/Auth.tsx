@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signInEmail, signUpEmail } from "../logic/authSetting";
 import { authService } from "../logic/firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import styled from "styled-components";
@@ -54,20 +55,32 @@ const Auth = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    let data;
     event.preventDefault();
     try {
-      if (signIn) {
-        data = await signInWithEmailAndPassword(authService, email, password);
-        const nickname = await getUserNickname(data.user.uid);
-        navigate(`/home/${nickname}`);
-      } else {
-        data = await createUserWithEmailAndPassword(authService, email, password);
-        await addUserData(data.user.uid);
-        navigate(`/home/${data.user.uid}`);
+      const nickname = await (signIn ? signInEmail(email, password) : signUpEmail(email, password));
+      navigate(`/home/${nickname}`);
+    } catch (error: any) {
+      switch (error.code) {
+        //login failed
+        case "auth/invalid-email":
+          console.log("The email address you entered does not exist.");
+          break;
+        case "auth/wrong-password":
+          console.log("Password do not match.");
+          break;
+
+        //sign up failed
+        case "auth/weak-password":
+          console.log("Password must be at least 6 characters long.");
+          break;
+        case "auth/email-already-in-use":
+          console.log("The email address you entered already exists.");
+          break;
+        default:
+          console.log("Something wrong. Please try again later.");
+          break;
       }
-    } catch (error) {
-      console.log(error);
+      console.log(error.code);
     }
   };
 
