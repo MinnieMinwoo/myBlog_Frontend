@@ -9,7 +9,7 @@ import Header from "../components/Home/Header/Header";
 import PostTitle from "../components/Home/Section/PostTitle";
 import PostDetail from "../components/Home/Section/PostDetail";
 import CategorySideBar from "../components/Home/Section/CategorySideBar";
-import HomeFooter from "../components/Share/Footer";
+import Footer from "../components/Share/Footer";
 
 const Read = () => {
   const [value, setValue] = useState<PostDetail>();
@@ -36,7 +36,7 @@ const Read = () => {
         </BlogContainer>
       </section>
       <footer className="read_footer">
-        <HomeFooter />
+        <Footer />
       </footer>
     </FooterAlign>
   );

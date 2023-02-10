@@ -10,7 +10,7 @@ import { BlogContainer, FooterAlign } from "../styles/PageView";
 import Header from "../components/Home/Header/Header";
 import CategorySideBar from "../components/Home/Section/CategorySideBar";
 import PostContainer from "../components/Home/Section/PostContainer";
-import HomeFooter from "../components/Share/Footer";
+import Footer from "../components/Share/Footer";
 
 const Home = () => {
   const [postList, setPostList] = useState<PostData[]>([]);
@@ -37,7 +37,7 @@ const Home = () => {
         <CategorySideBar />
       </BlogContainer>
       <footer className="home_footer">
-        <HomeFooter />
+        <Footer />
       </footer>
     </FooterAlign>
   );

@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 import { CenterAlign } from "../../styles/PageView";
 
-const MainFooter = styled.div`
-  border-top: 1px solid #eee;
+const FooterContainer = styled.div<{ isBorder?: boolean }>`
+  border-top: ${(props) => (props.isBorder ? "1px solid #eee" : "")};
   padding: 20px 0;
 `;
 
@@ -16,15 +16,23 @@ const TextBox = styled.p`
   color: #777;
 `;
 
-const HomeFooter = () => {
+interface Props {
+  isBorder: boolean;
+}
+
+const Footer = ({ isBorder }: Props) => {
   return (
-    <MainFooter className="HomeFooter">
+    <FooterContainer isBorder={isBorder} className="HomeFooter">
       <FooterAlign>
         <TextBox> 2023 My own blog project</TextBox>
         <TextBox> © Snowcat</TextBox>
       </FooterAlign>
-    </MainFooter>
+    </FooterContainer>
   );
 };
 
-export default HomeFooter;
+Footer.defaultProps = {
+  isBorder: true,
+};
+
+export default Footer;

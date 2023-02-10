@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router";
+import { useRecoilValue } from "recoil";
+import { loginData } from "../../states/LoginState";
 import styled from "styled-components";
+import { ActionButton } from "../../styles/Buttons";
 
 const MainContainer = styled.section`
   display: flex;
-  border-top: 1px solid #eee;
   padding: 20px 0;
 `;
 
@@ -24,29 +26,16 @@ const TextData = styled.p<TextType>`
   color: #333;
 `;
 
-const StartButton = styled.button`
-  width: 200px;
-  margin: 0;
+const StartButton = styled(ActionButton)`
   margin-top: 20px;
-  line-height: 60px;
-  border-radius: 30px;
-  background-color: #555;
-  color: #fff;
-  border: 1px solid #555;
-  cursor: pointer;
-  font-size: 20px;
 `;
 
-interface Props {
-  isLoggedIn: boolean;
-  nickname: string;
-}
-
-const MainSection = ({ isLoggedIn, nickname }: Props) => {
+const MainSection = () => {
+  const userData = useRecoilValue(loginData);
   const navigate = useNavigate();
   const onClick = () => {
-    if (isLoggedIn === true) {
-      navigate(`/home/${nickname}`);
+    if (userData.isLoggedIn === true) {
+      navigate(`/home/${userData.nickname}`);
     } else {
       navigate("/auth");
     }
@@ -60,7 +49,9 @@ const MainSection = ({ isLoggedIn, nickname }: Props) => {
         <TextData fontSize="30px" fontWeight="normal">
           Create a unique and beautiful blog.
         </TextData>
-        <StartButton onClick={onClick}>Start</StartButton>
+        <StartButton width={200} height={60} color="#555" onClick={onClick}>
+          Start
+        </StartButton>
       </CenterAlign>
     </MainContainer>
   );
