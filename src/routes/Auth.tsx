@@ -71,7 +71,7 @@ const Auth = () => {
           case "auth/wrong-password":
             console.log("Password do not match.");
             break;
-          //login failed
+          //sign up failed
           case "auth/weak-password":
             console.log("Password must be at least 6 characters long.");
             break;
