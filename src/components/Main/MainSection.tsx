@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import styled from "styled-components";
-import { ActionButton } from "../../styles/Buttons";
+import { Button } from "react-bootstrap";
 
 const MainContainer = styled.section`
   display: flex;
@@ -26,7 +26,13 @@ const TextData = styled.p<TextType>`
   color: #333;
 `;
 
-const StartButton = styled(ActionButton)`
+const StartButton = styled(Button).attrs((props) => ({
+  variant: "primary",
+  size: "lg",
+}))`
+  width: 200px;
+  height: 60px;
+  font-size: 24px;
   margin-top: 20px;
 `;
 
@@ -49,9 +55,7 @@ const MainSection = () => {
         <TextData fontSize="30px" fontWeight="normal">
           Create a unique and beautiful blog.
         </TextData>
-        <StartButton width={200} height={60} color="#555" onClick={onClick}>
-          Start
-        </StartButton>
+        <StartButton onClick={onClick}>Start</StartButton>
       </CenterAlign>
     </MainContainer>
   );

@@ -1,20 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 
-import { CenterAlign } from "../../styles/PageView";
+import { Navbar, Container } from "react-bootstrap";
 import image from "../../assets/images/logo.png";
 
 const Logo = styled.img`
-  width: 75px;
-  height: 75px;
+  width: 50px;
+  height: 50px;
 `;
 
 const MainHeader = () => {
   return (
     <header className="MainHeader">
-      <CenterAlign>
-        <Logo src={image} alt="blog logo" />
-      </CenterAlign>
+      <Navbar bg="light">
+        <Container>
+          <Navbar.Brand href="/">
+            <Logo src={image} alt="blog logo" />
+          </Navbar.Brand>
+        </Container>
+      </Navbar>
     </header>
   );
 };

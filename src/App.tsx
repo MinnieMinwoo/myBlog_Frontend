@@ -4,7 +4,6 @@ import { useAuthObserver } from "./logic/authSetting";
 
 import Loading from "./components/Share/Loading";
 import AppRouter from "./AppRouter";
-import "./App.css";
 
 const App = () => {
   const [init, setInit] = useState(false);
