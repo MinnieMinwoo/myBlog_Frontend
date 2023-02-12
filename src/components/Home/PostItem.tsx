@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import getDate from "../../../logic/getDate";
+import getDate from "../../logic/getDate";
 import styled from "styled-components";
 
 const PostBox = styled(Link)`

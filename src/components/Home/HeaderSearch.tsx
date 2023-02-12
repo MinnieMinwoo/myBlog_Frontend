@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import search from "../../../assets/images/search.png";
+import search from "../../assets/images/search.png";
 
 const SearchBox = styled.div`
   display: inline-block;
@@ -9,8 +9,8 @@ const SearchBox = styled.div`
 `;
 
 const SearchButton = styled.button`
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border: 1px solid #eee;
   background-image: url(${search});

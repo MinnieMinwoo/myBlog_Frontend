@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { loginData } from "../../../states/LoginState";
-import { authService } from "../../../logic/firebase";
+import { loginData } from "../../states/LoginState";
+import { authService } from "../../logic/firebase";
 import { signOut } from "firebase/auth";
 import styled from "styled-components";
 
@@ -13,8 +13,8 @@ const ProfileBox = styled.div`
 `;
 
 const ProfileButton = styled.div<{ url: string | null }>`
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border: 1px solid #eee;
   background-image: url(${(props) => (props.url ? props.url : "")});
@@ -27,9 +27,9 @@ const ProfileButton = styled.div<{ url: string | null }>`
 
 const ButtonContainer = styled.div`
   position: absolute;
-  transform: translateX(-34px);
-  @media (max-width: 1080px) {
-    transform: translateX(-64px);
+  transform: translateX(-25px);
+  @media (max-width: 767px) {
+    transform: translateX(-49px);
   }
   margin-top: 5px;
 `;

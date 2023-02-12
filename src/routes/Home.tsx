@@ -1,41 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 
-import { getUserPostList } from "../logic/getSetPostInfo";
-import { getUserUID } from "../logic/getSetUserInfo";
-import { BlogContainer, FooterAlign } from "../styles/PageView";
+import { FooterAlign } from "../styles/PageView";
 
-import Header from "../components/Home/Header/Header";
-import CategorySideBar from "../components/Home/Section/CategorySideBar";
-import PostContainer from "../components/Home/Section/PostContainer";
+import Header from "../components/Home/Header";
+import CategorySideBar from "../components/Home/CategorySideBar";
 import Footer from "../components/Share/Footer";
 
 const Home = () => {
-  const [postList, setPostList] = useState<PostData[]>([]);
-  const params = useParams();
-
-  useEffect(() => {
-    if (!params.userID) throw console.log("no name data");
-    getUserUID(params.userID)
-      .then((uid) => {
-        return getUserPostList(uid);
-      })
-      .then((docList) => {
-        setPostList(docList);
-      });
-  }, []);
-
   return (
     <FooterAlign className="Home">
       <header className="home_header">
         <Header />
       </header>
-      <BlogContainer>
-        <PostContainer postList={postList} types="posts" />
-        <CategorySideBar />
-      </BlogContainer>
+      <section className="home_section">
+        <Row>
+          <Col sm={{ span: 10, offset: 1 }} lg={{ span: 8, offset: 1 }}>
+            <Outlet />
+          </Col>
+          <Col lg={2}>
+            <CategorySideBar />
+          </Col>
+        </Row>
+      </section>
       <footer className="home_footer">
         <Footer />
       </footer>

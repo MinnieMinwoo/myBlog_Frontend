@@ -13,7 +13,7 @@ const Main = () => {
     <MainContainer className="Main">
       <MainHeader />
       <MainSection />
-      <Footer isBorder={false} />
+      <Footer />
     </MainContainer>
   );
 };

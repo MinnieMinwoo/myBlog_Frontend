@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import Header from "../components/Home/Header/Header";
+import Header from "../components/Home/Header";
 import ProfileImageEdit from "../components/Setting/ProfileImageEdit";
 import ProfileInfoEdit from "../components/Setting/ProfileInfoEdit";
 import Withdrawal from "../components/Setting/Withdrawal";

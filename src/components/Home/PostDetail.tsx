@@ -1,57 +1,60 @@
-import React, { useState, useEffect } from "react";
-import { useRecoilValue } from "recoil";
-import { loginData } from "../../../states/LoginState";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { loginData } from "../../states/LoginState";
+import MarkdownPreview from "@uiw/react-markdown-preview";
 import styled from "styled-components";
 
-import { deletePost } from "../../../logic/getSetPostInfo";
-import getDate from "../../../logic/getDate";
-import { CenterAlign } from "../../../styles/PageView";
+import getDate from "../../logic/getDate";
+import { getPostData, deletePost } from "../../logic/getSetPostInfo";
 
 const PostTitleBackground = styled.div`
   height: 340px;
-  background-color: #999;
 `;
-
-const PostTitleContainer = styled(CenterAlign)``;
 
 const Category = styled.div`
   padding-top: 160px;
 `;
+
 const Title = styled.h2`
-  color: white;
   font-size: 35px;
   font-weight: 400;
   margin-bottom: 20px;
 `;
 
-const CreateData = styled.span`
-  color: #eee;
-`;
-
 const EditData = styled.span`
-  color: #eee;
   cursor: pointer;
 `;
 
-interface Props {
-  postData?: PostDetail;
-  nickname: string;
-}
+const PostBox = styled.article`
+  padding: 30px 0;
+  flex-basis: 80vw;
+  @media (min-width: 1080px) {
+    padding: 72px 50px 60px 0;
+    flex-grow: 3;
+  }
+`;
 
-const PostTitle = ({ postData, nickname }: Props) => {
-  const params = useParams();
+const PostDetail = () => {
+  const [postData, setPostData] = useState<PostDetail>();
   const [hidden, setHidden] = useState(true);
   const userData = useRecoilValue(loginData);
   const navigate = useNavigate();
-  // category div자리에 넣기
+  const params = useParams();
+
   useEffect(() => {
+    if (!params.docID) throw console.log("wrong url data");
+    const docID = params.docID;
+    getPostData(docID).then((postDetail) => {
+      setPostData(postDetail);
+    });
     if (userData.uid && postData?.createdBy === userData.uid) {
       setHidden(false);
     } else {
       setHidden(true);
     }
-  }, [userData.uid, postData?.createdBy]);
+  }, []);
 
   const onEdit = () => {
     navigate("/edit", { state: { postInfo: postData } });
@@ -68,25 +71,26 @@ const PostTitle = ({ postData, nickname }: Props) => {
   };
 
   return (
-    <PostTitleBackground>
-      <PostTitleContainer>
-        <Category></Category>
+    <section className="read_section">
+      <PostTitleBackground>
+        <Category />
         {postData?.title ? <Title>{postData?.title}</Title> : null}
-        {nickname ? <CreateData>{`by ${nickname}`}</CreateData> : null}
+        {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
         {postData?.createdAt ? (
-          <CreateData>{` ∙  ${getDate(postData?.createdAt)}`}</CreateData>
+          <span>{` ∙  ${getDate(postData?.createdAt)}`}</span>
         ) : null}
         <EditData hidden={hidden} onClick={onEdit}>
-          {" "}
           ∙ 수정
         </EditData>
         <EditData hidden={hidden} onClick={onDelete}>
-          {" "}
           ∙ 삭제
         </EditData>
-      </PostTitleContainer>
-    </PostTitleBackground>
+      </PostTitleBackground>
+      <PostBox data-color-mode="light">
+        <MarkdownPreview source={postData?.detail} />
+      </PostBox>
+    </section>
   );
 };
 
-export default PostTitle;
+export default PostDetail;

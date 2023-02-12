@@ -4,12 +4,9 @@ import CategorySideContent from "./CategorySideContent";
 import styled from "styled-components";
 
 const AsideTab = styled.aside`
-  flex-basis: 230px;
-  flex-grow: 1;
-  flex-shrink: 0;
-  padding: 75px 0px 32px 50px;
+  padding: 75px 0px 0px 50px;
   border-left: 1px solid #eee;
-  @media (max-width: 1079px) {
+  @media (max-width: 991px) {
     display: none;
   }
 `;
