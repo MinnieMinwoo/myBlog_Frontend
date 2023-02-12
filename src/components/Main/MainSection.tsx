@@ -2,23 +2,21 @@ import React from "react";
 import { useNavigate } from "react-router";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
-import styled from "styled-components";
 import { Button } from "react-bootstrap";
-
-const MainContainer = styled.section`
-  display: flex;
-  padding: 20px 0;
-`;
-
-const CenterAlign = styled.div`
-  margin: auto;
-  text-align: center;
-`;
+import styled from "styled-components";
 
 interface TextType {
   fontSize: string;
   fontWeight: string;
 }
+
+const MainContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
 const TextData = styled.p<TextType>`
   margin-bottom: 10px;
   font-size: ${(props) => props.fontSize};
@@ -26,7 +24,7 @@ const TextData = styled.p<TextType>`
   color: #333;
 `;
 
-const StartButton = styled(Button).attrs((props) => ({
+const StartButton = styled(Button).attrs(() => ({
   variant: "primary",
   size: "lg",
 }))`
@@ -48,15 +46,13 @@ const MainSection = () => {
   };
   return (
     <MainContainer className="MainSection">
-      <CenterAlign>
-        <TextData fontSize="45px" fontWeight="bold">
-          Publish your stroy, your way
-        </TextData>
-        <TextData fontSize="30px" fontWeight="normal">
-          Create a unique and beautiful blog.
-        </TextData>
-        <StartButton onClick={onClick}>Start</StartButton>
-      </CenterAlign>
+      <TextData fontSize="45px" fontWeight="bold">
+        Publish your stroy, your way
+      </TextData>
+      <TextData fontSize="30px" fontWeight="normal">
+        Create a unique and beautiful blog.
+      </TextData>
+      <StartButton onClick={onClick}>Start</StartButton>
     </MainContainer>
   );
 };

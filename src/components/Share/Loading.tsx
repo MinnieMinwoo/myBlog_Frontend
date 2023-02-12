@@ -1,24 +1,19 @@
 import React from "react";
 import styled from "styled-components";
+import { Spinner } from "react-bootstrap";
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   background-color: white;
   opacity: 50%;
+  z-index: 1;
 `;
 
-const Spinner = styled.div`
-  @keyframes spinning {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
+const Animation = styled(Spinner)`
   box-sizing: border-box;
   position: absolute;
   top: 50%;
@@ -27,17 +22,12 @@ const Spinner = styled.div`
   height: 96px;
   margin-top: -48px;
   margin-left: -48px;
-  border-radius: 50%;
-  border: 12px solid transparent;
-  border-top-color: #333;
-  border-bottom-color: #333;
-  animation: spinning 1.5s linear infinite;
 `;
 
 const Loading = () => {
   return (
     <Container>
-      <Spinner></Spinner>
+      <Animation animation="border" />
     </Container>
   );
 };

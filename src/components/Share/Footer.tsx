@@ -1,7 +1,6 @@
 import React from "react";
-import styled from "styled-components";
-
 import { Navbar, Container } from "react-bootstrap";
+import styled from "styled-components";
 
 const TextBox = styled.p`
   margin: 10px 0;
@@ -9,11 +8,7 @@ const TextBox = styled.p`
   color: #777;
 `;
 
-interface Props {
-  isBorder: boolean;
-}
-
-const Footer = ({ isBorder }: Props) => {
+const Footer = () => {
   return (
     <footer className="HomeFooter">
       <Navbar bg="light">
