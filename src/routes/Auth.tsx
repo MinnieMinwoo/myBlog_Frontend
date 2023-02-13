@@ -1,5 +1,4 @@
-import React, { ChangeEvent } from "react";
-import { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import { Button, Col, Form, Stack, Spinner } from "react-bootstrap";

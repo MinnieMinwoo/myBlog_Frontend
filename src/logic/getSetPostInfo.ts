@@ -56,7 +56,7 @@ export const addPost = async (title: string, postData: string, userData: UserDat
   // eslint-disable-next-line no-useless-escape
   const reg = /[`\n|\r|~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gim;
   const thumbnailObj = {
-    title: title,
+    title: title.substring(0, 31),
     createdBy: userData.uid,
     createdAt: Date.now(),
     tag: "",

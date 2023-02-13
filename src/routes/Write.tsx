@@ -82,6 +82,7 @@ const Write = () => {
             type="text"
             placeholder="Write post title"
             value={title}
+            maxLength={30}
             onChange={onTitleChange}
             required
           />

@@ -54,7 +54,7 @@ const PostDetail = () => {
     } else {
       setHidden(true);
     }
-  }, []);
+  }, [postData?.createdBy]);
 
   const onEdit = () => {
     navigate("/edit", { state: { postInfo: postData } });
@@ -76,9 +76,7 @@ const PostDetail = () => {
         <Category />
         {postData?.title ? <Title>{postData?.title}</Title> : null}
         {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
-        {postData?.createdAt ? (
-          <span>{` ∙  ${getDate(postData?.createdAt)}`}</span>
-        ) : null}
+        {postData?.createdAt ? <span>{` ∙  ${getDate(postData?.createdAt)}`}</span> : null}
         <EditData hidden={hidden} onClick={onEdit}>
           ∙ 수정
         </EditData>
