@@ -5,6 +5,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 
 import { getUserData, getUserNickname, addUserData } from "./getSetUserInfo";
@@ -55,4 +56,13 @@ export const signUpEmail = async (email: string, password: string): Promise<stri
       reject(error);
     }
   });
+};
+
+export const signOutUser = async () => {
+  const auth = getAuth();
+  try {
+    await signOut(auth);
+  } catch (error) {
+    throw error;
+  }
 };

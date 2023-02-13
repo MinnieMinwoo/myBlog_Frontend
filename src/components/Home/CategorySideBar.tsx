@@ -4,7 +4,8 @@ import CategorySideContent from "./CategorySideContent";
 import styled from "styled-components";
 
 const AsideTab = styled.aside`
-  padding: 75px 0px 0px 50px;
+  padding-left: 30px;
+  margin: 35px 0;
   border-left: 1px solid #eee;
   @media (max-width: 991px) {
     display: none;
@@ -46,7 +47,7 @@ const CategorySideBar = () => {
   return (
     <AsideTab className="CategorySideBar">
       <nav className="category_navigation">
-        <Title as="p">Display all categories</Title>
+        <Title as="p">All Categories</Title>
         {categoryData.map((element, id) => (
           <CategorySideContent key={id} data={element} />
         ))}

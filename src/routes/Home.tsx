@@ -17,10 +17,14 @@ const Home = () => {
       </header>
       <section className="home_section">
         <Row>
-          <Col sm={{ span: 10, offset: 1 }} lg={{ span: 8, offset: 1 }}>
+          <Col
+            sm={{ span: 10, offset: 1 }}
+            lg={{ span: 8, offset: 1 }}
+            xxl={{ span: 7, offset: 2 }}
+          >
             <Outlet />
           </Col>
-          <Col lg={2}>
+          <Col lg={3} xxl={2}>
             <CategorySideBar />
           </Col>
         </Row>

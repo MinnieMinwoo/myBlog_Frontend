@@ -35,9 +35,7 @@ const Auth = () => {
     event.preventDefault();
     setOnGoing(true);
     try {
-      const nickname = await (signIn
-        ? signInEmail(email, password)
-        : signUpEmail(email, password));
+      const nickname = await (signIn ? signInEmail(email, password) : signUpEmail(email, password));
       navigate(`/home/${nickname}`);
     } catch (error) {
       console.log(error);
@@ -64,12 +62,11 @@ const Auth = () => {
             errorText = "The email address you entered already exists.";
             break;
           default:
-            errorText =
-              "Server does not work properly. Please try again later.";
+            errorText = "Server does not work properly. Please try again later.";
             break;
         }
       } else {
-        errorText = `Something wrong. Please try again later.`;
+        errorText = "Something wrong. Please try again later.";
       }
       setModalData({ title: errorTitle, text: errorText });
       setModalShow(true);

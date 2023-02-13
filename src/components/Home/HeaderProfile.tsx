@@ -1,12 +1,13 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginData } from "../../states/LoginState";
-import { authService } from "../../logic/firebase";
-import { signOut } from "firebase/auth";
+import { Button } from "react-bootstrap";
 import styled from "styled-components";
+
+import { signOutUser } from "../../logic/authSetting";
+import AlertModal from "../Share/AlertModal";
 
 const ProfileBox = styled.div`
   display: inline-block;
@@ -33,53 +34,79 @@ const ButtonContainer = styled.div`
   }
   margin-top: 5px;
 `;
-const RouteButton = styled.button`
+
+const SelectButton = styled(Button).attrs(() => ({
+  variant: "outline-secondary",
+}))`
   display: block;
-  box-sizing: content-box;
-  width: 96px;
-  padding: 0;
-  border: 1px solid #eee;
+  width: 98px;
+  border-radius: 0;
   background-color: #fff;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  font-size: 14px;
-  line-height: 35px;
-  color: #777;
 `;
 
 const HomeProfile = () => {
-  const [isHidden, setIsHidden] = useState(true);
-  const navigate = useNavigate();
   const [userData, setUserData] = useRecoilState(loginData);
+  const [isHidden, setIsHidden] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
+  const [modalData, setModalData] = useState({
+    title: "",
+    text: "",
+  });
+  const navigate = useNavigate();
   const onToggle = () => {
     setIsHidden((prev) => !prev);
   };
 
-  const onLogout = async () => {
-    try {
-      await signOut(authService);
-      setUserData({
-        isLoggedIn: false,
-      });
-      navigate("/");
-    } catch (error) {
-      console.log(error);
+  const onClick = async (event: Event) => {
+    const { name } = event.target as HTMLButtonElement;
+    switch (name) {
+      case "write":
+        navigate("/write");
+        break;
+      case "setting":
+        navigate("/setting");
+        break;
+      case "logout":
+        try {
+          await signOutUser();
+          setUserData({
+            isLoggedIn: false,
+          });
+          navigate("/", { replace: false });
+        } catch (error) {
+          console.log(error);
+          const errorTitle = "Logout Error";
+          const errorText = "Something wrong. Please try again later";
+          setModalData({ title: errorTitle, text: errorText });
+          setModalShow(true);
+        }
+        break;
+      default:
+        break;
     }
   };
 
   return (
     <ProfileBox className="HeaderProfile">
+      <AlertModal
+        title={modalData.title}
+        text={modalData.text}
+        open={modalShow}
+        setOpen={setModalShow}
+      />
+
       <ProfileButton url={userData.photoURL ?? ""} onClick={onToggle} />
       {isHidden ? null : (
         <ButtonContainer>
-          <RouteButton as={Link} to="/write">
-            글쓰기
-          </RouteButton>
-          <RouteButton as={Link} to="/setting">
-            설정
-          </RouteButton>
-          <RouteButton onClick={onLogout}>로그아웃</RouteButton>
+          <SelectButton name="write" onClick={onClick}>
+            Post
+          </SelectButton>
+          <SelectButton name="setting" onClick={onClick}>
+            Setting
+          </SelectButton>
+          <SelectButton name="logout" onClick={onClick}>
+            Sign Out
+          </SelectButton>
         </ButtonContainer>
       )}
     </ProfileBox>

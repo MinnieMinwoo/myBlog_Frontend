@@ -2,9 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const CategoryContent = styled.div`
-  margin-top: 10px;
-`;
+const CategoryContent = styled.div``;
 
 const RouteContent = styled(Link)`
   text-decoration: none;
@@ -16,10 +14,13 @@ const RouteContent = styled(Link)`
 
 const Title = styled(RouteContent)`
   color: #555;
+  margin: 5px 0;
 `;
 
 const DetailData = styled(RouteContent)`
   color: #777;
+  padding: 3px 0;
+  margin: 0;
 `;
 
 const ListBox = styled.ul`

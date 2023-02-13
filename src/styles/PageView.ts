@@ -10,8 +10,8 @@ export const CenterAlign = styled.div`
 export const FooterAlign = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-
+  min-height: 100vh;
+  overflow-x: hidden;
   section {
     flex: 1;
   }
