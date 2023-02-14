@@ -7,24 +7,20 @@ interface Props {
   text: string;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  navigate?: () => void;
 }
 
 const ModalDialog = styled(Modal.Dialog)`
   margin: 0;
 `;
 
-const AlertModal = ({ title, text, open, setOpen }: Props) => {
+const AlertModal = ({ title, text, open, setOpen, navigate }: Props) => {
   const onClose = () => {
     setOpen(false);
+    if (navigate) navigate();
   };
   return (
-    <Modal
-      size="lg"
-      centered
-      show={open}
-      onHide={onClose}
-      className="AlertModal"
-    >
+    <Modal size="lg" centered show={open} onHide={onClose} className="AlertModal">
       <ModalDialog>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>

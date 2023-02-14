@@ -38,21 +38,33 @@ export const getUserPostList = async (uid: string): Promise<PostData[]> => {
 };
 
 export const getPostData = async (docId: string): Promise<PostDetail> => {
-  const docRefPre = doc(dbService, `posts`, docId);
-  const docRefDetail = doc(dbService, `posts/${docId}/detail`, docId);
-  const postPreview = (await getDoc(docRefPre)).data() as PostData;
-  const postDetail = (await getDoc(docRefDetail)).data();
-  const nickname = await getUserNickname(postPreview.createdBy);
-  return {
-    ...postPreview,
-    id: docId,
-    likes: postDetail?.likes ?? 0,
-    detail: postDetail?.detail ?? "",
-    nickname: nickname,
-  };
+  try {
+    const docRefPre = doc(dbService, `posts`, docId);
+    const docRefDetail = doc(dbService, `posts/${docId}/detail`, docId);
+    const postPreview = (await getDoc(docRefPre)).data() as PostData;
+    const postDetail = (await getDoc(docRefDetail)).data();
+    if (!postDetail) {
+      const error = { name: "URL_Error", code: "No_PostData" };
+      throw error;
+    }
+    const nickname = await getUserNickname(postPreview.createdBy);
+    return {
+      ...postPreview,
+      id: docId,
+      likes: postDetail?.likes ?? 0,
+      detail: postDetail?.detail ?? "",
+      nickname: nickname,
+    };
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const addPost = async (title: string, postData: string, userData: UserData) => {
+export const addPost = async (
+  title: string,
+  postData: string,
+  userData: UserData
+): Promise<string> => {
   // eslint-disable-next-line no-useless-escape
   const reg = /[`\n|\r|~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gim;
   const thumbnailObj = {
@@ -71,8 +83,9 @@ export const addPost = async (title: string, postData: string, userData: UserDat
   try {
     const docs = await addDoc(collection(dbService, "posts"), thumbnailObj);
     await setDoc(doc(dbService, `posts/${docs.id}/detail`, docs.id), dataObj);
+    return docs.id;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 

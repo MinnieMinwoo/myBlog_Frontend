@@ -1,11 +1,12 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../states/LoginState";
 import MDEditor from "@uiw/react-md-editor";
 import styled from "styled-components";
 
-import { addPost } from "../logic/getSetPostInfo";
+import { addPost, getPostData, updatePost } from "../logic/getSetPostInfo";
+import AlertModal from "../components/Share/AlertModal";
 
 const Container = styled.div`
   display: flex;
@@ -53,10 +54,56 @@ const Editor = styled(MDEditor)`
 `;
 
 const Write = () => {
+  const userData = useRecoilValue(loginData);
   const [title, setTitle] = useState("");
   const [postData, setPostData] = useState("**Write your post**");
+  const [modalShow, setModalShow] = useState(false);
+  const [modalData, setModalData] = useState({
+    title: "",
+    text: "",
+  });
+  const [closeCallback, setCloseCallback] = useState<() => void>();
   const navigate = useNavigate();
-  const userData = useRecoilValue(loginData);
+  const params = useParams();
+
+  useEffect(() => {
+    if (params["*"]) {
+      getPostData(params["*"])
+        .then((post) => {
+          if (post.createdBy !== userData.uid) {
+            const userError = { name: "Permission Denied", code: "No_Permission" };
+            throw userError;
+          }
+          setTitle(post.title);
+          setPostData(post.detail);
+        })
+        .catch((error) => {
+          console.log(error);
+          const errorTitle = "Post Loading failed";
+          let errorText;
+          switch (error?.code) {
+            case "No_PostData":
+              errorText = "You entered wrong url link";
+              break;
+            case "No_Permission":
+              errorText = "You don't have permission on this post.";
+              break;
+            default:
+              errorText = "Something wrong, try again later.";
+              break;
+          }
+          setModalData({
+            title: errorTitle,
+            text: errorText,
+          });
+          setCloseCallback(() => {
+            navigate("/");
+          });
+          setModalShow(true);
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
@@ -67,14 +114,40 @@ const Write = () => {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await addPost(title, postData, userData);
-    navigate(`/home/${userData.nickname}`);
+    try {
+      let postID: string;
+      if (params["*"]) {
+        await updatePost(params["*"], title, postData);
+        postID = params["*"];
+      } else {
+        postID = await addPost(title, postData, userData);
+      }
+      navigate(`/home/${userData.nickname}/${postID}`);
+    } catch (error) {
+      console.log(error);
+      const errorTitle = "Post Submit failed";
+      const errorText = "Something wrong, try again later.";
+      setModalData({
+        title: errorTitle,
+        text: errorText,
+      });
+      setCloseCallback(() => {});
+      setModalShow(true);
+    }
   };
 
   return (
     <Container className="Write">
+      <AlertModal
+        title={modalData.title}
+        text={modalData.text}
+        open={modalShow}
+        setOpen={setModalShow}
+        navigate={closeCallback}
+      />
+
       <header>
-        <DocTitle>Write your Story</DocTitle>
+        <DocTitle>{params["*"] ? "Edit post" : "Write your Story"}</DocTitle>
       </header>
       <section>
         <form onSubmit={onSubmit}>
@@ -93,7 +166,7 @@ const Write = () => {
               setPostData(value);
             }}
           />
-          <Submit type="submit" value="Write up" />
+          <Submit type="submit" value={params["*"] ? "Edit" : "Write up"} />
         </form>
       </section>
     </Container>

@@ -57,7 +57,7 @@ const PostDetail = () => {
   }, [postData?.createdBy]);
 
   const onEdit = () => {
-    navigate("/edit", { state: { postInfo: postData } });
+    navigate(`/write/${params.docID}`);
   };
 
   const onDelete = () => {
@@ -65,7 +65,7 @@ const PostDetail = () => {
     if (window.confirm("Do you really want delete This post?")) {
       deletePost(params.docID).then(() => {
         window.alert("Post has been deleted");
-        navigate(-1);
+        navigate(`/home/${params.userID}`, { replace: false });
       });
     }
   };

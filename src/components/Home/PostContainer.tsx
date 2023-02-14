@@ -9,7 +9,8 @@ import { getUserPostList } from "../../logic/getSetPostInfo";
 import { getUserUID } from "../../logic/getSetUserInfo";
 
 const PostArticle = styled.article`
-  padding: 30px 0;
+  padding: 0 30px;
+  margin: 30px;
 `;
 
 const HeaderBox = styled.div`

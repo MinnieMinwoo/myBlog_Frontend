@@ -6,7 +6,6 @@ import { Row, Col } from "react-bootstrap";
 import { FooterAlign } from "../styles/PageView";
 
 import Header from "../components/Home/Header";
-import CategorySideBar from "../components/Home/CategorySideBar";
 import Footer from "../components/Share/Footer";
 
 const Home = () => {
@@ -19,13 +18,10 @@ const Home = () => {
         <Row>
           <Col
             sm={{ span: 10, offset: 1 }}
-            lg={{ span: 8, offset: 1 }}
-            xxl={{ span: 7, offset: 2 }}
+            lg={{ span: 8, offset: 2 }}
+            xxl={{ span: 6, offset: 3 }}
           >
             <Outlet />
-          </Col>
-          <Col lg={3} xxl={2}>
-            <CategorySideBar />
           </Col>
         </Row>
       </section>

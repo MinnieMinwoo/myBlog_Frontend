@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { deleteUserData } from "../../logic/getSetUserInfo";
 import { useRecoilState } from "recoil";
 import { loginData } from "../../states/LoginState";
+import { Button } from "react-bootstrap";
 import styled from "styled-components";
 
 const SettingContainer = styled.div`
@@ -17,13 +18,6 @@ const SettingContainer = styled.div`
   button {
     float: right;
     width: 96px;
-    height: 32px;
-    border-radius: 4px;
-    background-color: #eee;
-    border: 0;
-    text-align: center;
-    font-weight: 500;
-    cursor: pointer;
   }
   p {
     margin-top: 16px;
@@ -47,7 +41,9 @@ const Withdrawal = () => {
   return (
     <SettingContainer>
       <h3>Withdrawal</h3>
-      <button onClick={onClick}>Quit</button>
+      <Button variant="danger" onClick={onClick}>
+        Quit
+      </Button>
       <p>
         All posts and comments you created upon withdrawal will be deleted and will not be
         recovered.

@@ -1,4 +1,5 @@
 import React from "react";
+import { Stack } from "react-bootstrap";
 import styled from "styled-components";
 
 import Header from "../components/Home/Header";
@@ -9,7 +10,6 @@ import Withdrawal from "../components/Setting/Withdrawal";
 import { CenterAlign } from "../styles/PageView";
 
 const ProfileEdit = styled(CenterAlign)`
-  display: flex;
   border-bottom: 1px solid #eee;
   padding: 30px 0;
   margin-bottom: 32px;
@@ -20,12 +20,13 @@ const SettingEdit = styled(CenterAlign)``;
 const Setting = () => {
   return (
     <>
-      {" "}
       <Header />
       <main className="EditProfile">
         <ProfileEdit as="section">
-          <ProfileImageEdit />
-          <ProfileInfoEdit />
+          <Stack direction="horizontal">
+            <ProfileImageEdit />
+            <ProfileInfoEdit />
+          </Stack>
         </ProfileEdit>
         <SettingEdit as="section">
           <div></div>

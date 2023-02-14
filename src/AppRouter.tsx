@@ -6,7 +6,6 @@ import Auth from "./routes/Auth";
 import Home from "./routes/Home";
 import Write from "./routes/Write";
 import Setting from "./routes/Setting";
-import Edit from "./routes/Edit";
 import PostDetail from "./components/Home/PostDetail";
 
 import PostContainer from "./components/Home/PostContainer";
@@ -21,8 +20,7 @@ const AppRouter = () => {
           <Route path="/home/:userID/:docID" element={<PostDetail />} />
         </Route>
         <Route path="/auth" element={<Auth />} />
-        <Route path="/write" element={<Write />} />
-        <Route path="/edit" element={<Edit />} />
+        <Route path="/write/*" element={<Write />} />
         <Route path="/setting" element={<Setting />} />
       </Routes>
     </Router>

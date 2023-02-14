@@ -2,46 +2,26 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { updateUserProfile } from "../../logic/getSetUserInfo";
 import { loginData } from "../../states/LoginState";
+import { Container, Form, Button, Stack } from "react-bootstrap";
 import styled from "styled-components";
 
-const ProfileInfo = styled.div`
-  flex-grow: 1;
-  padding: 0 44px 0 24px;
+const ProfileInfo = styled(Container)`
+  padding: 0 24px;
 `;
 
-const Nickname = styled.h2`
+const Nickname = styled.p`
   font-size: 36px;
-  line-height: 50px;
+  font-weight: 500;
+  margin: 0;
   color: #111;
 `;
 
 const Description = styled.div`
-  line-height: 24px;
   color: #333;
 `;
 
-const Button = styled.button`
-  display: block;
-  width: 128px;
-  height: 32px;
-  border-radius: 4px;
-  background-color: #eee;
-  border: 0;
-  margin-top: 10px;
-  text-align: center;
-  font-weight: 500;
-  cursor: pointer;
-`;
-
-const Input = styled.input`
-  display: block;
-  padding: 8px;
-  width: 100%;
-  height: ${(props) => props.height};
-  margin-bottom: 16px;
-  border-radius: 4px;
-  border: 1px solid #eee;
-  font-weight: 500;
+const SelectButton = styled(Button)`
+  width: 96px;
 `;
 
 const ProfileInfoEdit = () => {
@@ -81,32 +61,42 @@ const ProfileInfoEdit = () => {
   return (
     <ProfileInfo>
       <div hidden={!hidden}>
-        <Nickname>{userData.nickname}</Nickname>
-        <Description>{userData.description}</Description>
-        <Button onClick={onToggle}>Edit</Button>
+        <Stack gap={2}>
+          <Nickname>{userData.nickname}</Nickname>
+          <Description>{userData.description}</Description>
+          <SelectButton variant="outline-primary" onClick={onToggle}>
+            Edit
+          </SelectButton>
+        </Stack>
       </div>
-      <form hidden={hidden} onSubmit={onSubmit}>
-        <Input
-          type="text"
-          name="nickname"
-          placeholder="nickname"
-          value={nickname}
-          maxLength={20}
-          onChange={onChange}
-          required
-          height="28px"
-        />
-        <Input
-          type="text"
-          name="description"
-          placeholder="description"
-          value={description}
-          maxLength={100}
-          onChange={onChange}
-          height="18px"
-        />
-        <Button as="input" type="submit" value="Save" />
-      </form>
+      <Form hidden={hidden} onSubmit={onSubmit}>
+        <Stack gap={3}>
+          <Form.Group controlId="nickname">
+            <Form.Label>Nickname</Form.Label>
+            <Form.Control
+              type="text"
+              name="nickname"
+              placeholder="nickname"
+              value={nickname}
+              maxLength={20}
+              onChange={onChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="description">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              type="text"
+              name="description"
+              placeholder="description"
+              value={description}
+              maxLength={100}
+              onChange={onChange}
+            />
+          </Form.Group>
+          <SelectButton type="submit">Save</SelectButton>
+        </Stack>
+      </Form>
     </ProfileInfo>
   );
 };

@@ -2,34 +2,20 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { updateUserImage } from "../../logic/getSetUserInfo";
+import { Stack, Button, Image } from "react-bootstrap";
 import styled from "styled-components";
 
-const ProfileImg = styled.div`
-  width: 128px;
+const ImgContainer = styled.div`
+  flex-basis: 210px;
   padding: 0 24px;
   border-right: 1px solid #eee;
 `;
 
-const Image = styled.img`
-  background-color: #eee;
+const ProfileImg = styled(Image)`
   width: 128px;
   height: 128px;
-  border-radius: 50%;
+  margin: auto;
 `;
-
-const Button = styled.button`
-  display: block;
-  width: 128px;
-  height: 32px;
-  border-radius: 4px;
-  background-color: #eee;
-  border: 0;
-  margin-top: 10px;
-  text-align: center;
-  font-weight: 500;
-  cursor: pointer;
-`;
-
 const ProfileImageEdit = () => {
   const [userData, setUserData] = useRecoilState(loginData);
   const [imageLink, setImageLink] = useState("");
@@ -62,19 +48,23 @@ const ProfileImageEdit = () => {
   };
 
   return (
-    <ProfileImg className="ProfileImageEdit">
-      <Image src={imageLink} alt="Profile" width="128px" height="128px" />
-      <input
-        hidden
-        type="file"
-        accept="image/*"
-        ref={inputRef}
-        src={imageLink}
-        onChange={onChange}
-      />
-      <Button onClick={onUpload}>Upload Image</Button>
-      <Button onClick={onDelete}>Delete Image</Button>
-    </ProfileImg>
+    <ImgContainer className="ProfileImageEdit">
+      <Stack gap={3}>
+        <ProfileImg src={imageLink} alt="Profile" roundedCircle={true} thumbnail={true} />
+        <input
+          hidden
+          type="file"
+          accept="image/*"
+          ref={inputRef}
+          src={imageLink}
+          onChange={onChange}
+        />
+        <Button onClick={onUpload}>Upload Image</Button>
+        <Button variant="outline-primary" onClick={onDelete}>
+          Delete Image
+        </Button>
+      </Stack>
+    </ImgContainer>
   );
 };
 
