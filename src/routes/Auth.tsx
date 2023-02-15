@@ -1,5 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { isLoadingData } from "../states/LoadingState";
 import { FirebaseError } from "firebase/app";
 import { Button, Col, Form, Stack, Spinner } from "react-bootstrap";
 import styled from "styled-components";
@@ -23,16 +25,22 @@ const Auth = () => {
   const [signIn, setSignIn] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [onGoing, setOnGoing] = useState(false);
+  const [isLoading, setIsLoading] = useRecoilState(isLoadingData);
   const { openModal } = useModal();
   const navigate = useNavigate();
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setOnGoing(true);
+    setIsLoading(true);
     try {
       const nickname = await (signIn ? signInEmail(email, password) : signUpEmail(email, password));
-      navigate(`/home/${nickname}`);
+      if (nickname) {
+        navigate(`/home/${nickname}`);
+      } else {
+        const errorTitle = "Email Verification";
+        const errorText = "Please complete email verification if you want to login.";
+        openModal(errorTitle, errorText);
+      }
     } catch (error) {
       console.log(error);
       const errorTitle = signIn ? "Login Error" : "Sign up Error";
@@ -66,7 +74,7 @@ const Auth = () => {
       }
       openModal(errorTitle, errorText);
     } finally {
-      setOnGoing(false);
+      setIsLoading(false);
     }
   };
 
@@ -116,8 +124,8 @@ const Auth = () => {
                   onChange={onChange}
                 />
               </Form.Group>
-              <AuthButton type="submit" disabled={onGoing}>
-                {onGoing ? (
+              <AuthButton type="submit" disabled={isLoading}>
+                {isLoading ? (
                   <Spinner
                     as="span"
                     animation="border"

@@ -6,9 +6,9 @@ import Auth from "./routes/Auth";
 import Home from "./routes/Home";
 import Write from "./routes/Write";
 import Setting from "./routes/Setting";
-import PostDetail from "./components/Home/PostDetail";
 
 import PostContainer from "./components/Home/PostContainer";
+import PostDetail from "./components/Home/PostDetail";
 
 const AppRouter = () => {
   return (

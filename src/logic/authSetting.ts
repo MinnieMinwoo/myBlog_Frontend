@@ -6,6 +6,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
+  sendSignInLinkToEmail,
+  sendEmailVerification,
 } from "firebase/auth";
 
 import { getUserData, getUserNickname, addUserData } from "./getSetUserInfo";
@@ -32,11 +34,19 @@ export const useAuthObserver = async () => {
   }
 };
 
-export const signInEmail = async (email: string, password: string): Promise<string> => {
+export const signInEmail = async (email: string, password: string): Promise<string | null> => {
   return new Promise(async (resolve, reject) => {
     try {
       const auth = getAuth();
       const data = await signInWithEmailAndPassword(auth, email, password);
+      if (!data.user.emailVerified) {
+        const actionCodeSettings = {
+          url: "http://localhost:3000/myBlog_Frontend#/",
+          handleCodeInApp: true,
+        };
+        await sendEmailVerification(data.user, actionCodeSettings);
+        resolve(null);
+      }
       const nickname = await getUserNickname(data.user.uid);
       resolve(nickname);
     } catch (error) {
@@ -45,13 +55,18 @@ export const signInEmail = async (email: string, password: string): Promise<stri
   });
 };
 
-export const signUpEmail = async (email: string, password: string): Promise<string> => {
+export const signUpEmail = async (email: string, password: string): Promise<null> => {
   return new Promise(async (resolve, reject) => {
     try {
       const auth = getAuth();
       const data = await createUserWithEmailAndPassword(auth, email, password);
       await addUserData(data.user.uid);
-      resolve(data.user.uid); //Nickname is uid when create account
+      const actionCodeSettings = {
+        url: "http://localhost:3000/myBlog_Frontend#/",
+        handleCodeInApp: true,
+      };
+      await sendEmailVerification(data.user, actionCodeSettings);
+      resolve(null);
     } catch (error) {
       reject(error);
     }
