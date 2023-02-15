@@ -1,35 +1,32 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import styled from "styled-components";
-
-interface Props {
-  title: string;
-  text: string;
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  navigate?: () => void;
-}
+import { useModal } from "../../states/ModalState";
 
 const ModalDialog = styled(Modal.Dialog)`
   margin: 0;
 `;
 
-const AlertModal = ({ title, text, open, setOpen, navigate }: Props) => {
-  const onClose = () => {
-    setOpen(false);
-    if (navigate) navigate();
-  };
+const AlertModal = () => {
+  const { modalDataState, closeModal } = useModal();
+
   return (
-    <Modal size="lg" centered show={open} onHide={onClose} className="AlertModal">
+    <Modal
+      size="lg"
+      centered
+      show={modalDataState.isOpen}
+      onHide={closeModal}
+      className="AlertModal"
+    >
       <ModalDialog>
         <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
+          <Modal.Title>{modalDataState.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>{text}</p>
+          <p>{modalDataState.content}</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={onClose}>
+          <Button variant="secondary" onClick={closeModal}>
             Close
           </Button>
         </Modal.Footer>

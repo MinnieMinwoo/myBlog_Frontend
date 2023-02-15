@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 import styled from "styled-components";
 
 import { signOutUser } from "../../logic/authSetting";
+import { useModal } from "../../states/ModalState";
 import AlertModal from "../Share/AlertModal";
 
 const ProfileBox = styled.div`
@@ -47,11 +48,8 @@ const SelectButton = styled(Button).attrs(() => ({
 const HomeProfile = () => {
   const [userData, setUserData] = useRecoilState(loginData);
   const [isHidden, setIsHidden] = useState(true);
-  const [modalShow, setModalShow] = useState(false);
-  const [modalData, setModalData] = useState({
-    title: "",
-    text: "",
-  });
+  const { openModal } = useModal();
+
   const navigate = useNavigate();
   const onToggle = () => {
     setIsHidden((prev) => !prev);
@@ -77,8 +75,7 @@ const HomeProfile = () => {
           console.log(error);
           const errorTitle = "Logout Error";
           const errorText = "Something wrong. Please try again later";
-          setModalData({ title: errorTitle, text: errorText });
-          setModalShow(true);
+          openModal(errorTitle, errorText);
         }
         break;
       default:
@@ -88,12 +85,7 @@ const HomeProfile = () => {
 
   return (
     <ProfileBox className="HeaderProfile">
-      <AlertModal
-        title={modalData.title}
-        text={modalData.text}
-        open={modalShow}
-        setOpen={setModalShow}
-      />
+      <AlertModal />
 
       <ProfileButton url={userData.photoURL ?? ""} onClick={onToggle} />
       {isHidden ? null : (

@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 import { signInEmail, signUpEmail } from "../logic/authSetting";
 
+import { useModal } from "../states/ModalState";
 import AlertModal from "../components/Share/AlertModal";
 
 const AuthBox = styled.div`
@@ -23,11 +24,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [onGoing, setOnGoing] = useState(false);
-  const [modalShow, setModalShow] = useState(false);
-  const [modalData, setModalData] = useState({
-    title: "",
-    text: "",
-  });
+  const { openModal } = useModal();
   const navigate = useNavigate();
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -67,8 +64,7 @@ const Auth = () => {
       } else {
         errorText = "Something wrong. Please try again later.";
       }
-      setModalData({ title: errorTitle, text: errorText });
-      setModalShow(true);
+      openModal(errorTitle, errorText);
     } finally {
       setOnGoing(false);
     }
@@ -91,12 +87,7 @@ const Auth = () => {
 
   return (
     <AuthBox className="Auth">
-      <AlertModal
-        title={modalData.title}
-        text={modalData.text}
-        open={modalShow}
-        setOpen={setModalShow}
-      />
+      <AlertModal />
       <Col md={{ span: 6, offset: 3 }} lg={{ span: 4, offset: 4 }}>
         <Stack gap={3}>
           <h1>MyBlog</h1>

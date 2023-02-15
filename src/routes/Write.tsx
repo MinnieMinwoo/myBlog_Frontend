@@ -6,6 +6,7 @@ import MDEditor from "@uiw/react-md-editor";
 import styled from "styled-components";
 
 import { addPost, getPostData, updatePost } from "../logic/getSetPostInfo";
+import { useModal } from "../states/ModalState";
 import AlertModal from "../components/Share/AlertModal";
 
 const Container = styled.div`
@@ -57,12 +58,7 @@ const Write = () => {
   const userData = useRecoilValue(loginData);
   const [title, setTitle] = useState("");
   const [postData, setPostData] = useState("**Write your post**");
-  const [modalShow, setModalShow] = useState(false);
-  const [modalData, setModalData] = useState({
-    title: "",
-    text: "",
-  });
-  const [closeCallback, setCloseCallback] = useState<() => void>();
+  const { openModal } = useModal();
   const navigate = useNavigate();
   const params = useParams();
 
@@ -92,14 +88,9 @@ const Write = () => {
               errorText = "Something wrong, try again later.";
               break;
           }
-          setModalData({
-            title: errorTitle,
-            text: errorText,
-          });
-          setCloseCallback(() => {
+          openModal(errorTitle, errorText, () => {
             navigate("/");
           });
-          setModalShow(true);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,24 +118,13 @@ const Write = () => {
       console.log(error);
       const errorTitle = "Post Submit failed";
       const errorText = "Something wrong, try again later.";
-      setModalData({
-        title: errorTitle,
-        text: errorText,
-      });
-      setCloseCallback(() => {});
-      setModalShow(true);
+      openModal(errorTitle, errorText);
     }
   };
 
   return (
     <Container className="Write">
-      <AlertModal
-        title={modalData.title}
-        text={modalData.text}
-        open={modalShow}
-        setOpen={setModalShow}
-        navigate={closeCallback}
-      />
+      <AlertModal />
 
       <header>
         <DocTitle>{params["*"] ? "Edit post" : "Write your Story"}</DocTitle>
