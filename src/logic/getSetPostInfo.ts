@@ -63,18 +63,19 @@ export const getPostData = async (docId: string): Promise<PostDetail> => {
 export const addPost = async (
   title: string,
   postData: string,
-  userData: UserData
+  userData: UserData,
+  imgLink: string,
+  description: string
 ): Promise<string> => {
   // eslint-disable-next-line no-useless-escape
-  const reg = /[`\n|\r|~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gim;
   const thumbnailObj = {
     title: title.substring(0, 31),
     createdBy: userData.uid,
     createdAt: Date.now(),
     tag: "",
     category: [],
-    thumbnailData: postData.replace(reg, "").substring(0, 151),
-    thumbnailImageURL: "",
+    thumbnailData: description,
+    thumbnailImageURL: imgLink,
   };
   const dataObj = {
     detail: postData,
@@ -89,11 +90,19 @@ export const addPost = async (
   }
 };
 
-export const updatePost = async (id: string, title: string, postData: string) => {
+export const updatePost = async (
+  id: string,
+  title: string,
+  postData: string,
+  imgLink: string,
+  description: string
+) => {
   const thumbnailObj = {
     title: title,
     tag: "",
     category: [],
+    thumbnailData: description,
+    thumbnailImageURL: imgLink,
   };
   const dataObj = {
     detail: postData,

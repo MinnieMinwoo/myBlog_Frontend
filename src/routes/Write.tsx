@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../states/LoginState";
@@ -10,9 +10,12 @@ import OnWrite from "../components/Write/OnWrite";
 import Preview from "../components/Write/Preview";
 
 const Write = () => {
+  // 객체 하나로 합치기
   const userData = useRecoilValue(loginData);
   const [title, setTitle] = useState("");
   const [postData, setPostData] = useState("**Write your post**");
+  const [imgLink, setImgLink] = useState("");
+  const [description, setDescription] = useState("");
   const [firstOpen, setFirstOpen] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
   const { openModal } = useModal();
@@ -54,15 +57,14 @@ const Write = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = async () => {
     try {
       let postID: string;
       if (params["*"]) {
-        await updatePost(params["*"], title, postData);
+        await updatePost(params["*"], title, postData, imgLink, description);
         postID = params["*"];
       } else {
-        postID = await addPost(title, postData, userData);
+        postID = await addPost(title, postData, userData, imgLink, description);
       }
       navigate(`/home/${userData.nickname}/${postID}`);
     } catch (error) {
@@ -74,14 +76,26 @@ const Write = () => {
   };
 
   const onPreview = () => {
-    setFirstOpen(true);
+    !firstOpen && setFirstOpen(true);
+    const reg = /[`\n|\r|~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gim;
+    !description && setDescription(postData.replace(reg, "").substring(0, 150));
     setIsPreview((prev) => !prev);
   };
 
   return (
     <div className="Write">
       <AlertModal />
-      <Preview firstOpen={firstOpen} isHidden={!isPreview} onPreview={onPreview} />
+      <Preview
+        firstOpen={firstOpen}
+        isHidden={!isPreview}
+        imageLink={imgLink}
+        setImageLink={setImgLink}
+        title={title}
+        description={description}
+        setDescription={setDescription}
+        onPreview={onPreview}
+        onSubmit={onSubmit}
+      />
       <OnWrite
         isEdit={Boolean(params["*"])}
         title={title}
