@@ -27,13 +27,12 @@ export const useModal = () => {
     [setModalDataState]
   );
 
-  const closeModal = useCallback(
-    () =>
-      setModalDataState((prev) => {
-        return { ...prev, isOpen: false };
-      }),
-    [setModalDataState]
-  );
+  const closeModal = useCallback(() => {
+    setModalDataState((prev) => {
+      if (modalDataState.callBack) modalDataState.callBack();
+      return { ...prev, isOpen: false };
+    });
+  }, [setModalDataState]);
 
   return { modalDataState, openModal, closeModal };
 };

@@ -1,63 +1,20 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import React, { useState, useEffect, FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../states/LoginState";
-import MDEditor from "@uiw/react-md-editor";
-import styled from "styled-components";
 
 import { addPost, getPostData, updatePost } from "../logic/getSetPostInfo";
 import { useModal } from "../states/ModalState";
 import AlertModal from "../components/Share/AlertModal";
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  @media (min-width: 1080px) {
-    width: 80%;
-    margin-left: 10%;
-  }
-`;
-
-const DocTitle = styled.h1`
-  border-bottom: 1px solid #eee;
-  padding-bottom: 22px;
-  color: #333;
-`;
-
-const PostTitle = styled.input`
-  color: #777;
-  border: 0;
-  border-bottom: 1px solid #eee;
-  &:focus {
-    outline: none;
-    border-bottom: 2px solid #777;
-  }
-  font-size: 36px;
-  margin-bottom: 20px;
-`;
-
-const Submit = styled.input`
-  width: 88px;
-  margin: 0;
-  margin-top: 20px;
-  line-height: 38px;
-  border-radius: 20px;
-  float: right;
-  background-color: #000;
-  color: #fff;
-  border: 1px solid #000;
-  cursor: pointer;
-`;
-
-const Editor = styled(MDEditor)`
-  height: calc(100vh - 260px) !important;
-`;
+import OnWrite from "../components/Write/OnWrite";
+import Preview from "../components/Write/Preview";
 
 const Write = () => {
   const userData = useRecoilValue(loginData);
   const [title, setTitle] = useState("");
   const [postData, setPostData] = useState("**Write your post**");
+  const [firstOpen, setFirstOpen] = useState(false);
+  const [isPreview, setIsPreview] = useState(false);
   const { openModal } = useModal();
   const navigate = useNavigate();
   const params = useParams();
@@ -89,19 +46,13 @@ const Write = () => {
               break;
           }
           openModal(errorTitle, errorText, () => {
+            console.log("test");
             navigate("/");
           });
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = event;
-    setTitle(value);
-  };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -122,34 +73,24 @@ const Write = () => {
     }
   };
 
-  return (
-    <Container className="Write">
-      <AlertModal />
+  const onPreview = () => {
+    setFirstOpen(true);
+    setIsPreview((prev) => !prev);
+  };
 
-      <header>
-        <DocTitle>{params["*"] ? "Edit post" : "Write your Story"}</DocTitle>
-      </header>
-      <section>
-        <form onSubmit={onSubmit}>
-          <PostTitle
-            type="text"
-            placeholder="Write post title"
-            value={title}
-            maxLength={30}
-            onChange={onTitleChange}
-            required
-          />
-          <Editor
-            data-color-mode="light"
-            value={postData}
-            onChange={(value = "") => {
-              setPostData(value);
-            }}
-          />
-          <Submit type="submit" value={params["*"] ? "Edit" : "Write up"} />
-        </form>
-      </section>
-    </Container>
+  return (
+    <div className="Write">
+      <AlertModal />
+      <Preview firstOpen={firstOpen} isHidden={!isPreview} onPreview={onPreview} />
+      <OnWrite
+        isEdit={Boolean(params["*"])}
+        title={title}
+        setTitle={setTitle}
+        postData={postData}
+        setPostData={setPostData}
+        onPreview={onPreview}
+      />
+    </div>
   );
 };
 

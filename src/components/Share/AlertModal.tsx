@@ -9,7 +9,6 @@ const ModalDialog = styled(Modal.Dialog)`
 
 const AlertModal = () => {
   const { modalDataState, closeModal } = useModal();
-
   return (
     <Modal
       size="lg"
