@@ -39,7 +39,6 @@ export const getUserData = async (user: User): Promise<UserData> => {
   const userDocData = (await getDoc(userDocRef)).data() as DocData;
   const token = await user.getIdToken();
   return {
-    isInit: true,
     isLoggedIn: true,
     email: user.email ?? "",
     photoURL: user.photoURL ?? "",
@@ -51,7 +50,10 @@ export const getUserData = async (user: User): Promise<UserData> => {
 };
 
 export const getUserUID = async (nickname: string): Promise<string> => {
-  const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
+  const q = query(
+    collection(dbService, "users"),
+    where("nickname", "==", nickname)
+  );
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs[0].id;
 };
@@ -83,8 +85,15 @@ export const updateUserImage = async (
   });
 };
 
-export const updateUserProfile = async (uid: string, nickname: string, description: string) => {
-  const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
+export const updateUserProfile = async (
+  uid: string,
+  nickname: string,
+  description: string
+) => {
+  const q = query(
+    collection(dbService, "users"),
+    where("nickname", "==", nickname)
+  );
   const querySnapshot = await getDocs(q);
   if (querySnapshot.docs[0] && querySnapshot.docs[0].id !== uid)
     throw window.alert("Profile update error: Duplicate nickname");
@@ -98,7 +107,8 @@ export const updateUserProfile = async (uid: string, nickname: string, descripti
 
 export const deleteUserData = async (uid: string) => {
   const user = authService.currentUser;
-  if (!user || user.uid !== uid) throw window.alert("Withdrawal error: wrong uid data");
+  if (!user || user.uid !== uid)
+    throw window.alert("Withdrawal error: wrong uid data");
   if (!user.email) throw window.alert("Withdrawal error: wrong email data");
   let password = "";
   while (password === "") {

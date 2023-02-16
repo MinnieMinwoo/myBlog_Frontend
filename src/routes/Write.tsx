@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { isWaitingPost } from "../states/LoadingState";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { isLoadingData } from "../states/LoadingState";
 import { loginData } from "../states/LoginState";
 import { useModal } from "../states/ModalState";
 import { getAuth } from "firebase/auth";
@@ -10,11 +10,12 @@ import { addPost, getPostData, updatePost } from "../logic/getSetPostInfo";
 import AlertModal from "../components/Share/AlertModal";
 import OnWrite from "../components/Write/OnWrite";
 import Preview from "../components/Write/Preview";
+import Loading from "../components/Share/Loading";
 
 const Write = () => {
-  const [waiting, setWaiting] = useRecoilState(isWaitingPost);
+  const [loading, setLoading] = useRecoilState(isLoadingData);
   const userData = useRecoilValue(loginData);
-  const [postContent, setPostContent] = useState({
+  const [postContent, setPostContent] = useState<postEditData>({
     title: "",
     postData: "",
     imgLink: "",
@@ -25,59 +26,47 @@ const Write = () => {
   const navigate = useNavigate();
   const params = useParams();
 
-  const checkSignIn = () => {
-    const auth = getAuth();
-    if (auth.currentUser) {
-      console.log(userData.isInit);
-      setTimeout(() => {
-        checkSignIn();
-      }, 500);
-    }
-    readPost();
-  };
-
-  const readPost = async () => {
-    getPostData(params["*"] as string)
-      .then((post) => {
-        const auth = getAuth();
-        if (post.createdBy !== auth.currentUser?.uid) {
-          const userError = { name: "Permission Denied", code: "No_Permission" };
-          throw userError;
-        }
-        setPostContent((prev) => ({
-          ...prev,
-          title: post.title,
-          postData: post.detail,
-          imgLink: post.thumbnailImageURL,
-          thumbnailData: post.thumbnailData,
-        }));
-      })
-      .catch((error) => {
-        console.log(error);
-        const errorTitle = "Post Loading failed";
-        let errorText;
-        switch (error?.code) {
-          case "No_PostData":
-            errorText = "You entered wrong url link";
-            break;
-          case "No_Permission":
-            errorText = "You don't have permission on this post.";
-            break;
-          default:
-            errorText = "Something wrong, try again later.";
-            break;
-        }
-        openModal(errorTitle, errorText, () => {
-          navigate("/");
-        });
-      });
-    setWaiting(false);
-  };
   useEffect(() => {
     if (params["*"]) {
-      //로그인 이후 글 불러와야 권한 획득 가능
-      setWaiting(true);
-      checkSignIn();
+      setLoading(true);
+      getPostData(params["*"] as string)
+        .then((post) => {
+          const auth = getAuth();
+          if (post.createdBy !== auth.currentUser?.uid) {
+            const userError = {
+              name: "Permission Denied",
+              code: "No_Permission",
+            };
+            throw userError;
+          }
+          setPostContent((prev) => ({
+            ...prev,
+            title: post.title,
+            postData: post.detail,
+            imgLink: post.thumbnailImageURL,
+            thumbnailData: post.thumbnailData,
+          }));
+        })
+        .catch((error) => {
+          console.log(error);
+          const errorTitle = "Post Loading failed";
+          let errorText;
+          switch (error?.code) {
+            case "No_PostData":
+              errorText = "You entered wrong url link";
+              break;
+            case "No_Permission":
+              errorText = "You don't have permission on this post.";
+              break;
+            default:
+              errorText = "Something wrong, try again later.";
+              break;
+          }
+          openModal(errorTitle, errorText, () => {
+            navigate("/");
+          });
+        })
+        .finally(() => setLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -124,9 +113,10 @@ const Write = () => {
 
   return (
     <div className="Write">
+      {loading ? <Loading /> : null}
       <AlertModal />
       <Preview
-        isPreview={!isPreview}
+        isPreview={isPreview}
         postContent={postContent}
         setPostContent={setPostContent}
         onPreview={onPreview}

@@ -20,19 +20,25 @@ export const modalState = atom<ModalType>({
 
 export const useModal = () => {
   const [modalDataState, setModalDataState] = useRecoilState(modalState);
-
   const openModal = useCallback(
-    (title: string, content: JSX.Element | string, callback?: () => any) =>
-      setModalDataState({ isOpen: true, title: title, content: content, callBack: callback }),
+    (title: string, content: JSX.Element | string, callback?: () => any) => {
+      setModalDataState({
+        isOpen: true,
+        title: title,
+        content: content,
+        callBack: callback,
+      });
+    },
     [setModalDataState]
   );
 
   const closeModal = useCallback(() => {
-    setModalDataState((prev) => {
-      if (modalDataState.callBack) modalDataState.callBack();
-      return { ...prev, isOpen: false };
-    });
-  }, [setModalDataState]);
+    if (modalDataState.callBack) modalDataState.callBack();
+    setModalDataState((prev) => ({
+      ...prev,
+      isOpen: false,
+    }));
+  }, [modalDataState, setModalDataState]);
 
   return { modalDataState, openModal, closeModal };
 };

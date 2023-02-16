@@ -33,7 +33,7 @@ const Withdrawal = () => {
     if (userData.uid && window.confirm("Are you really want to leave?")) {
       await deleteUserData(userData.uid);
       window.alert("Your withdrawal has been completed.");
-      setUserData({ isInit: true, isLoggedIn: false });
+      setUserData({ isLoggedIn: false });
       navigate("/");
     }
   };
@@ -45,8 +45,8 @@ const Withdrawal = () => {
         Quit
       </Button>
       <p>
-        All posts and comments you created upon withdrawal will be deleted and will not be
-        recovered.
+        All posts and comments you created upon withdrawal will be deleted and
+        will not be recovered.
       </p>
     </SettingContainer>
   );

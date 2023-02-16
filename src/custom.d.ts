@@ -20,8 +20,14 @@ interface PostDetail extends PostData {
   nickname: string;
 }
 
+interface postEditData {
+  title: string;
+  postData: string;
+  imgLink: string;
+  thumbnailData: string;
+}
+
 interface UserData {
-  isInit: boolean;
   isLoggedIn: boolean;
   uid?: string;
   email?: string;

@@ -58,21 +58,21 @@ const ImageContainer = styled(Image)`
   aspect-ratio: 16 / 9;
 `;
 
-interface postContent {
-  title: string;
-  postData: string;
-  imgLink: string;
-  thumbnailData: string;
-}
 interface Props {
   isPreview: boolean;
-  postContent: postContent;
-  setPostContent: React.Dispatch<React.SetStateAction<postContent>>;
+  postContent: postEditData;
+  setPostContent: React.Dispatch<React.SetStateAction<postEditData>>;
   onPreview: () => void;
   onSubmit: () => void;
 }
 
-const Preview = ({ isPreview, postContent, setPostContent, onPreview, onSubmit }: Props) => {
+const Preview = ({
+  isPreview,
+  postContent,
+  setPostContent,
+  onPreview,
+  onSubmit,
+}: Props) => {
   const imgRef = useRef<HTMLInputElement | null>(null);
   const [firstOpen, setFirstOpen] = useState(false);
   useEffect(() => {
@@ -118,7 +118,9 @@ const Preview = ({ isPreview, postContent, setPostContent, onPreview, onSubmit }
   };
 
   return (
-    <PreviewContainer className={`Preview ${isPreview ? (firstOpen ? "close" : "") : "open"}`}>
+    <PreviewContainer
+      className={`Preview ${isPreview ? "open" : firstOpen ? "close" : ""}`}
+    >
       <Col md={{ span: 5, offset: 1 }} xxl={{ span: 4, offset: 2 }}>
         <Stack>
           <h3>Preview</h3>
@@ -142,7 +144,10 @@ const Preview = ({ isPreview, postContent, setPostContent, onPreview, onSubmit }
             </button>
           </Stack>
           <h3>{postContent.title}</h3>
-          <textarea value={postContent.thumbnailData} onChange={onEditDescription} />
+          <textarea
+            value={postContent.thumbnailData}
+            onChange={onEditDescription}
+          />
           <p>{postContent.thumbnailData.length}/150</p>
         </Stack>
       </Col>

@@ -59,16 +59,10 @@ const Editor = styled(MDEditor)`
   height: calc(100vh - 260px) !important;
 `;
 
-interface postContent {
-  title: string;
-  postData: string;
-  imgLink: string;
-  thumbnailData: string;
-}
 interface Props {
   isEdit: boolean;
-  postContent: postContent;
-  setPostContent: React.Dispatch<React.SetStateAction<postContent>>;
+  postContent: postEditData;
+  setPostContent: React.Dispatch<React.SetStateAction<postEditData>>;
   onPreview: () => void;
 }
 
