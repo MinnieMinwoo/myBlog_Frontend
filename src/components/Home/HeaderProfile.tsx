@@ -68,6 +68,7 @@ const HomeProfile = () => {
         try {
           await signOutUser();
           setUserData({
+            isInit: true,
             isLoggedIn: false,
           });
           navigate("/", { replace: false });

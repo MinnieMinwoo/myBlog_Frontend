@@ -21,6 +21,7 @@ interface PostDetail extends PostData {
 }
 
 interface UserData {
+  isInit: boolean;
   isLoggedIn: boolean;
   uid?: string;
   email?: string;

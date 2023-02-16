@@ -33,7 +33,7 @@ const Withdrawal = () => {
     if (userData.uid && window.confirm("Are you really want to leave?")) {
       await deleteUserData(userData.uid);
       window.alert("Your withdrawal has been completed.");
-      setUserData({ isLoggedIn: false });
+      setUserData({ isInit: true, isLoggedIn: false });
       navigate("/");
     }
   };

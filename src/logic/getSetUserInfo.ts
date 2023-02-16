@@ -39,6 +39,7 @@ export const getUserData = async (user: User): Promise<UserData> => {
   const userDocData = (await getDoc(userDocRef)).data() as DocData;
   const token = await user.getIdToken();
   return {
+    isInit: true,
     isLoggedIn: true,
     email: user.email ?? "",
     photoURL: user.photoURL ?? "",

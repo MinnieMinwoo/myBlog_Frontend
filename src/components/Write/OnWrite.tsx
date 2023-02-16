@@ -59,21 +59,28 @@ const Editor = styled(MDEditor)`
   height: calc(100vh - 260px) !important;
 `;
 
+interface postContent {
+  title: string;
+  postData: string;
+  imgLink: string;
+  thumbnailData: string;
+}
 interface Props {
   isEdit: boolean;
-  title: string;
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
-  postData: string;
-  setPostData: React.Dispatch<React.SetStateAction<string>>;
+  postContent: postContent;
+  setPostContent: React.Dispatch<React.SetStateAction<postContent>>;
   onPreview: () => void;
 }
 
-const OnWrite = ({ isEdit, title, setTitle, postData, setPostData, onPreview }: Props) => {
+const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
   const onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
     } = event;
-    setTitle(value);
+    setPostContent((prev) => ({
+      ...prev,
+      title: value,
+    }));
   };
 
   return (
@@ -86,16 +93,19 @@ const OnWrite = ({ isEdit, title, setTitle, postData, setPostData, onPreview }: 
           <PostTitle
             type="text"
             placeholder="Write post title"
-            value={title}
+            value={postContent.title}
             maxLength={30}
             onChange={onTitleChange}
             required
           />
           <Editor
             data-color-mode="light"
-            value={postData}
+            value={postContent.postData}
             onChange={(value = "") => {
-              setPostData(value);
+              setPostContent((prev) => ({
+                ...prev,
+                postData: value,
+              }));
             }}
           />
           <Submit type="submit" value={isEdit ? "Edit" : "Write up"} />

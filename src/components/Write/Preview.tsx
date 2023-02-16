@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Stack, Col, Image } from "react-bootstrap";
 import styled from "styled-components";
 import { uuidv4 } from "@firebase/util";
@@ -58,30 +58,26 @@ const ImageContainer = styled(Image)`
   aspect-ratio: 16 / 9;
 `;
 
-interface Props {
-  firstOpen: boolean;
-  isHidden: boolean;
-  imageLink: string;
-  setImageLink: React.Dispatch<React.SetStateAction<string>>;
+interface postContent {
   title: string;
-  description: string;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
+  postData: string;
+  imgLink: string;
+  thumbnailData: string;
+}
+interface Props {
+  isPreview: boolean;
+  postContent: postContent;
+  setPostContent: React.Dispatch<React.SetStateAction<postContent>>;
   onPreview: () => void;
   onSubmit: () => void;
 }
 
-const Preview = ({
-  firstOpen,
-  isHidden,
-  imageLink,
-  setImageLink,
-  title,
-  description,
-  setDescription,
-  onPreview,
-  onSubmit,
-}: Props) => {
+const Preview = ({ isPreview, postContent, setPostContent, onPreview, onSubmit }: Props) => {
   const imgRef = useRef<HTMLInputElement | null>(null);
+  const [firstOpen, setFirstOpen] = useState(false);
+  useEffect(() => {
+    isPreview && setFirstOpen(true);
+  }, [isPreview]);
 
   const onImgUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -90,7 +86,10 @@ const Preview = ({
     if (!files) throw console.log("no image files");
     try {
       const uploadURL = await uploadImg(files[0], `$thumbnail/${uuidv4()}`);
-      setImageLink(uploadURL);
+      setPostContent((prev) => ({
+        ...prev,
+        imgLink: uploadURL,
+      }));
     } catch (error) {
       console.log(error);
     }
@@ -101,23 +100,30 @@ const Preview = ({
   };
 
   const onDelete = () => {
-    imageLink && deleteImg(imageLink);
-    setImageLink("");
+    postContent.imgLink && deleteImg(postContent.imgLink);
+    setPostContent((prev) => ({
+      ...prev,
+      imgLink: "",
+    }));
   };
 
   const onEditDescription = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const {
       target: { value },
     } = event;
-    setDescription(value);
+    setPostContent((prev) => ({
+      ...prev,
+      description: value,
+    }));
   };
+
   return (
-    <PreviewContainer className={`Preview ${isHidden ? (firstOpen ? "close" : "") : "open"}`}>
+    <PreviewContainer className={`Preview ${isPreview ? (firstOpen ? "close" : "") : "open"}`}>
       <Col md={{ span: 5, offset: 1 }} xxl={{ span: 4, offset: 2 }}>
         <Stack>
           <h3>Preview</h3>
           <ImageContainer
-            src={imageLink ? imageLink : altImage}
+            src={postContent.imgLink ? postContent.imgLink : altImage}
             alt="Thumbnail"
             thumbnail={true}
           ></ImageContainer>
@@ -126,18 +132,18 @@ const Preview = ({
             type="file"
             accept="image/*"
             ref={imgRef}
-            src={imageLink}
+            src={postContent.imgLink}
             onChange={onImgUpload}
           />
           <Stack direction="horizontal">
             <button onClick={onUpload}>Upload Image</button>
-            <button onClick={onDelete} hidden={!imageLink}>
+            <button onClick={onDelete} hidden={!postContent.imgLink}>
               Delete
             </button>
           </Stack>
-          <h3>{title}</h3>
-          <textarea value={description} onChange={onEditDescription} />
-          <p>{description.length}/150</p>
+          <h3>{postContent.title}</h3>
+          <textarea value={postContent.thumbnailData} onChange={onEditDescription} />
+          <p>{postContent.thumbnailData.length}/150</p>
         </Stack>
       </Col>
       <Col md={{ span: 5, offset: 6 }} xxl={{ span: 4, offset: 6 }}>

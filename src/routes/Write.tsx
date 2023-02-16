@@ -1,58 +1,83 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isWaitingPost } from "../states/LoadingState";
 import { loginData } from "../states/LoginState";
+import { useModal } from "../states/ModalState";
+import { getAuth } from "firebase/auth";
 
 import { addPost, getPostData, updatePost } from "../logic/getSetPostInfo";
-import { useModal } from "../states/ModalState";
 import AlertModal from "../components/Share/AlertModal";
 import OnWrite from "../components/Write/OnWrite";
 import Preview from "../components/Write/Preview";
 
 const Write = () => {
-  // 객체 하나로 합치기
+  const [waiting, setWaiting] = useRecoilState(isWaitingPost);
   const userData = useRecoilValue(loginData);
-  const [title, setTitle] = useState("");
-  const [postData, setPostData] = useState("**Write your post**");
-  const [imgLink, setImgLink] = useState("");
-  const [description, setDescription] = useState("");
-  const [firstOpen, setFirstOpen] = useState(false);
+  const [postContent, setPostContent] = useState({
+    title: "",
+    postData: "",
+    imgLink: "",
+    thumbnailData: "",
+  });
   const [isPreview, setIsPreview] = useState(false);
   const { openModal } = useModal();
   const navigate = useNavigate();
   const params = useParams();
 
+  const checkSignIn = () => {
+    const auth = getAuth();
+    if (auth.currentUser) {
+      console.log(userData.isInit);
+      setTimeout(() => {
+        checkSignIn();
+      }, 500);
+    }
+    readPost();
+  };
+
+  const readPost = async () => {
+    getPostData(params["*"] as string)
+      .then((post) => {
+        const auth = getAuth();
+        if (post.createdBy !== auth.currentUser?.uid) {
+          const userError = { name: "Permission Denied", code: "No_Permission" };
+          throw userError;
+        }
+        setPostContent((prev) => ({
+          ...prev,
+          title: post.title,
+          postData: post.detail,
+          imgLink: post.thumbnailImageURL,
+          thumbnailData: post.thumbnailData,
+        }));
+      })
+      .catch((error) => {
+        console.log(error);
+        const errorTitle = "Post Loading failed";
+        let errorText;
+        switch (error?.code) {
+          case "No_PostData":
+            errorText = "You entered wrong url link";
+            break;
+          case "No_Permission":
+            errorText = "You don't have permission on this post.";
+            break;
+          default:
+            errorText = "Something wrong, try again later.";
+            break;
+        }
+        openModal(errorTitle, errorText, () => {
+          navigate("/");
+        });
+      });
+    setWaiting(false);
+  };
   useEffect(() => {
     if (params["*"]) {
-      getPostData(params["*"])
-        .then((post) => {
-          if (post.createdBy !== userData.uid) {
-            const userError = { name: "Permission Denied", code: "No_Permission" };
-            throw userError;
-          }
-          setTitle(post.title);
-          setPostData(post.detail);
-        })
-        .catch((error) => {
-          console.log(error);
-          const errorTitle = "Post Loading failed";
-          let errorText;
-          switch (error?.code) {
-            case "No_PostData":
-              errorText = "You entered wrong url link";
-              break;
-            case "No_Permission":
-              errorText = "You don't have permission on this post.";
-              break;
-            default:
-              errorText = "Something wrong, try again later.";
-              break;
-          }
-          openModal(errorTitle, errorText, () => {
-            console.log("test");
-            navigate("/");
-          });
-        });
+      //로그인 이후 글 불러와야 권한 획득 가능
+      setWaiting(true);
+      checkSignIn();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -61,10 +86,22 @@ const Write = () => {
     try {
       let postID: string;
       if (params["*"]) {
-        await updatePost(params["*"], title, postData, imgLink, description);
+        await updatePost(
+          params["*"],
+          postContent.title,
+          postContent.postData,
+          postContent.imgLink,
+          postContent.thumbnailData
+        );
         postID = params["*"];
       } else {
-        postID = await addPost(title, postData, userData, imgLink, description);
+        postID = await addPost(
+          postContent.title,
+          postContent.postData,
+          userData,
+          postContent.imgLink,
+          postContent.thumbnailData
+        );
       }
       navigate(`/home/${userData.nickname}/${postID}`);
     } catch (error) {
@@ -76,9 +113,12 @@ const Write = () => {
   };
 
   const onPreview = () => {
-    !firstOpen && setFirstOpen(true);
     const reg = /[`\n|\r|~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gim;
-    !description && setDescription(postData.replace(reg, "").substring(0, 150));
+    !postContent.thumbnailData &&
+      setPostContent((prev) => ({
+        ...prev,
+        thumbnailData: postContent.postData.replace(reg, "").substring(0, 150),
+      }));
     setIsPreview((prev) => !prev);
   };
 
@@ -86,22 +126,16 @@ const Write = () => {
     <div className="Write">
       <AlertModal />
       <Preview
-        firstOpen={firstOpen}
-        isHidden={!isPreview}
-        imageLink={imgLink}
-        setImageLink={setImgLink}
-        title={title}
-        description={description}
-        setDescription={setDescription}
+        isPreview={!isPreview}
+        postContent={postContent}
+        setPostContent={setPostContent}
         onPreview={onPreview}
         onSubmit={onSubmit}
       />
       <OnWrite
         isEdit={Boolean(params["*"])}
-        title={title}
-        setTitle={setTitle}
-        postData={postData}
-        setPostData={setPostData}
+        postContent={postContent}
+        setPostContent={setPostContent}
         onPreview={onPreview}
       />
     </div>

@@ -1,7 +1,12 @@
 import { atom } from "recoil";
 
-export const isAuthInit = atom({
-  key: "isAuthInit",
+export const isInit = atom({
+  key: "isInit",
+  default: false,
+});
+
+export const isWaitingPost = atom({
+  key: "isWaitingPost",
   default: false,
 });
 
