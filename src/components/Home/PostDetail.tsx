@@ -1,16 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { loginData } from "../../states/LoginState";
+import { useRecoilState } from "recoil";
+import { getAuth } from "firebase/auth";
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import { Stack, Placeholder } from "react-bootstrap";
 import styled from "styled-components";
 
 import getDate from "../../logic/getDate";
 import { getPostData, deletePost } from "../../logic/getSetPostInfo";
+import { isLoadingData } from "../../states/LoadingState";
 
-const PostTitleBackground = styled.div`
+const PostTitleBackground = styled.div<{ imageLink: string }>`
   height: 340px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 0 20px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url(${(props) => props.imageLink});
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #eee;
 `;
 
 const Category = styled.div`
@@ -29,32 +40,64 @@ const EditData = styled.span`
 
 const PostBox = styled.article`
   padding: 30px 0;
-  flex-basis: 80vw;
-  @media (min-width: 1080px) {
-    padding: 72px 50px 60px 0;
-    flex-grow: 3;
-  }
 `;
 
+const Dummy = () => {
+  const repeat = 5;
+  return (
+    <>
+      <PostTitleBackground imageLink="">
+        <Placeholder animation="wave">
+          <Category />
+          <Stack>
+            <Placeholder as={Title} xs={5} bg="light" />
+            <Stack direction="horizontal" gap={1}>
+              <Placeholder as="span" xs={1} bg="light" />
+              <Placeholder as="span" xs={1} bg="light" />
+            </Stack>
+          </Stack>
+        </Placeholder>
+      </PostTitleBackground>
+      <PostBox />
+      <Placeholder animation="wave">
+        <Stack gap={4}>
+          {[...Array(repeat)].map((e, index) => (
+            <div key={index}>
+              <Placeholder as="h1" xs={6} size="lg" />
+              <Stack>
+                <Placeholder as="p" xs={10} />
+                <Placeholder as="p" xs={8} />
+                <Placeholder as="p" xs={12} />
+                <Placeholder as="p" xs={7} />
+                <Placeholder as="p" xs={5} />
+              </Stack>
+            </div>
+          ))}
+        </Stack>
+      </Placeholder>
+    </>
+  );
+};
 const PostDetail = () => {
   const [postData, setPostData] = useState<PostDetail>();
   const [hidden, setHidden] = useState(true);
-  const userData = useRecoilValue(loginData);
+  const [onLoading, setOnLoading] = useRecoilState(isLoadingData);
   const navigate = useNavigate();
   const params = useParams();
 
   useEffect(() => {
+    setOnLoading(true);
     if (!params.docID) throw console.log("wrong url data");
     const docID = params.docID;
     getPostData(docID).then((postDetail) => {
       setPostData(postDetail);
+      const auth = getAuth();
+      if (auth.currentUser?.uid && postDetail?.createdBy === auth.currentUser.uid) {
+        setHidden(false);
+      }
+      setOnLoading(false);
     });
-    if (userData.uid && postData?.createdBy === userData.uid) {
-      setHidden(false);
-    } else {
-      setHidden(true);
-    }
-  }, [postData?.createdBy]);
+  }, []);
 
   const onEdit = () => {
     navigate(`/write/${params.docID}`);
@@ -71,23 +114,26 @@ const PostDetail = () => {
   };
 
   return (
-    <section className="read_section">
-      <PostTitleBackground>
-        <Category />
-        {postData?.title ? <Title>{postData?.title}</Title> : null}
-        {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
-        {postData?.createdAt ? <span>{` ∙  ${getDate(postData?.createdAt)}`}</span> : null}
-        <EditData hidden={hidden} onClick={onEdit}>
-          ∙ 수정
-        </EditData>
-        <EditData hidden={hidden} onClick={onDelete}>
-          ∙ 삭제
-        </EditData>
-      </PostTitleBackground>
-      <PostBox data-color-mode="light">
-        <MarkdownPreview source={postData?.detail} />
-      </PostBox>
-    </section>
+    <>
+      {onLoading ? <Dummy /> : null}
+      <section className="read_section" hidden={onLoading}>
+        <PostTitleBackground imageLink={postData?.thumbnailImageURL ?? ""}>
+          <Category />
+          {postData?.title ? <Title>{postData?.title}</Title> : null}
+          {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
+          {postData?.createdAt ? <span>{` ∙  ${getDate(postData?.createdAt)}`}</span> : null}
+          <EditData hidden={hidden} onClick={onEdit}>
+            ∙ Edit
+          </EditData>
+          <EditData hidden={hidden} onClick={onDelete}>
+            ∙ Delete
+          </EditData>
+        </PostTitleBackground>
+        <PostBox data-color-mode="light">
+          <MarkdownPreview source={postData?.detail} />
+        </PostBox>
+      </section>
+    </>
   );
 };
 

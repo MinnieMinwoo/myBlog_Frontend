@@ -50,11 +50,13 @@ const ImageBox = styled(Image).attrs(() => ({
   fluid: true,
   thumbnail: true,
 }))`
+  width: 100%;
   margin-bottom: 15px;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   object-position: center center;
 `;
+
 const TextData = styled.p`
   word-break: break-all;
   cursor: pointer;
@@ -77,7 +79,7 @@ const Dummy = () => {
           <Placeholder as={Number} xs={1} bg="primary" />
         </Stack>
       </Placeholder>
-      {Array(repeat).map(() => (
+      {[...Array(repeat)].map(() => (
         <Placeholder as={PostBox} animation="wave" size="lg">
           <Stack gap={1}>
             <Placeholder as={Title} bg="secondary" xs={3} />
@@ -149,30 +151,3 @@ const PostContainer = () => {
   );
 };
 export default PostContainer;
-
-/*
-      <HeaderBox className="PostHeader">
-        <Stack direction="horizontal" gap={1}>
-          <HeaderTitle>{title}</HeaderTitle>
-          <Number>{`(${String(postList.length)})`}</Number>
-        </Stack>
-      </HeaderBox>
-      <div className="PostItemList">
-        <Stack>
-          {postList.map((post) => (
-            <PostBox className="PostItem" key={post.id} to={`/home/${params.userID}/${post.id}`}>
-              <Stack gap={1}>
-                {post.thumbnailImageURL !== "" ? (
-                  <div>
-                    <ImageBox fluid={true} src={post.thumbnailImageURL} alt="post" />
-                  </div>
-                ) : null}
-                <Title>{post.title}</Title>
-                <TextData>{post.thumbnailData}</TextData>
-                <Date>{getDate(post.createdAt)}</Date>
-              </Stack>
-            </PostBox>
-          ))}
-        </Stack>
-      </div>
-*/
