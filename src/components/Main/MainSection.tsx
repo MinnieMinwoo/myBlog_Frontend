@@ -11,6 +11,7 @@ interface TextType {
 }
 
 const MainContainer = styled.section`
+  background: linear-gradient(#f8f9fa 0%, #fbfcdb 20%, #e9defa 80%, #f8f9fa 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
