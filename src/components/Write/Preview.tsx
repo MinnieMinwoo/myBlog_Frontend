@@ -71,6 +71,8 @@ const ImageContainer = styled(Image)`
   background-color: #eee;
   width: 100%;
   aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center center;
 `;
 
 interface Props {
