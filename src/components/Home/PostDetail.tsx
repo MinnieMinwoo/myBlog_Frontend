@@ -76,12 +76,14 @@ const PostDetail = () => {
         <Category />
         {postData?.title ? <Title>{postData?.title}</Title> : null}
         {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
-        {postData?.createdAt ? <span>{` ∙  ${getDate(postData?.createdAt)}`}</span> : null}
+        {postData?.createdAt ? (
+          <span>{` ∙  ${getDate(postData?.createdAt)}`}</span>
+        ) : null}
         <EditData hidden={hidden} onClick={onEdit}>
-          ∙ 수정
+          ∙ Edit
         </EditData>
         <EditData hidden={hidden} onClick={onDelete}>
-          ∙ 삭제
+          ∙ Delete
         </EditData>
       </PostTitleBackground>
       <PostBox data-color-mode="light">

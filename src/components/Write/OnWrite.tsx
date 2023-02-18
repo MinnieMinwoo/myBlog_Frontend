@@ -1,16 +1,13 @@
 import React, { ChangeEvent } from "react";
+import { Link } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
+import { Button, Container, Navbar, Col } from "react-bootstrap";
 import styled from "styled-components";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  @media (min-width: 768px) {
-    width: 80%;
-    margin-left: 10%;
-  }
+import blogIcon from "../../assets/images/logo.png";
 
+const WriteContainer = styled(Col)`
+  margin-top: 20px;
   animation-name: init;
   animation-duration: 1s;
   animation-duration: linear;
@@ -24,13 +21,14 @@ const Container = styled.div`
   }
 `;
 
-const DocTitle = styled.h1`
-  border-bottom: 1px solid #eee;
-  padding-bottom: 22px;
-  color: #333;
+const Logo = styled.img`
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
 `;
 
 const PostTitle = styled.input`
+  width: 100%;
   color: #777;
   border: 0;
   border-bottom: 1px solid #eee;
@@ -42,17 +40,10 @@ const PostTitle = styled.input`
   margin-bottom: 20px;
 `;
 
-const Submit = styled.input`
-  width: 88px;
+const Submit = styled(Button)`
   margin: 0;
   margin-top: 20px;
-  line-height: 38px;
-  border-radius: 20px;
   float: right;
-  background-color: #000;
-  color: #fff;
-  border: 1px solid #000;
-  cursor: pointer;
 `;
 
 const Editor = styled(MDEditor)`
@@ -78,14 +69,27 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
   };
 
   return (
-    <Container className="OnWrite">
+    <>
       <header>
-        <DocTitle>{isEdit ? "Edit post" : "Write your Story"}</DocTitle>
+        <Navbar bg="light">
+          <Container>
+            <Navbar.Brand>
+              <Link to="/">
+                <Logo src={blogIcon} alt="blog logo" />
+              </Link>
+              {isEdit ? "Edit post" : "Write your Story"}
+            </Navbar.Brand>
+          </Container>
+        </Navbar>
       </header>
-      <section>
-        <form onSubmit={onPreview}>
+      <WriteContainer
+        sm={{ span: 10, offset: 1 }}
+        lg={{ span: 8, offset: 2 }}
+        xxl={{ span: 6, offset: 3 }}
+        className="OnWrite"
+      >
+        <section>
           <PostTitle
-            type="text"
             placeholder="Write post title"
             value={postContent.title}
             maxLength={30}
@@ -102,10 +106,10 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
               }));
             }}
           />
-          <Submit type="submit" value={isEdit ? "Edit" : "Write up"} />
-        </form>
-      </section>
-    </Container>
+          <Submit onClick={onPreview}>{isEdit ? "Edit" : "Write up"}</Submit>
+        </section>
+      </WriteContainer>
+    </>
   );
 };
 

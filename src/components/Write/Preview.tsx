@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Stack, Col, Image } from "react-bootstrap";
+import { Stack, Col, Image, Button, Form, InputGroup } from "react-bootstrap";
 import styled from "styled-components";
 import { uuidv4 } from "@firebase/util";
 
@@ -7,6 +7,7 @@ import altImage from "../../assets/images/altThumbnail.jpg";
 import { deleteImg, uploadImg } from "../../logic/getSetImage";
 
 const PreviewContainer = styled.div`
+  display: flex;
   position: absolute;
   visibility: hidden;
   background-color: #fff;
@@ -52,6 +53,20 @@ const PreviewContainer = styled.div`
   }
 `;
 
+const LeftContainer = styled(Col)`
+  padding: 0 30px;
+  border-right: 1px solid #eee;
+  align-self: center;
+`;
+
+const RightContainer = styled(Col)`
+  padding: 0 30px;
+  align-self: center;
+`;
+
+const ButtonContainer = styled(Stack)`
+  float: right;
+`;
 const ImageContainer = styled(Image)`
   background-color: #eee;
   width: 100%;
@@ -59,6 +74,7 @@ const ImageContainer = styled(Image)`
 `;
 
 interface Props {
+  isEdit: boolean;
   isPreview: boolean;
   postContent: postEditData;
   setPostContent: React.Dispatch<React.SetStateAction<postEditData>>;
@@ -67,6 +83,7 @@ interface Props {
 }
 
 const Preview = ({
+  isEdit,
   isPreview,
   postContent,
   setPostContent,
@@ -113,7 +130,7 @@ const Preview = ({
     } = event;
     setPostContent((prev) => ({
       ...prev,
-      description: value,
+      thumbnailData: value,
     }));
   };
 
@@ -121,8 +138,8 @@ const Preview = ({
     <PreviewContainer
       className={`Preview ${isPreview ? "open" : firstOpen ? "close" : ""}`}
     >
-      <Col md={{ span: 5, offset: 1 }} xxl={{ span: 4, offset: 2 }}>
-        <Stack>
+      <LeftContainer md={{ span: 5, offset: 1 }} xxl={{ span: 4, offset: 2 }}>
+        <Stack gap={3}>
           <h3>Preview</h3>
           <ImageContainer
             src={postContent.imgLink ? postContent.imgLink : altImage}
@@ -137,26 +154,36 @@ const Preview = ({
             src={postContent.imgLink}
             onChange={onImgUpload}
           />
-          <Stack direction="horizontal">
-            <button onClick={onUpload}>Upload Image</button>
-            <button onClick={onDelete} hidden={!postContent.imgLink}>
-              Delete
-            </button>
+          <Stack gap={2} direction="horizontal">
+            <Button onClick={onUpload}>Upload Image</Button>
+            <Button
+              variant="outline-primary"
+              onClick={onDelete}
+              hidden={!postContent.imgLink}
+            >
+              Delete Image
+            </Button>
           </Stack>
           <h3>{postContent.title}</h3>
-          <textarea
-            value={postContent.thumbnailData}
-            onChange={onEditDescription}
-          />
+          <InputGroup size="lg">
+            <Form.Control
+              as="textarea"
+              value={postContent.thumbnailData}
+              maxLength={150}
+              onChange={onEditDescription}
+            />
+          </InputGroup>
           <p>{postContent.thumbnailData.length}/150</p>
         </Stack>
-      </Col>
-      <Col md={{ span: 5, offset: 6 }} xxl={{ span: 4, offset: 6 }}>
-        <Stack direction="horizontal">
-          <button onClick={onPreview}>Cancel</button>
-          <button onClick={onSubmit}>Write Up</button>
-        </Stack>
-      </Col>
+      </LeftContainer>
+      <RightContainer xs={0} md={5} xxl={4}>
+        <ButtonContainer gap={3} direction="horizontal">
+          <Button variant="outline-primary" onClick={onPreview}>
+            Cancel
+          </Button>
+          <Button onClick={onSubmit}>{isEdit ? "Edit" : "Write Up"}</Button>
+        </ButtonContainer>
+      </RightContainer>
     </PreviewContainer>
   );
 };

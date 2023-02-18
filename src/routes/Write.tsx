@@ -17,7 +17,7 @@ const Write = () => {
   const userData = useRecoilValue(loginData);
   const [postContent, setPostContent] = useState<postEditData>({
     title: "",
-    postData: "",
+    postData: "**Write your post**",
     imgLink: "",
     thumbnailData: "",
   });
@@ -116,6 +116,7 @@ const Write = () => {
       {loading ? <Loading /> : null}
       <AlertModal />
       <Preview
+        isEdit={Boolean(params["*"])}
         isPreview={isPreview}
         postContent={postContent}
         setPostContent={setPostContent}
