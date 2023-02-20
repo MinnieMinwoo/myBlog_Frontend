@@ -54,31 +54,27 @@ export const getPostData = async (docId: string): Promise<PostDetail> => {
       likes: postDetail?.likes ?? 0,
       detail: postDetail?.detail ?? "",
       nickname: nickname,
+      imageList: postDetail?.imageList ?? [],
     };
   } catch (error) {
     throw error;
   }
 };
 
-export const addPost = async (
-  title: string,
-  postData: string,
-  userData: UserData,
-  imgLink: string,
-  description: string
-): Promise<string> => {
+export const addPost = async (postData: postEditData, userData: UserData): Promise<string> => {
   // eslint-disable-next-line no-useless-escape
   const thumbnailObj = {
-    title: title.substring(0, 31),
+    title: postData.title.substring(0, 31),
     createdBy: userData.uid,
     createdAt: Date.now(),
     tag: "",
     category: [],
-    thumbnailData: description,
-    thumbnailImageURL: imgLink,
+    thumbnailData: postData.thumbnailData,
+    thumbnailImageURL: postData.thumbnailImgLink,
   };
   const dataObj = {
-    detail: postData,
+    imageList: postData.imageList,
+    detail: postData.postData,
     likes: 0,
   };
   try {
@@ -90,28 +86,27 @@ export const addPost = async (
   }
 };
 
-export const updatePost = async (
-  id: string,
-  title: string,
-  postData: string,
-  imgLink: string,
-  description: string
-) => {
+export const updatePost = async (id: string, postData: postEditData) => {
   const thumbnailObj = {
-    title: title,
+    title: postData.title,
     tag: "",
     category: [],
-    thumbnailData: description,
-    thumbnailImageURL: imgLink,
+    thumbnailData: postData.thumbnailData,
+    thumbnailImageURL: postData.thumbnailImgLink,
   };
-  const dataObj = {
-    detail: postData,
+  const detailObj = {
+    detail: postData.postData,
+  };
+  const imageListObj = {
+    imageList: postData.imageList,
   };
   try {
     const thumbnailRef = doc(dbService, "posts", id);
-    const dataRef = doc(dbService, `posts/${id}/detail`, id);
+    const detailRef = doc(dbService, `posts/${id}/detail`, id);
+    const imageListRef = doc(dbService, `posts/${id}/imageList`, id);
     await updateDoc(thumbnailRef, thumbnailObj);
-    await updateDoc(dataRef, dataObj);
+    await updateDoc(detailRef, detailObj);
+    await updateDoc(imageListRef, imageListObj);
   } catch (error) {
     console.log(error);
   }

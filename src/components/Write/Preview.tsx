@@ -107,7 +107,7 @@ const Preview = ({
       const uploadURL = await uploadImg(files[0], `$thumbnail/${uuidv4()}`);
       setPostContent((prev) => ({
         ...prev,
-        imgLink: uploadURL,
+        thumbnailImgLink: uploadURL,
       }));
     } catch (error) {
       console.log(error);
@@ -119,10 +119,10 @@ const Preview = ({
   };
 
   const onDelete = () => {
-    postContent.imgLink && deleteImg(postContent.imgLink);
+    postContent.thumbnailImgLink && deleteImg(postContent.thumbnailImgLink);
     setPostContent((prev) => ({
       ...prev,
-      imgLink: "",
+      thumbnailImgLink: "",
     }));
   };
 
@@ -137,14 +137,12 @@ const Preview = ({
   };
 
   return (
-    <PreviewContainer
-      className={`Preview ${isPreview ? "open" : firstOpen ? "close" : ""}`}
-    >
+    <PreviewContainer className={`Preview ${isPreview ? "open" : firstOpen ? "close" : ""}`}>
       <LeftContainer md={{ span: 5, offset: 1 }} xxl={{ span: 4, offset: 2 }}>
         <Stack gap={3}>
           <h3>Preview</h3>
           <ImageContainer
-            src={postContent.imgLink ? postContent.imgLink : altImage}
+            src={postContent.thumbnailImgLink ? postContent.thumbnailImgLink : altImage}
             alt="Thumbnail"
             thumbnail={true}
           ></ImageContainer>
@@ -153,7 +151,7 @@ const Preview = ({
             type="file"
             accept="image/*"
             ref={imgRef}
-            src={postContent.imgLink}
+            src={postContent.thumbnailImgLink}
             onChange={onImgUpload}
           />
           <Stack gap={2} direction="horizontal">
@@ -161,7 +159,7 @@ const Preview = ({
             <Button
               variant="outline-primary"
               onClick={onDelete}
-              hidden={!postContent.imgLink}
+              hidden={!postContent.thumbnailImgLink}
             >
               Delete Image
             </Button>

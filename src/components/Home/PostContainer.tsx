@@ -79,8 +79,8 @@ const Dummy = () => {
           <Placeholder as={Number} xs={1} bg="primary" />
         </Stack>
       </Placeholder>
-      {[...Array(repeat)].map(() => (
-        <Placeholder as={PostBox} animation="wave" size="lg">
+      {[...Array(repeat)].map((e, index) => (
+        <Placeholder as={PostBox} animation="wave" size="lg" key={index}>
           <Stack gap={1}>
             <Placeholder as={Title} bg="secondary" xs={3} />
             <div>

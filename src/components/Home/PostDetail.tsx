@@ -10,6 +10,7 @@ import styled from "styled-components";
 import getDate from "../../logic/getDate";
 import { getPostData, deletePost } from "../../logic/getSetPostInfo";
 import { isLoadingData } from "../../states/LoadingState";
+import { deleteImg } from "../../logic/getSetImage";
 
 const PostTitleBackground = styled.div<{ imageLink: string }>`
   height: 340px;
@@ -92,10 +93,7 @@ const PostDetail = () => {
     getPostData(docID).then((postDetail) => {
       setPostData(postDetail);
       const auth = getAuth();
-      if (
-        auth.currentUser?.uid &&
-        postDetail?.createdBy === auth.currentUser.uid
-      ) {
+      if (auth.currentUser?.uid && postDetail?.createdBy === auth.currentUser.uid) {
         setHidden(false);
       }
       setOnLoading(false);
@@ -110,6 +108,12 @@ const PostDetail = () => {
     if (!params.docID) throw window.alert("wrong url data");
     if (window.confirm("Do you really want delete This post?")) {
       deletePost(params.docID).then(() => {
+        postData?.imageList &&
+          postData.imageList.map((data) => {
+            console.log(data);
+            deleteImg(data);
+          });
+        postData?.thumbnailImageURL && deleteImg(postData.thumbnailImageURL);
         window.alert("Post has been deleted");
         navigate(`/home/${params.userID}`, { replace: false });
       });
@@ -124,9 +128,7 @@ const PostDetail = () => {
           <Category />
           {postData?.title ? <Title>{postData?.title}</Title> : null}
           {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
-          {postData?.createdAt ? (
-            <span>{` ∙  ${getDate(postData?.createdAt)}`}</span>
-          ) : null}
+          {postData?.createdAt ? <span>{` ∙  ${getDate(postData?.createdAt)}`}</span> : null}
           <EditData hidden={hidden} onClick={onEdit}>
             ∙ Edit
           </EditData>

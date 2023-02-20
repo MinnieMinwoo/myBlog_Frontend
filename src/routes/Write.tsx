@@ -18,8 +18,9 @@ const Write = () => {
   const [postContent, setPostContent] = useState<postEditData>({
     title: "",
     postData: "**Write your post**",
-    imgLink: "",
+    thumbnailImgLink: "",
     thumbnailData: "",
+    imageList: [],
   });
   const [isPreview, setIsPreview] = useState(false);
   const { openModal } = useModal();
@@ -43,8 +44,9 @@ const Write = () => {
             ...prev,
             title: post.title,
             postData: post.detail,
-            imgLink: post.thumbnailImageURL,
+            thumbnailImgLink: post.thumbnailImageURL,
             thumbnailData: post.thumbnailData,
+            imageList: post.imageList,
           }));
         })
         .catch((error) => {
@@ -75,22 +77,10 @@ const Write = () => {
     try {
       let postID: string;
       if (params["*"]) {
-        await updatePost(
-          params["*"],
-          postContent.title,
-          postContent.postData,
-          postContent.imgLink,
-          postContent.thumbnailData
-        );
+        await updatePost(params["*"], postContent);
         postID = params["*"];
       } else {
-        postID = await addPost(
-          postContent.title,
-          postContent.postData,
-          userData,
-          postContent.imgLink,
-          postContent.thumbnailData
-        );
+        postID = await addPost(postContent, userData);
       }
       navigate(`/home/${userData.nickname}/${postID}`);
     } catch (error) {

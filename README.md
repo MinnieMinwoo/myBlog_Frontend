@@ -6,11 +6,12 @@ Make my own blog project.
 
 - Auth
 
-  - Email
+  - Email with verification
 
 - Blog home
 
   - Get blog posts list by user nickname
+  - View post thumbnail With images
 
 - Post read
 
@@ -18,8 +19,9 @@ Make my own blog project.
 
 - Post edit & write
 
-  - Set title
+  - Set title and thumbnail data
   - Write blog posts using markdown
+  - Drag & Drop image to fit the cursor during post edit
 
 - Setting
   - Edit profile images
@@ -40,6 +42,7 @@ Make my own blog project.
 - Firebase
   - Authentication
   - Firestore Database
+  - Storage
 - Github Pages
 
 ## demonstration

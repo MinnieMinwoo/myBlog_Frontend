@@ -18,13 +18,15 @@ interface PostDetail extends PostData {
   likes: number;
   detail: string;
   nickname: string;
+  imageList: string[];
 }
 
 interface postEditData {
   title: string;
   postData: string;
-  imgLink: string;
+  thumbnailImgLink: string;
   thumbnailData: string;
+  imageList: string[];
 }
 
 interface UserData {

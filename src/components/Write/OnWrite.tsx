@@ -100,14 +100,15 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
     }
   };
   const onDrop = async (event: DragEvent) => {
-    event.preventDefault(); // 브라우저 이벤트 방지
-    event.stopPropagation(); // 부모 이벤트 방지
+    event.preventDefault();
+    event.stopPropagation();
     const textarea = inputRef.current?.children[0]?.children[1]?.children[0]?.children[0]
       ?.children[1] as HTMLTextAreaElement; // Editor에서 직접 ref 사용시 속성 정의 에러발생
     if (!textarea) return;
     const files = event.dataTransfer.files[0];
     if (!files) return;
-    const imageLink = await uploadImg(files, `$thumbnail/${userData.uid}/${uuidv4()}`);
+    //  postImageList 추가
+    const imageLink = await uploadImg(files, `$images/${userData.uid}/${uuidv4()}`);
     const currentText = postContent.postData;
     const textCursor = textarea.selectionStart;
     setPostContent((prev) => ({
@@ -115,6 +116,7 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
       postData: `${currentText.slice(0, textCursor)}![](${imageLink})${currentText.slice(
         textCursor
       )}`,
+      imageList: [...prev.imageList, imageLink],
     }));
     setIsDragging(false);
   };
