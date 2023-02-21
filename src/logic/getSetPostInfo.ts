@@ -100,17 +100,13 @@ export const updatePost = async (id: string, postData: postEditData) => {
   };
   const detailObj = {
     detail: postData.postData,
-  };
-  const imageListObj = {
     imageList: postData.imageList,
   };
   try {
     const thumbnailRef = doc(dbService, "posts", id);
     const detailRef = doc(dbService, `posts/${id}/detail`, id);
-    const imageListRef = doc(dbService, `posts/${id}/imageList`, id);
     await updateDoc(thumbnailRef, thumbnailObj);
     await updateDoc(detailRef, detailObj);
-    await updateDoc(imageListRef, imageListObj);
   } catch (error) {
     throw error;
   }
