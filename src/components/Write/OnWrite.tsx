@@ -1,5 +1,4 @@
 import React, { ChangeEvent, DragEvent, useState, useRef } from "react";
-import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { uuidv4 } from "@firebase/util";
@@ -7,9 +6,12 @@ import MDEditor from "@uiw/react-md-editor";
 import { Button, Container, Navbar, Col } from "react-bootstrap";
 import styled from "styled-components";
 
+import { useModal } from "../../states/ModalState";
+import { useToast } from "../../states/ToastState";
+
 import { uploadImg } from "../../logic/getSetImage";
 import blogIcon from "../../assets/images/logo.png";
-import { useToast } from "../../states/ToastState";
+import { useNavigate } from "react-router-dom";
 
 const OnDragCheck = styled.div`
   &.Drag {
@@ -36,6 +38,7 @@ const Logo = styled.img`
   width: 40px;
   height: 40px;
   margin-right: 20px;
+  cursor: pointer;
 `;
 
 const PostTitle = styled.input`
@@ -72,7 +75,9 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
   const inputRef = useRef<HTMLDivElement>(null);
   const userData = useRecoilValue(loginData);
   const [isDragging, setIsDragging] = useState(false);
+  const { openModal } = useModal();
   const { openToast } = useToast();
+  const navigate = useNavigate();
   const onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
@@ -128,15 +133,22 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
     }
   };
 
+  const onExit = () => {
+    const warningTitle = "Warning";
+    const warningMessage = "Post data will not be saved when you leave the window.";
+    const confirmCallback = () => {
+      navigate("/");
+    };
+    openModal(warningTitle, warningMessage, confirmCallback, true);
+  };
+
   return (
     <OnDragCheck className={isDragging ? "OnWrite Drag" : "OnWrite"}>
       <header>
         <Navbar bg="light">
           <Container>
             <Navbar.Brand>
-              <Link to="/">
-                <Logo src={blogIcon} alt="blog logo" />
-              </Link>
+              <Logo src={blogIcon} alt="blog logo" onClick={onExit} />
               {isEdit ? "Edit post" : "Write your Story"}
             </Navbar.Brand>
           </Container>

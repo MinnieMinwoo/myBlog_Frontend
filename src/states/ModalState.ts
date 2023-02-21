@@ -4,8 +4,9 @@ import { atom, useRecoilState } from "recoil";
 type ModalType = {
   isOpen: boolean;
   title?: string;
-  content: JSX.Element | string;
-  callBack?: () => any;
+  content: string;
+  closeCallBack?: () => any;
+  isConfirm: boolean;
 };
 
 export const modalState = atom<ModalType>({
@@ -14,31 +15,41 @@ export const modalState = atom<ModalType>({
     isOpen: false,
     title: "",
     content: "",
-    callBack: () => {},
+    closeCallBack: () => {},
+    isConfirm: false,
   },
 });
 
 export const useModal = () => {
   const [modalDataState, setModalDataState] = useRecoilState(modalState);
+
   const openModal = useCallback(
-    (title: string, content: JSX.Element | string, callback?: () => any) => {
+    (title: string, content: string, closeCallBack?: () => any, isConfirm?: boolean) => {
       setModalDataState({
         isOpen: true,
         title: title,
         content: content,
-        callBack: callback,
+        closeCallBack: closeCallBack,
+        isConfirm: isConfirm ?? false,
       });
     },
     [setModalDataState]
   );
 
   const closeModal = useCallback(() => {
-    if (modalDataState.callBack) modalDataState.callBack();
+    setModalDataState((prev) => ({
+      ...prev,
+      isOpen: false,
+    }));
+  }, [setModalDataState]);
+
+  const closeModalWithCallback = useCallback(() => {
+    if (modalDataState.closeCallBack) modalDataState.closeCallBack();
     setModalDataState((prev) => ({
       ...prev,
       isOpen: false,
     }));
   }, [modalDataState, setModalDataState]);
 
-  return { modalDataState, openModal, closeModal };
+  return { modalDataState, openModal, closeModal, closeModalWithCallback };
 };

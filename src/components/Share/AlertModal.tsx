@@ -1,20 +1,21 @@
 import React from "react";
+import { useModal } from "../../states/ModalState";
 import { Button, Modal } from "react-bootstrap";
 import styled from "styled-components";
-import { useModal } from "../../states/ModalState";
 
 const ModalDialog = styled(Modal.Dialog)`
   margin: 0;
 `;
 
 const AlertModal = () => {
-  const { modalDataState, closeModal } = useModal();
+  const { modalDataState, closeModal, closeModalWithCallback } = useModal();
+
   return (
     <Modal
       size="lg"
       centered
       show={modalDataState.isOpen}
-      onHide={closeModal}
+      onHide={modalDataState.isConfirm ? closeModal : closeModalWithCallback}
       className="AlertModal"
     >
       <ModalDialog>
@@ -25,8 +26,14 @@ const AlertModal = () => {
           <p>{modalDataState.content}</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeModal}>
-            Close
+          <Button
+            variant="secondary"
+            onClick={modalDataState.isConfirm ? closeModal : closeModalWithCallback}
+          >
+            {modalDataState.isConfirm ? "Cancel" : "Close"}
+          </Button>
+          <Button variant="primary" onClick={closeModalWithCallback}>
+            Confirm
           </Button>
         </Modal.Footer>
       </ModalDialog>
