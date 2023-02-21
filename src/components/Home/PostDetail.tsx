@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -11,6 +10,8 @@ import getDate from "../../logic/getDate";
 import { getPostData, deletePost } from "../../logic/getSetPostInfo";
 import { isLoadingData } from "../../states/LoadingState";
 import { deleteImg } from "../../logic/getSetImage";
+import { useToast } from "../../states/ToastState";
+import AlertToast from "../Share/Toast";
 
 const PostTitleBackground = styled.div<{ imageLink: string }>`
   height: 340px;
@@ -83,6 +84,7 @@ const PostDetail = () => {
   const [postData, setPostData] = useState<PostDetail>();
   const [hidden, setHidden] = useState(true);
   const [onLoading, setOnLoading] = useRecoilState(isLoadingData);
+  const { openToast } = useToast();
   const navigate = useNavigate();
   const params = useParams();
 
@@ -90,14 +92,20 @@ const PostDetail = () => {
     setOnLoading(true);
     if (!params.docID) throw console.log("wrong url data");
     const docID = params.docID;
-    getPostData(docID).then((postDetail) => {
-      setPostData(postDetail);
-      const auth = getAuth();
-      if (auth.currentUser?.uid && postDetail?.createdBy === auth.currentUser.uid) {
-        setHidden(false);
-      }
-      setOnLoading(false);
-    });
+    getPostData(docID)
+      .then((postDetail) => {
+        setPostData(postDetail);
+        const auth = getAuth();
+        if (auth.currentUser?.uid && postDetail?.createdBy === auth.currentUser.uid) {
+          setHidden(false);
+        }
+        setOnLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        openToast("Error", "Post loading failed", "warning");
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onEdit = () => {
@@ -123,6 +131,7 @@ const PostDetail = () => {
   return (
     <>
       {onLoading ? <Dummy /> : null}
+      <AlertToast />
       <section className="read_section" hidden={onLoading}>
         <PostTitleBackground imageLink={postData?.thumbnailImageURL ?? ""}>
           <Category />

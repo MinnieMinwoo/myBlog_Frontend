@@ -21,20 +21,24 @@ export const getUserPostList = async (uid: string): Promise<PostData[]> => {
     where("createdBy", "==", uid),
     orderBy("createdAt", "desc")
   );
-  const querySnapshot = await getDocs(q);
-  let docList: PostData[] = [];
-  querySnapshot.forEach((doc) => {
-    docList.push({
-      id: doc.id,
-      createdAt: doc.data().createdAt,
-      createdBy: doc.data().createdBy,
-      tag: doc.data().tag,
-      thumbnailData: doc.data().thumbnailData,
-      thumbnailImageURL: doc.data().thumbnailImageURL,
-      title: doc.data().title,
+  try {
+    const querySnapshot = await getDocs(q);
+    let docList: PostData[] = [];
+    querySnapshot.forEach((doc) => {
+      docList.push({
+        id: doc.id,
+        createdAt: doc.data().createdAt,
+        createdBy: doc.data().createdBy,
+        tag: doc.data().tag,
+        thumbnailData: doc.data().thumbnailData,
+        thumbnailImageURL: doc.data().thumbnailImageURL,
+        title: doc.data().title,
+      });
     });
-  });
-  return docList;
+    return docList;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getPostData = async (docId: string): Promise<PostDetail> => {
@@ -108,13 +112,17 @@ export const updatePost = async (id: string, postData: postEditData) => {
     await updateDoc(detailRef, detailObj);
     await updateDoc(imageListRef, imageListObj);
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 
 export const deletePost = async (docId: string): Promise<void> => {
   const docRefPre = doc(dbService, `posts`, docId);
   const docRefDetail = doc(dbService, `posts/${docId}/detail`, docId);
-  await deleteDoc(docRefDetail);
-  await deleteDoc(docRefPre);
+  try {
+    await deleteDoc(docRefDetail);
+    await deleteDoc(docRefPre);
+  } catch (error) {
+    throw error;
+  }
 };

@@ -31,37 +31,50 @@ export const addUserData = async (uid: string) => {
     nickname: uid,
     description: "Hello",
   };
-  await setDoc(doc(dbService, "users", uid), userDetail);
+  try {
+    await setDoc(doc(dbService, "users", uid), userDetail);
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getUserData = async (user: User): Promise<UserData> => {
   const userDocRef = doc(dbService, `users`, user.uid);
-  const userDocData = (await getDoc(userDocRef)).data() as DocData;
-  const token = await user.getIdToken();
-  return {
-    isLoggedIn: true,
-    email: user.email ?? "",
-    photoURL: user.photoURL ?? "",
-    uid: user.uid,
-    accessToken: token,
-    nickname: userDocData?.nickname ?? "",
-    description: userDocData?.description ?? "",
-  };
+  try {
+    const userDocData = (await getDoc(userDocRef)).data() as DocData;
+    const token = await user.getIdToken();
+    return {
+      isLoggedIn: true,
+      email: user.email ?? "",
+      photoURL: user.photoURL ?? "",
+      uid: user.uid,
+      accessToken: token,
+      nickname: userDocData?.nickname ?? "",
+      description: userDocData?.description ?? "",
+    };
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getUserUID = async (nickname: string): Promise<string> => {
-  const q = query(
-    collection(dbService, "users"),
-    where("nickname", "==", nickname)
-  );
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs[0].id;
+  const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
+  try {
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs[0].id;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getUserNickname = async (uid: string): Promise<string> => {
   const userDocRef = doc(dbService, "users", uid);
-  const userDocData = (await getDoc(userDocRef)).data() as DocData;
-  return userDocData?.nickname ?? "";
+  try {
+    const userDocData = (await getDoc(userDocRef)).data() as DocData;
+    return userDocData?.nickname ?? "";
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const updateUserImage = async (
@@ -69,31 +82,22 @@ export const updateUserImage = async (
   uid: string,
   file: File
 ): Promise<string> => {
-  return new Promise(async (resolve, reject) => {
-    if (isOwnImage) deleteImg(`$profile/${uid}`);
-    if (authService.currentUser)
-      try {
-        const imageURL = await uploadImg(file, `$profile/${uid}`);
-        if (!imageURL) throw console.log("no image data");
-        await updateProfile(authService.currentUser, {
-          photoURL: imageURL,
-        });
-        resolve(imageURL);
-      } catch (error) {
-        reject(error);
-      }
-  });
+  if (isOwnImage) deleteImg(`$profile/${uid}`);
+  if (!authService.currentUser) throw console.log("no user data");
+  try {
+    const imageURL = await uploadImg(file, `$profile/${uid}`);
+    if (!imageURL) throw console.log("no image data");
+    await updateProfile(authService.currentUser, {
+      photoURL: imageURL,
+    });
+    return imageURL;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const updateUserProfile = async (
-  uid: string,
-  nickname: string,
-  description: string
-) => {
-  const q = query(
-    collection(dbService, "users"),
-    where("nickname", "==", nickname)
-  );
+export const updateUserProfile = async (uid: string, nickname: string, description: string) => {
+  const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
   const querySnapshot = await getDocs(q);
   if (querySnapshot.docs[0] && querySnapshot.docs[0].id !== uid)
     throw window.alert("Profile update error: Duplicate nickname");
@@ -107,8 +111,7 @@ export const updateUserProfile = async (
 
 export const deleteUserData = async (uid: string) => {
   const user = authService.currentUser;
-  if (!user || user.uid !== uid)
-    throw window.alert("Withdrawal error: wrong uid data");
+  if (!user || user.uid !== uid) throw window.alert("Withdrawal error: wrong uid data");
   if (!user.email) throw window.alert("Withdrawal error: wrong email data");
   let password = "";
   while (password === "") {

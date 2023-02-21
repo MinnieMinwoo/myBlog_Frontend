@@ -9,6 +9,8 @@ import getDate from "../../logic/getDate";
 
 import { getUserPostList } from "../../logic/getSetPostInfo";
 import { getUserUID } from "../../logic/getSetUserInfo";
+import AlertToast from "../Share/Toast";
+import { useToast } from "../../states/ToastState";
 
 const PostArticle = styled.article`
   padding: 0 30px;
@@ -99,11 +101,12 @@ const Dummy = () => {
 const PostContainer = () => {
   const [isLoading, setIsLoading] = useRecoilState(isLoadingData);
   const [postList, setPostList] = useState<PostData[]>([]);
+  const { openToast } = useToast();
   const params = useParams();
 
   useEffect(() => {
     setIsLoading(true);
-    if (!params.userID) throw console.log("no name data");
+    if (!params.userID) throw console.log("no params");
     getUserUID(params.userID)
       .then((uid) => {
         return getUserPostList(uid);
@@ -111,7 +114,10 @@ const PostContainer = () => {
       .then((docList) => {
         setPostList(docList);
       })
-      .catch((error) => {})
+      .catch((error) => {
+        console.log(error);
+        openToast("Error", "Read post list failed.", "warning");
+      })
       .finally(() => {
         setIsLoading(false);
       });
@@ -123,6 +129,7 @@ const PostContainer = () => {
   return (
     <PostArticle>
       {isLoading ? <Dummy /> : null}
+      <AlertToast />
       <HeaderBox className="PostHeader" hidden={isLoading}>
         <Stack direction="horizontal" gap={1}>
           <HeaderTitle>{title}</HeaderTitle>

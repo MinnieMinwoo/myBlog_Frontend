@@ -32,7 +32,6 @@ export const useToast = () => {
   const [toastDataState, setToastDataState] = useRecoilState(toastState);
   const openToast = useCallback(
     (title: string, content: string, background?: colorType) => {
-      console.log("open toast");
       setToastDataState({
         isOpen: true,
         title: title,
