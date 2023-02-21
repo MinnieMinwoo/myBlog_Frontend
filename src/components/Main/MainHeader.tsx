@@ -5,8 +5,8 @@ import { Navbar, Container } from "react-bootstrap";
 import image from "../../assets/images/logo.png";
 
 const Logo = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
 `;
 
 const MainHeader = () => {

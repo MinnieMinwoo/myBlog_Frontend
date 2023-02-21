@@ -7,10 +7,13 @@ import { useModal } from "../states/ModalState";
 import { getAuth } from "firebase/auth";
 
 import { addPost, getPostData, updatePost } from "../logic/getSetPostInfo";
+import { useOnPreventLeave } from "../logic/useOnPreventLeave";
+
 import AlertModal from "../components/Share/AlertModal";
 import OnWrite from "../components/Write/OnWrite";
 import Preview from "../components/Write/Preview";
 import Loading from "../components/Share/Loading";
+import AlertToast from "../components/Share/Toast";
 
 const Write = () => {
   const [loading, setLoading] = useRecoilState(isLoadingData);
@@ -27,6 +30,7 @@ const Write = () => {
   const navigate = useNavigate();
   const params = useParams();
 
+  useOnPreventLeave();
   useEffect(() => {
     if (params["*"]) {
       setLoading(true);
@@ -105,6 +109,7 @@ const Write = () => {
     <div className="Write">
       {loading ? <Loading /> : null}
       <AlertModal />
+      <AlertToast />
       <Preview
         isEdit={Boolean(params["*"])}
         isPreview={isPreview}

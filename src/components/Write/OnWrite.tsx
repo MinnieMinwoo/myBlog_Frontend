@@ -9,6 +9,7 @@ import styled from "styled-components";
 
 import { uploadImg } from "../../logic/getSetImage";
 import blogIcon from "../../assets/images/logo.png";
+import { useToast } from "../../states/ToastState";
 
 const OnDragCheck = styled.div`
   &.Drag {
@@ -71,7 +72,7 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
   const inputRef = useRef<HTMLDivElement>(null);
   const userData = useRecoilValue(loginData);
   const [isDragging, setIsDragging] = useState(false);
-
+  const { openToast } = useToast();
   const onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
@@ -82,6 +83,7 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
     }));
   };
 
+  // drag & drop image
   const onDragEnter = (event: DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
@@ -103,22 +105,27 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
     event.preventDefault();
     event.stopPropagation();
     const textarea = inputRef.current?.children[0]?.children[1]?.children[0]?.children[0]
-      ?.children[1] as HTMLTextAreaElement; // Editor에서 직접 ref 사용시 속성 정의 에러발생
+      ?.children[1] as HTMLTextAreaElement; // Type definition error when use ref on editor directly
     if (!textarea) return;
     const files = event.dataTransfer.files[0];
     if (!files) return;
-    //  postImageList 추가
-    const imageLink = await uploadImg(files, `$images/${userData.uid}/${uuidv4()}`);
-    const currentText = postContent.postData;
-    const textCursor = textarea.selectionStart;
-    setPostContent((prev) => ({
-      ...prev,
-      postData: `${currentText.slice(0, textCursor)}![](${imageLink})${currentText.slice(
-        textCursor
-      )}`,
-      imageList: [...prev.imageList, imageLink],
-    }));
-    setIsDragging(false);
+    try {
+      const imageLink = await uploadImg(files, `$images/${userData.uid}/${uuidv4()}`);
+      const currentText = postContent.postData;
+      const textCursor = textarea.selectionStart;
+      setPostContent((prev) => ({
+        ...prev,
+        postData: `${currentText.slice(0, textCursor)}![](${imageLink})${currentText.slice(
+          textCursor
+        )}`,
+        imageList: [...prev.imageList, imageLink],
+      }));
+    } catch (error) {
+      console.log(error);
+      openToast("Error", "Image upload failed.", "danger");
+    } finally {
+      setIsDragging(false);
+    }
   };
 
   return (

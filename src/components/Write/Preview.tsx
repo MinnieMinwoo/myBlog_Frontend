@@ -3,6 +3,8 @@ import { Stack, Col, Image, Button, Form, InputGroup } from "react-bootstrap";
 import styled from "styled-components";
 import { uuidv4 } from "@firebase/util";
 
+import { useToast } from "../../states/ToastState";
+
 import altImage from "../../assets/images/altThumbnail.jpg";
 import { deleteImg, uploadImg } from "../../logic/getSetImage";
 
@@ -94,6 +96,8 @@ const Preview = ({
 }: Props) => {
   const imgRef = useRef<HTMLInputElement | null>(null);
   const [firstOpen, setFirstOpen] = useState(false);
+  const { openToast } = useToast();
+
   useEffect(() => {
     isPreview && setFirstOpen(true);
   }, [isPreview]);
@@ -111,6 +115,7 @@ const Preview = ({
       }));
     } catch (error) {
       console.log(error);
+      openToast("Error", "Image upload failed.", "danger");
     }
   };
 
