@@ -4,7 +4,6 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import styled from "styled-components";
 
 import blogIcon from "../../assets/images/logo.png";
-import HeaderSearch from "./HeaderSearch";
 import HeaderProfile from "./HeaderProfile";
 
 const Logo = styled.img`
@@ -25,10 +24,7 @@ const Header = () => {
             </Link>
             {`${params.userID ? `${params.userID}'s` : ""} Blog`}
             <Nav>
-              <Nav.Link
-                as={Link}
-                to={`${params.userID ? `/home/${params.userID}` : "/"}`}
-              >
+              <Nav.Link as={Link} to={`${params.userID ? `/home/${params.userID}` : "/"}`}>
                 Home
               </Nav.Link>
               <Nav.Link href="/">Category</Nav.Link>
@@ -37,7 +33,6 @@ const Header = () => {
             </Nav>
           </Navbar.Brand>
           <div>
-            <HeaderSearch />
             <HeaderProfile />
           </div>
         </Container>
