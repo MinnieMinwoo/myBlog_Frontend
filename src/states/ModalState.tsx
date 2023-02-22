@@ -1,12 +1,14 @@
+import React from "react";
 import { useCallback } from "react";
 import { atom, useRecoilState } from "recoil";
 
 type ModalType = {
   isOpen: boolean;
   title?: string;
-  content: string;
+  content: string | JSX.Element;
   closeCallBack?: () => any;
   isConfirm: boolean;
+  buttonColor?: BootStrapColor;
 };
 
 export const modalState = atom<ModalType>({
@@ -17,6 +19,7 @@ export const modalState = atom<ModalType>({
     content: "",
     closeCallBack: () => {},
     isConfirm: false,
+    buttonColor: "primary",
   },
 });
 
@@ -24,13 +27,26 @@ export const useModal = () => {
   const [modalDataState, setModalDataState] = useRecoilState(modalState);
 
   const openModal = useCallback(
-    (title: string, content: string, closeCallBack?: () => any, isConfirm?: boolean) => {
+    (
+      title: string,
+      content: string | JSX.Element,
+      closeCallBack?: () => any,
+      isConfirm?: boolean,
+      buttonColor?: BootStrapColor
+    ) => {
+      let contentElement: JSX.Element;
+      if (typeof content === "string") {
+        contentElement = <p>{content}</p>;
+      } else {
+        contentElement = content;
+      }
       setModalDataState({
         isOpen: true,
         title: title,
-        content: content,
+        content: contentElement,
         closeCallBack: closeCallBack,
         isConfirm: isConfirm ?? false,
+        buttonColor: buttonColor ?? "primary",
       });
     },
     [setModalDataState]

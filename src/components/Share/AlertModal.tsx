@@ -22,9 +22,7 @@ const AlertModal = () => {
         <Modal.Header closeButton>
           <Modal.Title>{modalDataState.title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <p>{modalDataState.content}</p>
-        </Modal.Body>
+        <Modal.Body>{modalDataState.content}</Modal.Body>
         <Modal.Footer>
           <Button
             variant="secondary"
@@ -32,7 +30,11 @@ const AlertModal = () => {
           >
             {modalDataState.isConfirm ? "Cancel" : "Close"}
           </Button>
-          <Button variant="primary" onClick={closeModalWithCallback}>
+          <Button
+            hidden={!modalDataState.isConfirm}
+            variant={modalDataState.buttonColor}
+            onClick={closeModalWithCallback}
+          >
             Confirm
           </Button>
         </Modal.Footer>

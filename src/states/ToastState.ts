@@ -1,21 +1,11 @@
 import { useCallback } from "react";
 import { atom, useRecoilState } from "recoil";
 
-type colorType =
-  | "primary"
-  | "secondary"
-  | "success"
-  | "danger"
-  | "warning"
-  | "info"
-  | "light"
-  | "dark";
-
 interface ToastType {
   isOpen: boolean;
   title: string;
   content: string;
-  background: colorType;
+  background: BootStrapColor;
 }
 
 export const toastState = atom<ToastType>({
@@ -31,7 +21,7 @@ export const toastState = atom<ToastType>({
 export const useToast = () => {
   const [toastDataState, setToastDataState] = useRecoilState(toastState);
   const openToast = useCallback(
-    (title: string, content: string, background?: colorType) => {
+    (title: string, content: string, background?: BootStrapColor) => {
       setToastDataState({
         isOpen: true,
         title: title,

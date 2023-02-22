@@ -109,19 +109,15 @@ export const updateUserProfile = async (uid: string, nickname: string, descripti
   await updateDoc(userDocRef, profile);
 };
 
-export const deleteUserData = async (uid: string) => {
+export const deleteUserData = async (uid: string, password: string) => {
   const user = authService.currentUser;
-  if (!user || user.uid !== uid) throw window.alert("Withdrawal error: wrong uid data");
-  if (!user.email) throw window.alert("Withdrawal error: wrong email data");
-  let password = "";
-  while (password === "") {
-    password = window.prompt("Enter your account password") ?? "";
-  }
+  if (!user || user.uid !== uid) throw console.log("Withdrawal error: wrong uid data");
+  if (!user.email) throw console.log("Withdrawal error: wrong email data");
   const credential = EmailAuthProvider.credential(user.email, password);
   try {
     await reauthenticateWithCredential(user, credential);
   } catch {
-    throw window.alert("Withdrawal error: wrong password");
+    throw console.log("Withdrawal error: wrong password");
   }
   const docList = await getUserPostList(uid);
   docList.forEach((doc) => {

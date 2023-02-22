@@ -38,3 +38,13 @@ interface UserData {
   description?: string;
   accessToken?: string;
 }
+
+type BootStrapColor =
+  | "primary"
+  | "secondary"
+  | "success"
+  | "danger"
+  | "warning"
+  | "info"
+  | "light"
+  | "dark";

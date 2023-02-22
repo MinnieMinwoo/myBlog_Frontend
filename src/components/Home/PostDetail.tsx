@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import { useToast } from "../../states/ToastState";
+import { useModal } from "../../states/ModalState";
 import { getAuth } from "firebase/auth";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { Stack, Placeholder } from "react-bootstrap";
@@ -10,8 +12,8 @@ import getDate from "../../logic/getDate";
 import { getPostData, deletePost } from "../../logic/getSetPostInfo";
 import { isLoadingData } from "../../states/LoadingState";
 import { deleteImg } from "../../logic/getSetImage";
-import { useToast } from "../../states/ToastState";
 import AlertToast from "../Share/Toast";
+import AlertModal from "../Share/AlertModal";
 
 const PostTitleBackground = styled.div<{ imageLink: string }>`
   height: 340px;
@@ -84,6 +86,7 @@ const PostDetail = () => {
   const [postData, setPostData] = useState<PostDetail>();
   const [hidden, setHidden] = useState(true);
   const [onLoading, setOnLoading] = useRecoilState(isLoadingData);
+  const { openModal, closeModal } = useModal();
   const { openToast } = useToast();
   const navigate = useNavigate();
   const params = useParams();
@@ -112,25 +115,33 @@ const PostDetail = () => {
     navigate(`/write/${params.docID}`);
   };
 
-  const onDelete = () => {
+  const deleteModal = () => {
+    openModal("Warning", "Do you really want delete This post?", onDelete, true, "danger");
+  };
+
+  const onDelete = async () => {
     if (!params.docID) throw window.alert("wrong url data");
-    if (window.confirm("Do you really want delete This post?")) {
-      deletePost(params.docID).then(() => {
-        postData?.imageList &&
-          postData.imageList.map((data) => {
-            console.log(data);
-            deleteImg(data);
-          });
-        postData?.thumbnailImageURL && deleteImg(postData.thumbnailImageURL);
-        window.alert("Post has been deleted");
-        navigate(`/home/${params.userID}`, { replace: false });
+    await deletePost(params.docID);
+    postData?.thumbnailImageURL && deleteImg(postData.thumbnailImageURL);
+    postData?.imageList &&
+      postData.imageList.map((data) => {
+        deleteImg(data);
       });
-    }
+    closeModal();
+    openModal(
+      "Delete post complete",
+      "Post has been deleted.",
+      () => {
+        navigate(`/home/${params.userID}`, { replace: false });
+      },
+      false
+    );
   };
 
   return (
     <>
       {onLoading ? <Dummy /> : null}
+      <AlertModal />
       <AlertToast />
       <section className="read_section" hidden={onLoading}>
         <PostTitleBackground imageLink={postData?.thumbnailImageURL ?? ""}>
@@ -141,7 +152,7 @@ const PostDetail = () => {
           <EditData hidden={hidden} onClick={onEdit}>
             ∙ Edit
           </EditData>
-          <EditData hidden={hidden} onClick={onDelete}>
+          <EditData hidden={hidden} onClick={deleteModal}>
             ∙ Delete
           </EditData>
         </PostTitleBackground>

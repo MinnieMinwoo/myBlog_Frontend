@@ -5,11 +5,6 @@ export const isInit = atom({
   default: false,
 });
 
-export const isWaitingPost = atom({
-  key: "isWaitingPost",
-  default: false,
-});
-
 export const isLoadingData = atom({
   key: "isLoadingData",
   default: false,
