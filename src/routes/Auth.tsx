@@ -112,7 +112,7 @@ const Auth = () => {
                   onChange={onChange}
                 />
               </Form.Group>
-              <Form.Group controlId="email">
+              <Form.Group controlId="password">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   name="password"

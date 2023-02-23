@@ -15,7 +15,6 @@ const PreviewContainer = styled.div`
   background-color: #fff;
   width: 100%;
   height: 100%;
-  overflow: hidden;
   z-index: 1;
 
   &.open {
@@ -77,6 +76,10 @@ const ImageContainer = styled(Image)`
   object-position: center center;
 `;
 
+const ThumbnailText = styled(InputGroup)`
+  height: 200px;
+`;
+
 interface Props {
   isEdit: boolean;
   isPreview: boolean;
@@ -129,6 +132,7 @@ const Preview = ({
       ...prev,
       thumbnailImgLink: "",
     }));
+    if (imgRef.current?.value) imgRef.current.value = "";
   };
 
   const onEditDescription = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -170,14 +174,14 @@ const Preview = ({
             </Button>
           </Stack>
           <h3>{postContent.title}</h3>
-          <InputGroup size="lg">
+          <ThumbnailText size="lg">
             <Form.Control
               as="textarea"
               value={postContent.thumbnailData}
               maxLength={150}
               onChange={onEditDescription}
             />
-          </InputGroup>
+          </ThumbnailText>
           <p>{postContent.thumbnailData.length}/150</p>
         </Stack>
       </LeftContainer>

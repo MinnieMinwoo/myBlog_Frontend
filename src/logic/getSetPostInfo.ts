@@ -68,7 +68,7 @@ export const getPostData = async (docId: string): Promise<PostDetail> => {
 export const addPost = async (postData: postEditData, userData: UserData): Promise<string> => {
   // eslint-disable-next-line no-useless-escape
   const thumbnailObj = {
-    title: postData.title.substring(0, 31),
+    title: postData.title,
     createdBy: userData.uid,
     createdAt: Date.now(),
     tag: "",

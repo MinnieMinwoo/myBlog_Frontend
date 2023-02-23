@@ -1,28 +1,30 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 
-import Main from "./routes/Main";
-import Auth from "./routes/Auth";
-import Home from "./routes/Home";
-import Write from "./routes/Write";
-import Setting from "./routes/Setting";
-
-import PostContainer from "./components/Home/PostContainer";
-import PostDetail from "./components/Home/PostDetail";
+import Loading from "./components/Share/Loading";
+const Main = lazy(() => import("./routes/Main"));
+const Auth = lazy(() => import("./routes/Auth"));
+const Home = lazy(() => import("./routes/Home"));
+const Write = lazy(() => import("./routes/Write"));
+const Setting = lazy(() => import("./routes/Setting"));
+const PostContainer = lazy(() => import("./components/Home/PostContainer"));
+const PostDetail = lazy(() => import("./components/Home/PostDetail"));
 
 const AppRouter = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/home/:userID" element={<Home />}>
-          <Route path="/home/:userID" element={<PostContainer />} />
-          <Route path="/home/:userID/:docID" element={<PostDetail />} />
-        </Route>
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/write/*" element={<Write />} />
-        <Route path="/setting" element={<Setting />} />
-      </Routes>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/home/:userID" element={<Home />}>
+            <Route path="/home/:userID" element={<PostContainer />} />
+            <Route path="/home/:userID/:docID" element={<PostDetail />} />
+          </Route>
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/write/*" element={<Write />} />
+          <Route path="/setting" element={<Setting />} />
+        </Routes>
+      </Suspense>
     </Router>
   );
 };
