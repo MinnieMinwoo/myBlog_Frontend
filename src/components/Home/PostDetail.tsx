@@ -5,6 +5,7 @@ import { useToast } from "../../states/ToastState";
 import { useModal } from "../../states/ModalState";
 import { getAuth } from "firebase/auth";
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import toc from "@jsdevtools/rehype-toc";
 import { Stack, Placeholder } from "react-bootstrap";
 import styled from "styled-components";
 
@@ -44,6 +45,20 @@ const EditData = styled.span`
 
 const PostBox = styled.article`
   padding: 30px 0;
+`;
+
+const MDPreview = styled(MarkdownPreview)`
+  .page-outline {
+    display: inline-block;
+    position: absolute;
+    left: 75%;
+    @media (max-width: 1399px) {
+      visibility: hidden;
+    }
+  }
+  .page-list {
+    list-style: none;
+  }
 `;
 
 const Dummy = () => {
@@ -99,7 +114,10 @@ const PostDetail = () => {
       .then((postDetail) => {
         setPostData(postDetail);
         const auth = getAuth();
-        if (auth.currentUser?.uid && postDetail?.createdBy === auth.currentUser.uid) {
+        if (
+          auth.currentUser?.uid &&
+          postDetail?.createdBy === auth.currentUser.uid
+        ) {
           setHidden(false);
         }
         setOnLoading(false);
@@ -116,7 +134,13 @@ const PostDetail = () => {
   };
 
   const deleteModal = () => {
-    openModal("Warning", "Do you really want delete This post?", onDelete, true, "danger");
+    openModal(
+      "Warning",
+      "Do you really want delete This post?",
+      onDelete,
+      true,
+      "danger"
+    );
   };
 
   const onDelete = async () => {
@@ -148,7 +172,9 @@ const PostDetail = () => {
           <Category />
           {postData?.title ? <Title>{postData?.title}</Title> : null}
           {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
-          {postData?.createdAt ? <span>{` ∙  ${getDate(postData?.createdAt)}`}</span> : null}
+          {postData?.createdAt ? (
+            <span>{` ∙  ${getDate(postData?.createdAt)}`}</span>
+          ) : null}
           <EditData hidden={hidden} onClick={onEdit}>
             ∙ Edit
           </EditData>
@@ -157,7 +183,23 @@ const PostDetail = () => {
           </EditData>
         </PostTitleBackground>
         <PostBox data-color-mode="light">
-          <MarkdownPreview source={postData?.detail} />
+          <MDPreview
+            source={postData?.detail}
+            rehypePlugins={[
+              [
+                toc,
+                {
+                  headings: ["h1", "h2", "h3"],
+                  cssClasses: {
+                    toc: "page-outline",
+                    list: "page-list",
+                    listItem: "page-listItem",
+                    link: "page-link",
+                  },
+                },
+              ],
+            ]}
+          />
         </PostBox>
       </section>
     </>

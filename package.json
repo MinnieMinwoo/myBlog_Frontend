@@ -4,6 +4,7 @@
   "private": false,
   "homepage": "https://minnieminwoo.github.io/myBlog_Frontend/",
   "dependencies": {
+    "@jsdevtools/rehype-toc": "^3.0.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^29.4.0",
     "@types/node": "^18.11.18",
