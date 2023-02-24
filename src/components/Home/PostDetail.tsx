@@ -50,14 +50,28 @@ const PostBox = styled.article`
 const MDPreview = styled(MarkdownPreview)`
   .page-outline {
     display: inline-block;
-    position: absolute;
+    position: fixed;
     left: 75%;
+    top: 150px;
+    margin-left: 20px;
+    max-height: calc(100% - 300px);
+    overflow-y: scroll;
+    border-left: 1px solid #eee;
     @media (max-width: 1399px) {
       visibility: hidden;
     }
   }
   .page-list {
     list-style: none;
+    padding-left: 20px;
+  }
+  .page-listItem > a {
+    font-size: 13px;
+    color: #777;
+  }
+  .page-listItem > a:hover {
+    color: #333;
+    text-decoration-line: none;
   }
 `;
 
@@ -114,10 +128,7 @@ const PostDetail = () => {
       .then((postDetail) => {
         setPostData(postDetail);
         const auth = getAuth();
-        if (
-          auth.currentUser?.uid &&
-          postDetail?.createdBy === auth.currentUser.uid
-        ) {
+        if (auth.currentUser?.uid && postDetail?.createdBy === auth.currentUser.uid) {
           setHidden(false);
         }
         setOnLoading(false);
@@ -134,13 +145,7 @@ const PostDetail = () => {
   };
 
   const deleteModal = () => {
-    openModal(
-      "Warning",
-      "Do you really want delete This post?",
-      onDelete,
-      true,
-      "danger"
-    );
+    openModal("Warning", "Do you really want delete This post?", onDelete, true, "danger");
   };
 
   const onDelete = async () => {
@@ -172,9 +177,7 @@ const PostDetail = () => {
           <Category />
           {postData?.title ? <Title>{postData?.title}</Title> : null}
           {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
-          {postData?.createdAt ? (
-            <span>{` ∙  ${getDate(postData?.createdAt)}`}</span>
-          ) : null}
+          {postData?.createdAt ? <span>{` ∙  ${getDate(postData?.createdAt)}`}</span> : null}
           <EditData hidden={hidden} onClick={onEdit}>
             ∙ Edit
           </EditData>
