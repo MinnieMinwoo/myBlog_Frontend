@@ -1,8 +1,8 @@
 const getDate = (timestamp: number) => {
-  var date = new window.Date(timestamp);
-  var year = date.getFullYear();
-  var month = ("0" + (1 + date.getMonth())).slice(-2);
-  var day = ("0" + date.getDate()).slice(-2);
+  const date = new window.Date(timestamp);
+  const year = date.getFullYear();
+  const month = ("0" + (1 + date.getMonth())).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
 
   return `${year}. ${month}. ${day}`;
 };
