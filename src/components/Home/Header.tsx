@@ -27,7 +27,9 @@ const Header = () => {
               <Nav.Link as={Link} to={`${params.userID ? `/home/${params.userID}` : "/"}`}>
                 Home
               </Nav.Link>
-              <Nav.Link href="/">Category</Nav.Link>
+              <Nav.Link as={Link} to={`${params.userID ? `/home/${params.userID}/category` : "/"}`}>
+                Category
+              </Nav.Link>
               <Nav.Link href="/">Tag</Nav.Link>
               <Nav.Link href="/">About</Nav.Link>
             </Nav>

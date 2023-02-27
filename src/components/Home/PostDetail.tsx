@@ -16,7 +16,7 @@ import { deleteImg } from "../../logic/getSetImage";
 import AlertToast from "../Share/Toast";
 import AlertModal from "../Share/AlertModal";
 
-const PostTitleBackground = styled.div<{ imageLink: string }>`
+const PostTitleBackground = styled.section<{ imageLink: string }>`
   height: 340px;
   width: 100%;
   background-size: cover;
@@ -54,9 +54,16 @@ const MDPreview = styled(MarkdownPreview)`
     left: 75%;
     top: 150px;
     margin-left: 20px;
+    min-height: 200px;
     max-height: calc(100% - 300px);
-    overflow-y: scroll;
     border-left: 1px solid #eee;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 2px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #aaa;
+    }
     @media (max-width: 1399px) {
       visibility: hidden;
     }
@@ -172,7 +179,7 @@ const PostDetail = () => {
       {onLoading ? <Dummy /> : null}
       <AlertModal />
       <AlertToast />
-      <section className="read_section" hidden={onLoading}>
+      <main className="read_section" hidden={onLoading}>
         <PostTitleBackground imageLink={postData?.thumbnailImageURL ?? ""}>
           <Category />
           {postData?.title ? <Title>{postData?.title}</Title> : null}
@@ -204,7 +211,7 @@ const PostDetail = () => {
             ]}
           />
         </PostBox>
-      </section>
+      </main>
     </>
   );
 };

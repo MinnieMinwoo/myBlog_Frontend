@@ -12,7 +12,7 @@ import { getUserUID } from "../../logic/getSetUserInfo";
 import AlertToast from "../Share/Toast";
 import { useToast } from "../../states/ToastState";
 
-const PostArticle = styled.article`
+const PostArticle = styled.section`
   padding: 0 30px;
   margin: 30px;
 `;
@@ -127,7 +127,7 @@ const PostContainer = () => {
   let title = "Posts";
 
   return (
-    <PostArticle>
+    <PostArticle className="PostContainer">
       {isLoading ? <Dummy /> : null}
       <AlertToast />
       <HeaderBox className="PostHeader" hidden={isLoading}>
@@ -136,7 +136,7 @@ const PostContainer = () => {
           <Number>{`(${String(postList.length)})`}</Number>
         </Stack>
       </HeaderBox>
-      <div className="PostItemList" hidden={isLoading}>
+      <article className="PostItemList" hidden={isLoading}>
         <Stack>
           {postList.map((post) => (
             <PostBox className="PostItem" key={post.id} to={`/home/${params.userID}/${post.id}`}>
@@ -153,7 +153,7 @@ const PostContainer = () => {
             </PostBox>
           ))}
         </Stack>
-      </div>
+      </article>
     </PostArticle>
   );
 };
