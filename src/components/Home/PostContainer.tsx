@@ -19,16 +19,15 @@ const PostArticle = styled.section`
 
 const HeaderBox = styled.div`
   margin-bottom: 20px;
-`;
 
-const HeaderTitle = styled.h2`
-  font-weight: bold;
-`;
+  h2 {
+    font-weight: bold;
+    display: inline-block;
+  }
 
-const Number = styled.span.attrs(() => ({
-  className: "text-primary",
-}))`
-  font-size: 18px;
+  span {
+    font-size: 18px;
+  }
 `;
 
 const PostBox = styled(Link)`
@@ -77,8 +76,8 @@ const Dummy = () => {
     <>
       <Placeholder as={HeaderBox} animation="wave" size="lg">
         <Stack direction="horizontal" gap={1}>
-          <Placeholder as={HeaderTitle} xs={1} bg="secondary" />
-          <Placeholder as={Number} xs={1} bg="primary" />
+          <Placeholder as="h2" xs={1} bg="secondary" />
+          <Placeholder as="span" xs={1} bg="primary" />
         </Stack>
       </Placeholder>
       {[...Array(repeat)].map((e, index) => (
@@ -132,8 +131,8 @@ const PostContainer = () => {
       <AlertToast />
       <HeaderBox className="PostHeader" hidden={isLoading}>
         <Stack direction="horizontal" gap={1}>
-          <HeaderTitle>{title}</HeaderTitle>
-          <Number>{`(${String(postList.length)})`}</Number>
+          <h2>{title}</h2>
+          <span className="text-primary">{`(${String(postList.length)})`}</span>
         </Stack>
       </HeaderBox>
       <article className="PostItemList" hidden={isLoading}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Col, Stack } from "react-bootstrap";
 import styled from "styled-components";
@@ -7,14 +7,43 @@ import { getUserUID } from "../../logic/getSetUserInfo";
 import { getCategoryData } from "../../logic/getSetCategoryInfo";
 import altImage from "../../assets/images/altThumbnail.jpg";
 
+const MainContainer = styled(Stack)`
+  padding: 0 30px;
+  margin: 30px;
+`;
+
+const HeaderBox = styled.div`
+  margin-bottom: 20px;
+
+  h2 {
+    font-weight: bold;
+    display: inline-block;
+  }
+
+  h3 {
+    color: #333;
+    font-weight: 600;
+    display: inline-block;
+  }
+
+  span {
+    font-size: 18px;
+  }
+`;
+
+const CategorySection = styled.section`
+  padding: 30px 0;
+  border-top: 1px solid #eee;
+`;
+
 const CategoryContainer = styled(Card)`
   display: inline-block;
   margin: 10px;
   width: calc(100% - 20px);
-  @media screen and (min-width: 768px) and (max-width: 1399px) {
+  @media screen and (min-width: 768px) and (max-width: 1199px) {
     width: calc(50% - 20px);
   }
-  @media (min-width: 1400px) {
+  @media (min-width: 1200px) {
     width: calc(33% - 20px);
   }
   img {
@@ -26,6 +55,14 @@ const CategoryContainer = styled(Card)`
 const PostCategoryList = () => {
   const params = useParams();
   const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
+  const categoryNum = useMemo(() => {
+    let returnValue = 0;
+    categoryData.map((data) => {
+      returnValue += data.subfield.length;
+    });
+    return returnValue;
+  }, [categoryData]);
+
   useEffect(() => {
     if (!params.userID) throw console.log("no params");
     getUserUID(params.userID).then((uid) => {
@@ -39,22 +76,23 @@ const PostCategoryList = () => {
   };
 
   return (
-    <div className="PostCategoryList">
-      <Stack direction="horizontal" gap={1}>
-        <h2>{"title"}</h2>
-        <span>{0}</span>
-      </Stack>
+    <MainContainer className="PostCategoryList">
+      <HeaderBox>
+        <Stack direction="horizontal" gap={1}>
+          <h2>{"Categories"}</h2>
+          <span className="text-primary">({categoryData.length})</span>
+        </Stack>
+      </HeaderBox>
       <Col sm>
         {categoryData.map((data, id) => {
-          console.log(data);
           return (
-            <>
-              <CategoryContainer key={id}>
-                <Card.Img src={data.thumbnailLink} onError={onError} alt="Thumbnail" />
-                <Card.Body>
-                  <Card.Title>{data.mainfield}</Card.Title>
-                </Card.Body>
-              </CategoryContainer>
+            <CategorySection>
+              <HeaderBox>
+                <Stack direction="horizontal" gap={1}>
+                  <h3>{data.mainfield}</h3>
+                  <span className="text-secondary">({data.subfield.length})</span>
+                </Stack>
+              </HeaderBox>
               <>
                 {data.subfield.map((subData, index) => {
                   return (
@@ -65,17 +103,17 @@ const PostCategoryList = () => {
                         alt="Thumbnail"
                       />
                       <Card.Body>
-                        <Card.Title>{`${data.mainfield} - ${subData}`}</Card.Title>
+                        <Card.Title>{`${subData}`}</Card.Title>
                       </Card.Body>
                     </CategoryContainer>
                   );
                 })}
               </>
-            </>
+            </CategorySection>
           );
         })}
       </Col>
-    </div>
+    </MainContainer>
   );
 };
 
