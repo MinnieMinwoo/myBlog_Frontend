@@ -70,7 +70,9 @@ export const getUserUID = async (nickname: string): Promise<string> => {
 export const getUserNickname = async (uid: string): Promise<string> => {
   const userDocRef = doc(dbService, "users", uid);
   try {
+    console.log(userDocRef);
     const userDocData = (await getDoc(userDocRef)).data() as DocData;
+    console.log(userDocData);
     return userDocData?.nickname ?? "";
   } catch (error) {
     throw error;

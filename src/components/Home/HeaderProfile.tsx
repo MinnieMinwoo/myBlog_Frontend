@@ -14,7 +14,7 @@ const ProfileBox = styled.div`
   display: inline-block;
 `;
 
-const ProfileButton = styled.div<{ url: string | null }>`
+const ProfileButton = styled.button<{ url: string | null }>`
   width: 50px;
   height: 50px;
   border-radius: 50%;

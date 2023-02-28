@@ -1,7 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import CategorySideContent from "./CategorySideContent";
 import styled from "styled-components";
+
+import { getUserUID } from "../../logic/getSetUserInfo";
+import { getCategoryData } from "../../logic/getSetCategoryInfo";
 
 const AsideTab = styled.aside`
   padding-left: 30px;
@@ -19,36 +22,31 @@ const Title = styled(Link)`
   text-decoration: none;
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
 const CategorySideBar = () => {
-  let categoryData = [
-    {
-      title: "This is Dummy Data",
-    },
-    {
-      title: "Program",
-      content: ["HTML", "CSS", "JavaScript", "TypeScript", "Python"],
-    },
-    {
-      title: "Frontend",
-      content: ["React", "FireBase", "GraphQL", "Recoil"],
-    },
-    {
-      title: "Backend",
-      content: ["Node.js", "MySQL", "express.js", "GraphQL"],
-    },
-    {
-      title: "Life",
-    },
-  ];
+  const [categoryList, setCategoryList] = useState<CategoryData[]>([]);
+  const params = useParams();
+
+  useEffect(() => {
+    if (!params.userID) throw console.log("no params");
+    getUserUID(params.userID)
+      .then((uid) => {
+        return getCategoryData(uid);
+      })
+      .then((data) => {
+        setCategoryList(data);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <AsideTab className="CategorySideBar">
       <nav className="category_navigation">
         <Title as="p">All Categories</Title>
-        {categoryData.map((element, id) => (
+        {categoryList.map((element, id) => (
           <CategorySideContent key={id} data={element} />
         ))}
       </nav>

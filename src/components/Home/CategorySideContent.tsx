@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const CategoryContent = styled.div``;
@@ -9,18 +9,25 @@ const RouteContent = styled(Link)`
   font-size: 15px;
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
 const Title = styled(RouteContent)`
   color: #555;
   margin: 5px 0;
+  &:hover {
+    color: #555;
+  }
 `;
 
 const DetailData = styled(RouteContent)`
   color: #777;
   padding: 3px 0;
   margin: 0;
+  &:hover {
+    color: #777;
+  }
 `;
 
 const ListBox = styled.ul`
@@ -36,19 +43,24 @@ const ListData = styled.li`
 
 interface Props {
   data: {
-    title: string;
-    content?: string[];
+    mainfield: string;
+    subfield?: string[];
   };
 }
+
 const CategorySideContent = ({ data }: Props) => {
+  const params = useParams();
+
   return (
     <CategoryContent className="CategorySideContent">
-      <Title as="p">{data.title}</Title>
-      {data.content && (
+      <Title as="p">{data.mainfield}</Title>
+      {data.subfield && (
         <ListBox>
-          {data.content.map((content, id) => (
+          {data.subfield.map((content, id) => (
             <ListData key={id}>
-              <DetailData as="p">{content}</DetailData>
+              <DetailData to={`/home/${params.userID}/category/${data.mainfield}/${content}`}>
+                {content}
+              </DetailData>
             </ListData>
           ))}
         </ListBox>

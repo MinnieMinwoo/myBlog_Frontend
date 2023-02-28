@@ -39,6 +39,13 @@ interface UserData {
   accessToken?: string;
 }
 
+interface CategoryData {
+  mainfield: string;
+  subfield: string[];
+  thumbnailLink: string;
+  subThumbnailLink: string[];
+}
+
 type BootStrapColor =
   | "primary"
   | "secondary"

@@ -3,13 +3,16 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import HomeProfile from "./HeaderProfile";
 import { MemoryRouter } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 
 const onLogout = jest.fn();
 
 const initialize = () => {
   return render(
     <MemoryRouter>
-      <HomeProfile />
+      <RecoilRoot>
+        <HomeProfile />
+      </RecoilRoot>
     </MemoryRouter>
   );
 };
@@ -23,8 +26,8 @@ describe("Header Profile Test", () => {
     initialize();
     const button = screen.getByRole("button");
     fireEvent.click(button);
-    expect(screen.getByText("글쓰기")).toBeInTheDocument();
-    expect(screen.getByText("설정")).toBeInTheDocument();
-    expect(screen.getByText("로그아웃")).toBeInTheDocument();
+    expect(screen.getByText("Post")).toBeInTheDocument();
+    expect(screen.getByText("Setting")).toBeInTheDocument();
+    expect(screen.getByText("Sign Out")).toBeInTheDocument();
   });
 });

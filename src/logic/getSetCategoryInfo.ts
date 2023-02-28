@@ -1,12 +1,6 @@
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "./firebase";
 
-interface CategoryData {
-  mainfield: string;
-  subfield: string[];
-  thumbnailLink: string;
-}
-
 export const getCategoryData = async (uid: string) => {
   const categoryRef = doc(dbService, `users/${uid}/category`, uid);
   try {
@@ -21,10 +15,10 @@ export const getCategoryData = async (uid: string) => {
           mainfield: category,
           subfield: subCategory?.subfield ?? [],
           thumbnailLink: subCategory?.thumbnailLink ?? "",
+          subThumbnailLink: subCategory?.subThumbnailLink ?? [],
         });
       })
     );
-    console.log(categoryData);
     return categoryData;
   } catch (error) {
     console.log(error);
