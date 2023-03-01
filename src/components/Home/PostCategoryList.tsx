@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Card, Col, Stack } from "react-bootstrap";
+import { Card, Col, Stack, Button } from "react-bootstrap";
 import styled from "styled-components";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
@@ -29,6 +29,10 @@ const HeaderBox = styled.div`
   span {
     font-size: 18px;
   }
+
+  button {
+    width: 100px;
+  }
 `;
 
 const CategorySection = styled.section`
@@ -53,15 +57,9 @@ const CategoryContainer = styled(Card)`
 `;
 
 const PostCategoryList = () => {
+  const [isEdit, setIsEdit] = useState(false);
   const params = useParams();
   const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
-  const categoryNum = useMemo(() => {
-    let returnValue = 0;
-    categoryData.map((data) => {
-      returnValue += data.subfield.length;
-    });
-    return returnValue;
-  }, [categoryData]);
 
   useEffect(() => {
     if (!params.userID) throw console.log("no params");
@@ -71,8 +69,12 @@ const PostCategoryList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = altImage;
+  const onEdit = () => {
+    setIsEdit((prev) => !prev);
+  };
+
+  const onError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    event.currentTarget.src = altImage;
   };
 
   return (
@@ -81,29 +83,44 @@ const PostCategoryList = () => {
         <Stack direction="horizontal" gap={1}>
           <h2>{"Categories"}</h2>
           <span className="text-primary">({categoryData.length})</span>
+          <Button className="ms-auto" onClick={onEdit}>
+            {isEdit ? "Complete" : "Edit"}
+          </Button>
         </Stack>
       </HeaderBox>
       <Col sm>
         {categoryData.map((data, id) => {
           return (
-            <CategorySection>
+            <CategorySection key={id}>
               <HeaderBox>
                 <Stack direction="horizontal" gap={1}>
-                  <h3>{data.mainfield}</h3>
-                  <span className="text-secondary">({data.subfield.length})</span>
+                  <h3>{data.mainField}</h3>
+                  <span className="text-secondary">({data.subField.length})</span>
+                  {isEdit ? (
+                    <>
+                      <Button variant="outline-primary" className="ms-auto">
+                        Add
+                      </Button>
+                      <Button variant="outline-danger">Delete</Button>
+                    </>
+                  ) : null}
                 </Stack>
               </HeaderBox>
               <>
-                {data.subfield.map((subData, index) => {
+                {data.subField.map((subData, index) => {
                   return (
                     <CategoryContainer key={index}>
-                      <Card.Img
-                        src={data.subThumbnailLink[index]}
-                        onError={onError}
-                        alt="Thumbnail"
-                      />
+                      <Card.Img src={data.thumbnailLink[index]} onError={onError} alt="Thumbnail" />
                       <Card.Body>
                         <Card.Title>{`${subData}`}</Card.Title>
+                        <Stack direction="horizontal">
+                          <Button variant="outline-secondary" hidden={!isEdit}>
+                            ✎
+                          </Button>
+                          <Button variant="outline-warning" className="ms-auto" hidden={!isEdit}>
+                            🗑️
+                          </Button>
+                        </Stack>
                       </Card.Body>
                     </CategoryContainer>
                   );

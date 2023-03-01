@@ -43,8 +43,8 @@ const ListData = styled.li`
 
 interface Props {
   data: {
-    mainfield: string;
-    subfield?: string[];
+    mainField: string;
+    subField?: string[];
   };
 }
 
@@ -53,12 +53,12 @@ const CategorySideContent = ({ data }: Props) => {
 
   return (
     <CategoryContent className="CategorySideContent">
-      <Title as="p">{data.mainfield}</Title>
-      {data.subfield && (
+      <Title as="p">{data.mainField}</Title>
+      {data.subField && (
         <ListBox>
-          {data.subfield.map((content, id) => (
+          {data.subField.map((content, id) => (
             <ListData key={id}>
-              <DetailData to={`/home/${params.userID}/category/${data.mainfield}/${content}`}>
+              <DetailData to={`/home/${params.userID}/category/${data.mainField}/${content}`}>
                 {content}
               </DetailData>
             </ListData>

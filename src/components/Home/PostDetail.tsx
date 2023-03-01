@@ -160,7 +160,7 @@ const PostDetail = () => {
     await deletePost(params.docID);
     postData?.thumbnailImageURL && deleteImg(postData.thumbnailImageURL);
     postData?.imageList &&
-      postData.imageList.map((data) => {
+      postData.imageList.forEach((data) => {
         deleteImg(data);
       });
     closeModal();

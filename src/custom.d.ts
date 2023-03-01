@@ -40,10 +40,9 @@ interface UserData {
 }
 
 interface CategoryData {
-  mainfield: string;
-  subfield: string[];
-  thumbnailLink: string;
-  subThumbnailLink: string[];
+  mainField: string;
+  subField: string[];
+  thumbnailLink: string[];
 }
 
 type BootStrapColor =

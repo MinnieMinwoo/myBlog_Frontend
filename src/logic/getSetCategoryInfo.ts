@@ -12,10 +12,9 @@ export const getCategoryData = async (uid: string) => {
         const subCategoryRef = doc(dbService, `users/${uid}/category`, category);
         const subCategory = (await getDoc(subCategoryRef)).data();
         categoryData.push({
-          mainfield: category,
-          subfield: subCategory?.subfield ?? [],
-          thumbnailLink: subCategory?.thumbnailLink ?? "",
-          subThumbnailLink: subCategory?.subThumbnailLink ?? [],
+          mainField: category,
+          subField: subCategory?.subfield ?? [],
+          thumbnailLink: subCategory?.thumbnailLink ?? [],
         });
       })
     );
