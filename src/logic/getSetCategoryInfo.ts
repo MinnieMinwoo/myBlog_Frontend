@@ -40,3 +40,20 @@ export const setMainCategoryData = async (name: string, uid: string) => {
     throw error;
   }
 };
+
+/** Add Sub Category Data*/
+export const setSubCategoryData = async (mainCategory: CategoryData, name: string, uid: string) => {
+  const copyCategory = mainCategory;
+  copyCategory.subField.push(name);
+  copyCategory.thumbnailLink.push("");
+  try {
+    const subCategoryRef = doc(dbService, `users/${uid}/category`, `${copyCategory.mainField}`);
+    await setDoc(subCategoryRef, {
+      subfield: copyCategory.subField,
+      thumbnailLink: copyCategory.thumbnailLink,
+    });
+    return copyCategory;
+  } catch (error) {
+    throw error;
+  }
+};

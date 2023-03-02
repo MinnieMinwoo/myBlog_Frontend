@@ -6,7 +6,11 @@ import { Card, Col, Stack, Button, Form } from "react-bootstrap";
 import styled from "styled-components";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
-import { getCategoryData, setMainCategoryData } from "../../logic/getSetCategoryInfo";
+import {
+  getCategoryData,
+  setMainCategoryData,
+  setSubCategoryData,
+} from "../../logic/getSetCategoryInfo";
 import { useModal } from "../../states/ModalState";
 
 import altImage from "../../assets/images/altThumbnail.jpg";
@@ -100,6 +104,7 @@ const PostCategoryList = () => {
     );
   };
 
+  //코드 정리 필요!
   const onAddMainCategory = () => {
     openModal(
       "Add category",
@@ -107,23 +112,55 @@ const PostCategoryList = () => {
       async () => {
         if (!categoryRef.current?.value || !userData.uid) return;
         const category = categoryRef.current?.value;
-        await setMainCategoryData(category, userData.uid);
-        setCategoryData((prev) => [
-          ...prev,
-          {
-            mainField: category,
-            subField: [],
-            thumbnailLink: [],
-          },
-        ]);
-        await getCategoryData(userData.uid);
+        for (const data of categoryData) {
+          //error handling
+          if (data.mainField.indexOf(category) === -1) return;
+        }
+        try {
+          await setMainCategoryData(category, userData.uid);
+          setCategoryData((prev) => [
+            ...prev,
+            {
+              mainField: category,
+              subField: [],
+              thumbnailLink: [],
+            },
+          ]);
+        } catch (error) {
+          console.log(error);
+        }
       },
       true
     );
   };
 
-  const onAddSubCategory = () => {
-    openModal("Add category", inputForm(), () => {}, true);
+  const onAddSubCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (!(event.target as HTMLButtonElement).id) return;
+    const targetId = (event.target as HTMLButtonElement).id;
+    const targetCategory = categoryData[Number(targetId[0])];
+    openModal(
+      "Add category",
+      inputForm(),
+      async () => {
+        if (!categoryRef.current?.value || !userData.uid) return;
+        const subCategory = categoryRef.current?.value;
+        //error handling
+        if (targetCategory.subField.indexOf(subCategory) !== -1) return;
+        try {
+          const changedCategory = await setSubCategoryData(
+            targetCategory,
+            subCategory,
+            userData.uid
+          );
+          let copyArray = [...categoryData];
+          copyArray[Number(targetId[0])] = changedCategory;
+          setCategoryData(copyArray);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      true
+    );
   };
 
   const onEditMainCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
