@@ -7,6 +7,8 @@ import styled from "styled-components";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
 import {
+  deleteMainCategoryData,
+  deleteSubCategoryData,
   getCategoryData,
   setMainCategoryData,
   setSubCategoryData,
@@ -104,89 +106,127 @@ const PostCategoryList = () => {
     );
   };
 
-  //코드 정리 필요!
-  const onAddMainCategory = () => {
-    openModal(
-      "Add category",
-      inputForm(),
-      async () => {
-        if (!categoryRef.current?.value || !userData.uid) return;
-        const category = categoryRef.current?.value;
-        for (const data of categoryData) {
-          //error handling
-          if (data.mainField.indexOf(category) === -1) return;
-        }
-        try {
-          await setMainCategoryData(category, userData.uid);
+  const setCategoryChange = async (name: string, mainID: number = -1, subID: number = -1) => {
+    const targetCategory = categoryRef.current?.value ?? "";
+    const uid = userData.uid;
+    let copyArray = [...categoryData];
+
+    // handle exception
+    if (!uid || (!name.includes("Main") && !name.includes("Sub"))) return;
+    if (name.includes("add") || name.includes("edit")) {
+      if (!targetCategory) return;
+      if (name.includes("sub") && mainID === -1) return;
+      for (const category of categoryData) {
+        if (name.includes("Main") && category.mainField === name) return;
+        else if (category.subField.includes(name)) return;
+      }
+    } else if (name.includes("delete")) {
+      if (mainID === -1) return;
+      else if (name.includes("Sub") && subID === -1) return;
+    }
+
+    try {
+      switch (name) {
+        case "addMainCategory":
+          await setMainCategoryData(targetCategory, uid);
           setCategoryData((prev) => [
             ...prev,
             {
-              mainField: category,
+              mainField: targetCategory,
               subField: [],
               thumbnailLink: [],
             },
           ]);
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      true
-    );
-  };
-
-  const onAddSubCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (!(event.target as HTMLButtonElement).id) return;
-    const targetId = (event.target as HTMLButtonElement).id;
-    const targetCategory = categoryData[Number(targetId[0])];
-    openModal(
-      "Add category",
-      inputForm(),
-      async () => {
-        if (!categoryRef.current?.value || !userData.uid) return;
-        const subCategory = categoryRef.current?.value;
-        //error handling
-        if (targetCategory.subField.indexOf(subCategory) !== -1) return;
-        try {
+          break;
+        case "addSubCategory":
           const changedCategory = await setSubCategoryData(
+            categoryData[mainID],
             targetCategory,
-            subCategory,
-            userData.uid
+            uid
           );
-          let copyArray = [...categoryData];
-          copyArray[Number(targetId[0])] = changedCategory;
+          copyArray[mainID] = changedCategory;
           setCategoryData(copyArray);
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      true
-    );
+          break;
+        case "editMainCategory":
+          break;
+        case "editSubCategory":
+          break;
+        case "deleteMainCategory":
+          await deleteMainCategoryData(categoryData[mainID].mainField, uid);
+          setCategoryData((prev) =>
+            prev.filter((category) => {
+              return category.mainField !== categoryData[mainID].mainField;
+            })
+          );
+          break;
+        case "deleteSubCategory":
+          const deletedCategory = await deleteSubCategoryData(
+            categoryData[mainID],
+            categoryData[mainID].subField[subID],
+            uid
+          );
+          copyArray[mainID] = deletedCategory;
+          setCategoryData(copyArray);
+          break;
+        default:
+          return;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const onEditMainCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (!(event.target as HTMLButtonElement).id) return;
-    const targetId = (event.target as HTMLButtonElement).id;
-    const mainCategory = categoryData[Number(targetId[0])].mainField;
-    openModal("Edit category", inputForm(mainCategory), () => {}, true);
-  };
+  const onCategoryModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const buttonTarget = event.target as HTMLButtonElement;
+    const targetId = buttonTarget.id.split(",").map((index) => Number(index)) ?? [];
+    let modalTitle = "";
+    let modalContent: string | JSX.Element;
+    let isDelete = false;
+    let callBack = () => {};
 
-  const onEditSubCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (!(event.target as HTMLButtonElement).id) return;
-    const targetId = (event.target as HTMLButtonElement).id.split(",");
-    const subCategory = categoryData[Number(targetId[0])].subField[Number(targetId[1])];
-    openModal("Edit category", inputForm(subCategory), () => {}, true);
-  };
-
-  const onMainCategoryDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (!(event.target as HTMLButtonElement).id) return;
-    const targetId = (event.target as HTMLButtonElement).id;
-    openModal("Warning", "If you really want to delete?", () => {}, true, "danger");
-  };
-
-  const onSubCategoryDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (!(event.target as HTMLButtonElement).id) return;
-    const targetId = (event.target as HTMLButtonElement).id;
-    openModal("Warning", "If you really want to delete?", () => {}, true, "danger");
+    switch (buttonTarget.name) {
+      case "addMainCategory":
+        modalTitle = "Add category";
+        modalContent = inputForm();
+        callBack = () => {
+          setCategoryChange("addMainCategory");
+        };
+        break;
+      case "addSubCategory":
+        modalTitle = "Add sub category";
+        modalContent = inputForm();
+        callBack = () => {
+          setCategoryChange("addSubCategory", targetId[0]);
+        };
+        break;
+      case "editMainCategory":
+        modalTitle = "Edit category";
+        modalContent = inputForm();
+        break;
+      case "editSubCategory":
+        modalTitle = "Edit sub category";
+        modalContent = inputForm();
+        break;
+      case "deleteMainCategory":
+        modalTitle = "Warning";
+        modalContent = "If you really want to delete this category?";
+        callBack = () => {
+          setCategoryChange("deleteMainCategory", targetId[0]);
+        };
+        isDelete = true;
+        break;
+      case "deleteSubCategory":
+        modalTitle = "Warning";
+        modalContent = "If you really want to delete this sub category?";
+        callBack = () => {
+          setCategoryChange("deleteSubCategory", targetId[0], targetId[1]);
+        };
+        isDelete = true;
+        break;
+      default:
+        return;
+    }
+    openModal(modalTitle, modalContent, callBack, true, isDelete ? "danger" : "primary");
   };
 
   return (
@@ -197,7 +237,12 @@ const PostCategoryList = () => {
           <h2>{"Categories"}</h2>
           <span className="text-primary">({categoryData.length})</span>
           {isEdit ? (
-            <Button className="ms-auto" variant="outline-primary" onClick={onAddMainCategory}>
+            <Button
+              name="addMainCategory"
+              className="ms-auto"
+              variant="outline-primary"
+              onClick={onCategoryModal}
+            >
               Add
             </Button>
           ) : null}
@@ -218,20 +263,27 @@ const PostCategoryList = () => {
                     <>
                       <Button
                         id={`${id},1`}
+                        name="addSubCategory"
                         variant="outline-primary"
                         className="ms-auto"
-                        onClick={onAddSubCategory}
+                        onClick={onCategoryModal}
                       >
                         Add
                       </Button>
                       <Button
                         id={`${id},2`}
+                        name="editMainCategory"
                         variant="outline-secondary"
-                        onClick={onEditMainCategory}
+                        onClick={onCategoryModal}
                       >
                         Edit
                       </Button>
-                      <Button id={`${id},3`} variant="danger" onClick={onMainCategoryDelete}>
+                      <Button
+                        id={`${id},3`}
+                        name="deleteMainCategory"
+                        variant="danger"
+                        onClick={onCategoryModal}
+                      >
                         Delete
                       </Button>
                     </>
@@ -248,16 +300,18 @@ const PostCategoryList = () => {
                         <Stack direction="horizontal" hidden={!isEdit}>
                           <Button
                             id={`${id},${index},1`}
+                            name="editSubCategory"
                             variant="outline-secondary"
-                            onClick={onEditSubCategory}
+                            onClick={onCategoryModal}
                           >
                             ✎
                           </Button>
                           <Button
                             id={`${id},${index},2`}
+                            name="deleteSubCategory"
                             variant="outline-danger"
                             className="ms-auto"
-                            onClick={onSubCategoryDelete}
+                            onClick={onCategoryModal}
                           >
                             🗑️
                           </Button>

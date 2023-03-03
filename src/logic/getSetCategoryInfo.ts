@@ -1,4 +1,12 @@
-import { arrayUnion, doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
+  deleteDoc,
+  arrayRemove,
+} from "firebase/firestore";
 import { dbService } from "./firebase";
 
 /** Get Category Data by user uid*/
@@ -53,6 +61,47 @@ export const setSubCategoryData = async (mainCategory: CategoryData, name: strin
       thumbnailLink: copyCategory.thumbnailLink,
     });
     return copyCategory;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/** Delete Main Category Data*/
+export const deleteMainCategoryData = async (name: string, uid: string) => {
+  try {
+    const categoryRef = doc(dbService, `users/${uid}/category`, `${uid}`);
+    const subCategoryRef = doc(dbService, `users/${uid}/category`, `${name}`);
+    await updateDoc(categoryRef, { order: arrayRemove(name) });
+    await deleteDoc(subCategoryRef);
+  } catch (error) {
+    throw error;
+  }
+};
+
+/** Delete Sub Category Data*/
+export const deleteSubCategoryData = async (
+  mainCategory: CategoryData,
+  name: string,
+  uid: string
+) => {
+  const editCateGory: CategoryData = {
+    mainField: mainCategory.mainField,
+    subField: [],
+    thumbnailLink: [],
+  };
+  mainCategory.subField.forEach((element, index) => {
+    if (element !== name) {
+      editCateGory.subField.push(element);
+      editCateGory.thumbnailLink.push(mainCategory.thumbnailLink[index]);
+    }
+  });
+  try {
+    const subCategoryRef = doc(dbService, `users/${uid}/category`, `${editCateGory.mainField}`);
+    await setDoc(subCategoryRef, {
+      subfield: editCateGory.subField,
+      thumbnailLink: editCateGory.thumbnailLink,
+    });
+    return editCateGory;
   } catch (error) {
     throw error;
   }
