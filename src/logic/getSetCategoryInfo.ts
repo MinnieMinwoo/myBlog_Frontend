@@ -143,12 +143,13 @@ export const editSubCategoryData = async (
   newName: string,
   uid: string
 ) => {
-  const { mainField, subField } = mainCategory;
+  const { mainField, subField, thumbnailLink } = mainCategory;
   const newSubField = subField.map((element) => (element === existName ? newName : element));
   try {
     const subCategoryRef = doc(dbService, `users/${uid}/category`, `${mainField}`);
     await setDoc(subCategoryRef, {
       subfield: newSubField,
+      thumbnailLink: thumbnailLink,
     });
     return newSubField;
   } catch (error) {
