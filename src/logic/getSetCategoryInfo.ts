@@ -106,3 +106,52 @@ export const deleteSubCategoryData = async (
     throw error;
   }
 };
+
+/** Edit Main Category Data
+ * Delete exist categoryData and add new categoryData because firestore does not support rename doc
+ */
+export const editMainCategoryData = async (
+  categoryList: string[],
+  mainCategory: CategoryData,
+  name: string,
+  uid: string
+) => {
+  const { mainField, subField, thumbnailLink } = mainCategory;
+  try {
+    await deleteMainCategoryData(mainField, uid);
+    const categoryRef = doc(dbService, `users/${uid}/category`, `${uid}`);
+    const subCategoryRef = doc(dbService, `users/${uid}/category`, `${name}`);
+    await updateDoc(categoryRef, { order: categoryList });
+    await setDoc(subCategoryRef, {
+      subfield: mainCategory.subField,
+      thumbnailLink: mainCategory.thumbnailLink,
+    });
+    return {
+      mainField: name,
+      subField: subField,
+      thumbnailLink: thumbnailLink,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+/** Edit Sub Category Data */
+export const editSubCategoryData = async (
+  mainCategory: CategoryData,
+  existName: string,
+  newName: string,
+  uid: string
+) => {
+  const { mainField, subField } = mainCategory;
+  const newSubField = subField.map((element) => (element === existName ? newName : element));
+  try {
+    const subCategoryRef = doc(dbService, `users/${uid}/category`, `${mainField}`);
+    await setDoc(subCategoryRef, {
+      subfield: newSubField,
+    });
+    return newSubField;
+  } catch (error) {
+    throw error;
+  }
+};

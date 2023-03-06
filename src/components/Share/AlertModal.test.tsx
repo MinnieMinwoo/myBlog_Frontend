@@ -52,8 +52,7 @@ describe("Alert modal test", () => {
 
   // reset modal
   beforeEach(() => {
-    // 적절한 타입?
-    window.location = new URL("http://localhost/") as any;
+    window.location.reload();
   });
 
   it("Alert modal open test", () => {
