@@ -89,8 +89,6 @@ interface Props {
   postContent: postEditData;
   setPostContent: React.Dispatch<React.SetStateAction<postEditData>>;
   onPreview: () => void;
-  categoryValue: string;
-  setCategoryValue: React.Dispatch<React.SetStateAction<string>>;
   onSubmit: () => void;
 }
 
@@ -100,13 +98,12 @@ const Preview = ({
   postContent,
   setPostContent,
   onPreview,
-  categoryValue,
-  setCategoryValue,
   onSubmit,
 }: Props) => {
   const imgRef = useRef<HTMLInputElement | null>(null);
   const userData = useRecoilValue(loginData);
   const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
+  const [categoryIndex, setCategoryIndex] = useState("");
   const [firstOpen, setFirstOpen] = useState(false);
   const { openToast } = useToast();
 
@@ -162,7 +159,12 @@ const Preview = ({
     const {
       target: { value },
     } = event;
-    setCategoryValue(value);
+    setCategoryIndex(value);
+    const index = value.split(",").map(Number);
+    setPostContent((prev) => ({
+      ...prev,
+      category: [categoryData[index[0]].mainField, categoryData[index[0]].subField[index[1]]] ?? [],
+    }));
   };
 
   return (
@@ -208,7 +210,7 @@ const Preview = ({
       <RightContainer xs={0} md={5} xxl={4}>
         <Stack gap={1}>
           <h4>Category Setting</h4>
-          <Form.Select value={categoryValue} onChange={onCategoryChange}>
+          <Form.Select value={categoryIndex} onChange={onCategoryChange}>
             <option value={""}>None</option>
             {categoryData &&
               categoryData.map((category, id) => {

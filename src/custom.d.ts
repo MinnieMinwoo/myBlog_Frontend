@@ -8,6 +8,7 @@ interface PostData {
   id: string;
   createdAt: number;
   createdBy: string;
+  category?: string[];
   tag: string;
   thumbnailData: string;
   thumbnailImageURL: string;
@@ -23,6 +24,7 @@ interface PostDetail extends PostData {
 
 interface postEditData {
   title: string;
+  category: string[];
   postData: string;
   thumbnailImgLink: string;
   thumbnailData: string;

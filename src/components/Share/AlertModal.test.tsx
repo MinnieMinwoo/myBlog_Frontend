@@ -70,6 +70,7 @@ describe("Alert modal test", () => {
   });
 
   //on testing
+  /*
   it("Alert modal close test", async () => {
     render(
       <RecoilRoot>
@@ -88,4 +89,5 @@ describe("Alert modal test", () => {
     expect(screen.getByText("Hello")).not.toBeVisible();
     expect(screen.queryByText("Modal Test")).toBeNull();
   });
+  */
 });

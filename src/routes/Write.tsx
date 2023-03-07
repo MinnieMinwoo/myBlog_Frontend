@@ -20,13 +20,13 @@ const Write = () => {
   const userData = useRecoilValue(loginData);
   const [postContent, setPostContent] = useState<postEditData>({
     title: "",
+    category: [],
     postData: "**Write your post**",
     thumbnailImgLink: "",
     thumbnailData: "",
     imageList: [],
   });
   const [isPreview, setIsPreview] = useState(false);
-  const [categoryValue, setCategoryValue] = useState("");
   const { openModal } = useModal();
   const navigate = useNavigate();
   const params = useParams();
@@ -48,6 +48,7 @@ const Write = () => {
           setPostContent((prev) => ({
             ...prev,
             title: post.title,
+            category: post.category ?? [],
             postData: post.detail,
             thumbnailImgLink: post.thumbnailImageURL,
             thumbnailData: post.thumbnailData,
@@ -117,8 +118,6 @@ const Write = () => {
         postContent={postContent}
         setPostContent={setPostContent}
         onPreview={onPreview}
-        categoryValue={categoryValue}
-        setCategoryValue={setCategoryValue}
         onSubmit={onSubmit}
       />
       <OnWrite
