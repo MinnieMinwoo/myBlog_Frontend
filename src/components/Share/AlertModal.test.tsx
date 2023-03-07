@@ -1,8 +1,10 @@
 import React from "react";
-import { screen, render, fireEvent } from "@testing-library/react";
+import { screen, render, fireEvent, cleanup, prettyDOM } from "@testing-library/react";
 import { useModal } from "../../states/ModalState";
 import AlertModal from "./AlertModal";
 import { RecoilRoot } from "recoil";
+import { act } from "react-dom/test-utils";
+import userEvent from "@testing-library/user-event";
 
 interface props {
   title: string;
@@ -51,8 +53,8 @@ describe("Alert modal test", () => {
   };
 
   // reset modal
-  beforeEach(() => {
-    window.location.reload();
+  afterEach(() => {
+    cleanup();
   });
 
   it("Alert modal open test", () => {
@@ -65,5 +67,25 @@ describe("Alert modal test", () => {
     expect(screen.getByText("Hello")).toBeInTheDocument();
     expect(screen.getByText("Modal Test")).toBeInTheDocument();
     modalClose();
+  });
+
+  //on testing
+  it("Alert modal close test", async () => {
+    render(
+      <RecoilRoot>
+        <DummyComponent title="Hello" content="Modal Test" />
+      </RecoilRoot>
+    );
+    modalOpen();
+    const topButton = screen.getByText("Close");
+    console.log(prettyDOM(topButton));
+    expect(topButton).toBeInTheDocument();
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act(async () => {
+      userEvent.click(topButton);
+    });
+    modalClose();
+    expect(screen.getByText("Hello")).not.toBeVisible();
+    expect(screen.queryByText("Modal Test")).toBeNull();
   });
 });

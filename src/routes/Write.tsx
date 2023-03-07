@@ -26,6 +26,7 @@ const Write = () => {
     imageList: [],
   });
   const [isPreview, setIsPreview] = useState(false);
+  const [categoryValue, setCategoryValue] = useState("");
   const { openModal } = useModal();
   const navigate = useNavigate();
   const params = useParams();
@@ -116,6 +117,8 @@ const Write = () => {
         postContent={postContent}
         setPostContent={setPostContent}
         onPreview={onPreview}
+        categoryValue={categoryValue}
+        setCategoryValue={setCategoryValue}
         onSubmit={onSubmit}
       />
       <OnWrite

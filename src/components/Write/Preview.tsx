@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Stack, Col, Image, Button, Form, InputGroup } from "react-bootstrap";
+import { useRecoilValue } from "recoil";
+import { loginData } from "../../states/LoginState";
 import styled from "styled-components";
 import { uuidv4 } from "@firebase/util";
 
@@ -7,6 +9,7 @@ import { useToast } from "../../states/ToastState";
 
 import altImage from "../../assets/images/altThumbnail.jpg";
 import { deleteImg, uploadImg } from "../../logic/getSetImage";
+import { getCategoryData } from "../../logic/getSetCategoryInfo";
 
 const PreviewContainer = styled.div`
   display: flex;
@@ -86,6 +89,8 @@ interface Props {
   postContent: postEditData;
   setPostContent: React.Dispatch<React.SetStateAction<postEditData>>;
   onPreview: () => void;
+  categoryValue: string;
+  setCategoryValue: React.Dispatch<React.SetStateAction<string>>;
   onSubmit: () => void;
 }
 
@@ -95,11 +100,19 @@ const Preview = ({
   postContent,
   setPostContent,
   onPreview,
+  categoryValue,
+  setCategoryValue,
   onSubmit,
 }: Props) => {
   const imgRef = useRef<HTMLInputElement | null>(null);
+  const userData = useRecoilValue(loginData);
+  const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
   const [firstOpen, setFirstOpen] = useState(false);
   const { openToast } = useToast();
+
+  useEffect(() => {
+    userData.uid && getCategoryData(userData.uid).then((result) => setCategoryData(result));
+  }, [userData]);
 
   useEffect(() => {
     isPreview && setFirstOpen(true);
@@ -145,6 +158,13 @@ const Preview = ({
     }));
   };
 
+  const onCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const {
+      target: { value },
+    } = event;
+    setCategoryValue(value);
+  };
+
   return (
     <PreviewContainer className={`Preview ${isPreview ? "open" : firstOpen ? "close" : ""}`}>
       <LeftContainer md={{ span: 5, offset: 1 }} xxl={{ span: 4, offset: 2 }}>
@@ -186,6 +206,20 @@ const Preview = ({
         </Stack>
       </LeftContainer>
       <RightContainer xs={0} md={5} xxl={4}>
+        <Stack gap={1}>
+          <h4>Category Setting</h4>
+          <Form.Select value={categoryValue} onChange={onCategoryChange}>
+            <option value={""}>None</option>
+            {categoryData &&
+              categoryData.map((category, id) => {
+                return category.subField.map((subCategory, index) => (
+                  <option key={index} value={String([[id, index]])}>
+                    {`${category.mainField} - ${subCategory}`}
+                  </option>
+                ));
+              })}
+          </Form.Select>
+        </Stack>
         <ButtonContainer gap={3} direction="horizontal">
           <Button variant="outline-primary" onClick={onPreview}>
             Cancel
