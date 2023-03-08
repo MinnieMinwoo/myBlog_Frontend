@@ -6,6 +6,10 @@ import {
   setDoc,
   deleteDoc,
   arrayRemove,
+  query,
+  collection,
+  where,
+  getDocs,
 } from "firebase/firestore";
 import { dbService } from "./firebase";
 
@@ -69,6 +73,17 @@ export const setSubCategoryData = async (mainCategory: CategoryData, name: strin
 /** Delete Main Category Data*/
 export const deleteMainCategoryData = async (name: string, uid: string) => {
   try {
+    const q = query(
+      collection(dbService, `posts`),
+      where("createdBy", "==", uid),
+      where("category", "array-contains", name)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((document) => {
+      if (document.data().category[0] === name) {
+        updateDoc(doc(dbService, `posts`, document.id), { category: [] });
+      }
+    });
     const categoryRef = doc(dbService, `users/${uid}/category`, `${uid}`);
     const subCategoryRef = doc(dbService, `users/${uid}/category`, `${name}`);
     await updateDoc(categoryRef, { order: arrayRemove(name) });
@@ -96,8 +111,17 @@ export const deleteSubCategoryData = async (
     }
   });
   try {
+    const q = query(
+      collection(dbService, `posts`),
+      where("createdBy", "==", uid),
+      where("category", "==", [mainCategory.mainField, name])
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((document) => {
+      updateDoc(doc(dbService, `posts`, document.id), { category: [] });
+    });
     const subCategoryRef = doc(dbService, `users/${uid}/category`, `${editCateGory.mainField}`);
-    await setDoc(subCategoryRef, {
+    await updateDoc(subCategoryRef, {
       subfield: editCateGory.subField,
       thumbnailLink: editCateGory.thumbnailLink,
     });

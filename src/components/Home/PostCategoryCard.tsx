@@ -143,6 +143,15 @@ const PostCategoryCard = ({
           </Button>
           <Button
             id={`${id},${index},2`}
+            name="editCategoryImage"
+            variant="outline-info"
+            className="ms-auto"
+            onClick={onCategoryModal}
+          >
+            🖼️
+          </Button>
+          <Button
+            id={`${id},${index},3`}
             name="deleteSubCategory"
             variant="outline-danger"
             className="ms-auto"
