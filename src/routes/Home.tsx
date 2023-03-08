@@ -25,7 +25,7 @@ const Home = () => {
           >
             <Outlet />
           </Col>
-          <Col>{params["*"] ? null : <CategorySideBar />}</Col>
+          <Col>{params["docID"] ? null : <CategorySideBar />}</Col>
         </Row>
       </section>
       <footer className="home_footer">

@@ -30,7 +30,8 @@ const PostTitleBackground = styled.section<{ imageLink: string }>`
 `;
 
 const Category = styled.div`
-  padding-top: 160px;
+  padding-top: 140px;
+  padding-bottom: 10px;
 `;
 
 const Title = styled.h2`
@@ -181,7 +182,11 @@ const PostDetail = () => {
       <AlertToast />
       <main className="read_section" hidden={onLoading}>
         <PostTitleBackground imageLink={postData?.thumbnailImageURL ?? ""}>
-          <Category />
+          <Category>
+            {postData?.category?.length ? (
+              <span>{`${postData.category[0]} - ${postData.category[1]}`}</span>
+            ) : null}
+          </Category>
           {postData?.title ? <Title>{postData?.title}</Title> : null}
           {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
           {postData?.createdAt ? <span>{` ∙  ${getDate(postData?.createdAt)}`}</span> : null}

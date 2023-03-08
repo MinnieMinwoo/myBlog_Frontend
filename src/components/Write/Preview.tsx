@@ -108,8 +108,17 @@ const Preview = ({
   const { openToast } = useToast();
 
   useEffect(() => {
-    userData.uid && getCategoryData(userData.uid).then((result) => setCategoryData(result));
-  }, [userData]);
+    userData.uid &&
+      getCategoryData(userData.uid).then((result) => {
+        setCategoryData(result);
+        if (!postContent.category.length) return;
+        const categoryArray = postContent.category;
+        const mainFieldList = result.map((element) => element.mainField);
+        const mainIndex = mainFieldList.indexOf(categoryArray[0]);
+        const subIndex = result[mainIndex].subField.indexOf(categoryArray[1]);
+        setCategoryIndex(String([mainIndex, subIndex]));
+      });
+  }, [userData, postContent.category]);
 
   useEffect(() => {
     isPreview && setFirstOpen(true);
@@ -160,6 +169,13 @@ const Preview = ({
       target: { value },
     } = event;
     setCategoryIndex(value);
+    if (value === "") {
+      setPostContent((prev) => ({
+        ...prev,
+        category: [],
+      }));
+      return;
+    }
     const index = value.split(",").map(Number);
     setPostContent((prev) => ({
       ...prev,

@@ -65,14 +65,14 @@ export const getPostData = async (docId: string): Promise<PostDetail> => {
   }
 };
 
-export const addPost = async (postData: postEditData, userData: UserData): Promise<string> => {
+export const setPost = async (postData: postEditData, userData: UserData): Promise<string> => {
   // eslint-disable-next-line no-useless-escape
   const thumbnailObj = {
     title: postData.title,
     createdBy: userData.uid,
     createdAt: Date.now(),
     tag: "",
-    category: [],
+    category: postData.category,
     thumbnailData: postData.thumbnailData,
     thumbnailImageURL: postData.thumbnailImgLink,
   };
@@ -94,7 +94,7 @@ export const updatePost = async (id: string, postData: postEditData) => {
   const thumbnailObj = {
     title: postData.title,
     tag: "",
-    category: [],
+    category: postData.category,
     thumbnailData: postData.thumbnailData,
     thumbnailImageURL: postData.thumbnailImgLink,
   };

@@ -6,7 +6,7 @@ import { loginData } from "../states/LoginState";
 import { useModal } from "../states/ModalState";
 import { getAuth } from "firebase/auth";
 
-import { addPost, getPostData, updatePost } from "../logic/getSetPostInfo";
+import { setPost, getPostData, updatePost } from "../logic/getSetPostInfo";
 import { useOnPreventLeave } from "../logic/useOnPreventLeave";
 
 import AlertModal from "../components/Share/AlertModal";
@@ -86,7 +86,7 @@ const Write = () => {
         await updatePost(params["*"], postContent);
         postID = params["*"];
       } else {
-        postID = await addPost(postContent, userData);
+        postID = await setPost(postContent, userData);
       }
       navigate(`/home/${userData.nickname}/${postID}`);
     } catch (error) {
