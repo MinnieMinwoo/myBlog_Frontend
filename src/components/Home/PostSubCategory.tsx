@@ -136,7 +136,6 @@ const PostSubCategory = ({ isEdit, categoryData, setCategoryData }: Props) => {
         callBack = () => {
           setCategoryChange("deleteMainCategory", targetId[0]);
         };
-        isDelete = true;
         break;
       default:
         return;

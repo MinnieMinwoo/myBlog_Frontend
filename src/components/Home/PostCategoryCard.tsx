@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 import altImage from "../../assets/images/altThumbnail.jpg";
 import { editSubCategoryData, deleteSubCategoryData } from "../../logic/getSetCategoryInfo";
-import { CategoryNameForm as inputForm } from "./PostCategoryForm";
+import { CategoryImageForm, CategoryNameForm as inputForm } from "./PostCategoryForm";
 
 const CategoryContainer = styled(Card)`
   display: inline-block;
@@ -46,6 +46,7 @@ const PostCategoryCard = ({
 }: Props) => {
   const userData = useRecoilValue(loginData);
   const categoryRef = useRef<HTMLInputElement>(null);
+  const imageRef = useRef<HTMLInputElement>(null);
   const { openModal } = useModal();
 
   const onError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -102,6 +103,7 @@ const PostCategoryCard = ({
     const targetId = buttonTarget.id.split(",").map((index) => Number(index)) ?? [];
     let modalTitle = "";
     let modalContent: string | JSX.Element;
+    let isImage = false;
     let isDelete = false;
     let callBack = () => {};
 
@@ -121,10 +123,18 @@ const PostCategoryCard = ({
         };
         isDelete = true;
         break;
+      case "editCategoryImage":
+        modalTitle = "Thumbnail edit";
+        modalContent = CategoryImageForm(imgLink, imageRef);
+        callBack = () => {
+          setCategoryChange("editCategoryImage", targetId[0], targetId[1]);
+        };
+        isImage = true;
+        break;
       default:
         return;
     }
-    openModal(modalTitle, modalContent, callBack, true, isDelete ? "danger" : "primary");
+    openModal(modalTitle, modalContent, callBack, !isImage, isDelete ? "danger" : "primary");
   };
 
   return (

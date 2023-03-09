@@ -12,6 +12,8 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { dbService } from "./firebase";
+import { uuidv4 } from "@firebase/util";
+import { uploadImg } from "./getSetImage";
 
 /** Get Category Data by user uid*/
 export const getCategoryData = async (uid: string) => {
@@ -179,4 +181,9 @@ export const editSubCategoryData = async (
   } catch (error) {
     throw error;
   }
+};
+
+/** Edit Thumbnail Image Data */
+export const setCategoryThumbnail = async (file: File) => {
+  return uploadImg(file, `$category/${uuidv4()}`);
 };
