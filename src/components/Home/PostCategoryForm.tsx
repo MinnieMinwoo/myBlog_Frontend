@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Form, Button, Stack } from "react-bootstrap";
 import styled from "styled-components";
 import altImage from "../../assets/images/altThumbnail.jpg";
 
 import { setCategoryThumbnail } from "../../logic/getSetCategoryInfo";
+import { deleteImg } from "../../logic/getSetImage";
 
 export const CategoryNameForm = (
   categoryRef: React.RefObject<HTMLInputElement>,
@@ -25,23 +26,38 @@ export const CategoryNameForm = (
 
 const ThumbnailImage = styled.img`
   width: 100%;
+  aspect-ratio: 16/9;
   border-radius: 20px;
+  object-fit: cover;
+  object-position: center;
 `;
 export const CategoryImageForm = (
   imageLink: string,
-  imageRef: React.RefObject<HTMLInputElement>
+  inputRef: React.RefObject<HTMLInputElement>,
+  imageRef: React.RefObject<HTMLImageElement>
 ) => {
+  console.log(imageLink);
   const onUpload = () => {
-    imageRef.current?.click();
+    inputRef.current?.click();
   };
+
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return console.log("no image file");
-    if (imageRef.current)
-      imageRef.current.value = await setCategoryThumbnail(event.target.files[0]);
+    imageRef.current?.src && imageRef.current?.src !== altImage && deleteImg(imageRef.current.src);
+    const imageURL = await setCategoryThumbnail(event.target.files[0]);
+    imageRef.current && (imageRef.current.src = imageURL);
   };
-  const onDelete = () => {};
-  const onError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    event.currentTarget.src = altImage;
+
+  const onDelete = () => {
+    if (
+      imageRef.current?.src &&
+      imageRef.current?.src !== altImage &&
+      imageRef.current?.src !== imageLink &&
+      inputRef.current
+    ) {
+      deleteImg(imageRef.current.src);
+      imageRef.current.src = "";
+    }
   };
 
   return (
@@ -49,16 +65,16 @@ export const CategoryImageForm = (
       <Form.Label>Please upload the image.</Form.Label>
       <Stack gap={2}>
         <ThumbnailImage
-          src={imageRef.current?.value ?? imageLink}
-          onError={onError}
+          ref={imageRef}
+          src={imageRef.current?.src ?? imageLink ?? altImage}
           alt="Thumbnail"
         />
         <input
           hidden
           type="file"
           accept="image/*"
-          ref={imageRef}
-          src={imageRef.current?.value ?? imageLink}
+          ref={inputRef}
+          src={inputRef.current?.value ?? imageLink ? imageLink : altImage}
           onChange={onChange}
         />
         <Stack direction="horizontal" gap={2}>

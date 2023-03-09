@@ -169,13 +169,12 @@ export const editSubCategoryData = async (
   newName: string,
   uid: string
 ) => {
-  const { mainField, subField, thumbnailLink } = mainCategory;
+  const { mainField, subField } = mainCategory;
   const newSubField = subField.map((element) => (element === existName ? newName : element));
   try {
     const subCategoryRef = doc(dbService, `users/${uid}/category`, `${mainField}`);
-    await setDoc(subCategoryRef, {
+    await updateDoc(subCategoryRef, {
       subfield: newSubField,
-      thumbnailLink: thumbnailLink,
     });
     return newSubField;
   } catch (error) {
@@ -186,4 +185,21 @@ export const editSubCategoryData = async (
 /** Edit Thumbnail Image Data */
 export const setCategoryThumbnail = async (file: File) => {
   return uploadImg(file, `$category/${uuidv4()}`);
+};
+
+/** Update Thumbnail Image List URL */
+export const setCategoryThumbnailList = async (
+  thumbnailArray: string[],
+  mainField: string,
+  uid: string
+) => {
+  try {
+    const subCategoryRef = doc(dbService, `users/${uid}/category`, `${mainField}`);
+    await updateDoc(subCategoryRef, {
+      thumbnailLink: thumbnailArray,
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };

@@ -6,7 +6,11 @@ import { Card, Stack, Button } from "react-bootstrap";
 import styled from "styled-components";
 
 import altImage from "../../assets/images/altThumbnail.jpg";
-import { editSubCategoryData, deleteSubCategoryData } from "../../logic/getSetCategoryInfo";
+import {
+  editSubCategoryData,
+  deleteSubCategoryData,
+  setCategoryThumbnailList,
+} from "../../logic/getSetCategoryInfo";
 import { CategoryImageForm, CategoryNameForm as inputForm } from "./PostCategoryForm";
 
 const CategoryContainer = styled(Card)`
@@ -19,9 +23,14 @@ const CategoryContainer = styled(Card)`
   @media (min-width: 1200px) {
     width: calc(33% - 20px);
   }
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   img {
     width: 100%;
     aspect-ratio: 16/9;
+    object-fit: cover;
+    object-position: center;
   }
 `;
 
@@ -46,7 +55,8 @@ const PostCategoryCard = ({
 }: Props) => {
   const userData = useRecoilValue(loginData);
   const categoryRef = useRef<HTMLInputElement>(null);
-  const imageRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
   const { openModal } = useModal();
 
   const onError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -59,14 +69,13 @@ const PostCategoryCard = ({
     let copyArray = [...categoryData];
 
     // handle exception
-    if (!uid || (!name.includes("Main") && !name.includes("Sub"))) return;
-    if (name.includes("edit")) {
-      if (!targetCategory || mainID === -1) return;
+    if (!uid) return;
+    if (mainID === -1) return;
+    if (name.includes("edit") && name.includes("Sub")) {
+      if (!targetCategory) return;
       for (const category of categoryData) {
         if (category.subField.includes(name)) return;
       }
-    } else if (name.includes("delete")) {
-      if (mainID === -1) return;
     }
 
     try {
@@ -81,6 +90,15 @@ const PostCategoryCard = ({
           copyArray[mainID].subField = editedSubCategory;
           setCategoryData(copyArray);
           break;
+        case "editCategoryImage":
+          imageRef.current && (copyArray[mainID].thumbnailLink[subID] = imageRef.current?.src);
+          await setCategoryThumbnailList(
+            copyArray[mainID].thumbnailLink,
+            copyArray[mainID].mainField,
+            uid
+          );
+          setCategoryData(copyArray);
+          break;
         case "deleteSubCategory":
           const deletedCategory = await deleteSubCategoryData(
             categoryData[mainID],
@@ -90,6 +108,7 @@ const PostCategoryCard = ({
           copyArray[mainID] = deletedCategory;
           setCategoryData(copyArray);
           break;
+
         default:
           return;
       }
@@ -103,7 +122,6 @@ const PostCategoryCard = ({
     const targetId = buttonTarget.id.split(",").map((index) => Number(index)) ?? [];
     let modalTitle = "";
     let modalContent: string | JSX.Element;
-    let isImage = false;
     let isDelete = false;
     let callBack = () => {};
 
@@ -125,16 +143,15 @@ const PostCategoryCard = ({
         break;
       case "editCategoryImage":
         modalTitle = "Thumbnail edit";
-        modalContent = CategoryImageForm(imgLink, imageRef);
+        modalContent = CategoryImageForm(imgLink, inputRef, imageRef);
         callBack = () => {
           setCategoryChange("editCategoryImage", targetId[0], targetId[1]);
         };
-        isImage = true;
         break;
       default:
         return;
     }
-    openModal(modalTitle, modalContent, callBack, !isImage, isDelete ? "danger" : "primary");
+    openModal(modalTitle, modalContent, callBack, true, isDelete ? "danger" : "primary");
   };
 
   return (
