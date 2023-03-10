@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { useModal } from "../../states/ModalState";
@@ -10,8 +10,10 @@ import {
   editSubCategoryData,
   deleteSubCategoryData,
   setCategoryThumbnailList,
+  setCategoryThumbnail,
 } from "../../logic/getSetCategoryInfo";
 import { CategoryImageForm, CategoryNameForm as inputForm } from "./PostCategoryForm";
+import { deleteImg } from "../../logic/getSetImage";
 
 const CategoryContainer = styled(Card)`
   display: inline-block;
@@ -56,7 +58,8 @@ const PostCategoryCard = ({
   const userData = useRecoilValue(loginData);
   const categoryRef = useRef<HTMLInputElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
+  const thumbnailRef = useRef<HTMLImageElement>(null);
+  const imageRef = useRef("");
   const { openModal } = useModal();
 
   const onError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -91,7 +94,8 @@ const PostCategoryCard = ({
           setCategoryData(copyArray);
           break;
         case "editCategoryImage":
-          imageRef.current && (copyArray[mainID].thumbnailLink[subID] = imageRef.current?.src);
+          console.log(imageRef);
+          copyArray[mainID].thumbnailLink[subID] = imageRef.current;
           await setCategoryThumbnailList(
             copyArray[mainID].thumbnailLink,
             copyArray[mainID].mainField,
@@ -142,8 +146,21 @@ const PostCategoryCard = ({
         isDelete = true;
         break;
       case "editCategoryImage":
+        // Form 안에 넣으면, state쓰면 작동이 이상해지는 이유?
+        imageRef.current = imgLink;
+        const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+          if (!event.target.files) return;
+          imageRef.current && deleteImg(imageRef.current);
+          imageRef.current = await setCategoryThumbnail(event.target.files[0]);
+          thumbnailRef.current && (thumbnailRef.current.src = imageRef.current);
+        };
+        const onDelete = () => {
+          imageRef.current && deleteImg(imageRef.current);
+          imageRef.current = "";
+          thumbnailRef.current && (thumbnailRef.current.src = altImage);
+        };
         modalTitle = "Thumbnail edit";
-        modalContent = CategoryImageForm(imgLink, inputRef, imageRef);
+        modalContent = CategoryImageForm(imageRef, inputRef, thumbnailRef, onChange, onDelete);
         callBack = () => {
           setCategoryChange("editCategoryImage", targetId[0], targetId[1]);
         };

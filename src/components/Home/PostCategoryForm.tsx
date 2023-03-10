@@ -1,10 +1,10 @@
 import React from "react";
 import { Form, Button, Stack } from "react-bootstrap";
 import styled from "styled-components";
-import altImage from "../../assets/images/altThumbnail.jpg";
 
 import { setCategoryThumbnail } from "../../logic/getSetCategoryInfo";
 import { deleteImg } from "../../logic/getSetImage";
+import altImage from "../../assets/images/altThumbnail.jpg";
 
 export const CategoryNameForm = (
   categoryRef: React.RefObject<HTMLInputElement>,
@@ -25,39 +25,23 @@ export const CategoryNameForm = (
 };
 
 const ThumbnailImage = styled.img`
+  background-color: #666;
   width: 100%;
   aspect-ratio: 16/9;
   border-radius: 20px;
   object-fit: cover;
   object-position: center;
+  font-size: 0;
 `;
 export const CategoryImageForm = (
-  imageLink: string,
+  imageRef: React.MutableRefObject<string>,
   inputRef: React.RefObject<HTMLInputElement>,
-  imageRef: React.RefObject<HTMLImageElement>
+  thumbnailRef: React.RefObject<HTMLImageElement>,
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>,
+  onDelete: () => void
 ) => {
-  console.log(imageLink);
   const onUpload = () => {
     inputRef.current?.click();
-  };
-
-  const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return console.log("no image file");
-    imageRef.current?.src && imageRef.current?.src !== altImage && deleteImg(imageRef.current.src);
-    const imageURL = await setCategoryThumbnail(event.target.files[0]);
-    imageRef.current && (imageRef.current.src = imageURL);
-  };
-
-  const onDelete = () => {
-    if (
-      imageRef.current?.src &&
-      imageRef.current?.src !== altImage &&
-      imageRef.current?.src !== imageLink &&
-      inputRef.current
-    ) {
-      deleteImg(imageRef.current.src);
-      imageRef.current.src = "";
-    }
   };
 
   return (
@@ -65,18 +49,17 @@ export const CategoryImageForm = (
       <Form.Label>Please upload the image.</Form.Label>
       <Stack gap={2}>
         <ThumbnailImage
-          ref={imageRef}
-          src={imageRef.current?.src ?? imageLink ?? altImage}
+          ref={thumbnailRef}
+          src={
+            thumbnailRef.current?.src
+              ? thumbnailRef.current?.src
+              : imageRef.current
+              ? imageRef.current
+              : altImage
+          }
           alt="Thumbnail"
         />
-        <input
-          hidden
-          type="file"
-          accept="image/*"
-          ref={inputRef}
-          src={inputRef.current?.value ?? imageLink ? imageLink : altImage}
-          onChange={onChange}
-        />
+        <input hidden type="file" accept="image/*" ref={inputRef} onChange={onChange} />
         <Stack direction="horizontal" gap={2}>
           <Button onClick={onUpload}>Upload Image</Button>
           <Button variant="outline-primary" onClick={onDelete}>
