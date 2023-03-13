@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  screen,
-  render,
-  fireEvent,
-  cleanup,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import { screen, render, cleanup, waitForElementToBeRemoved } from "@testing-library/react";
 import { useModal } from "../../states/ModalState";
 import AlertModal from "./AlertModal";
 import { RecoilRoot } from "recoil";
@@ -44,7 +38,7 @@ describe("Alert modal test", () => {
   //open, close modal logic
   const modalOpen = () => {
     const openButton = screen.getByRole("button", { name: "openModal" });
-    fireEvent.click(openButton);
+    userEvent.click(openButton);
   };
 
   // reset modal
@@ -58,6 +52,10 @@ describe("Alert modal test", () => {
         <DummyComponent title="Hello" content="Modal Test" />
       </RecoilRoot>
     );
+
+    expect(screen.queryByText("Hello")).not.toBeInTheDocument();
+    expect(screen.queryByText("Modal Test")).not.toBeInTheDocument();
+
     modalOpen();
 
     expect(screen.getByText("Hello")).toBeInTheDocument();
