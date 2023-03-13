@@ -62,6 +62,7 @@ describe("Alert modal test", () => {
 
     expect(screen.getByText("Hello")).toBeInTheDocument();
     expect(screen.getByText("Modal Test")).toBeInTheDocument();
+    expect(screen.getByText("Close").classList.contains("btn-secondary")).toBe(true);
   });
 
   it("Alert modal close test", async () => {
@@ -92,5 +93,36 @@ describe("Alert modal test", () => {
     userEvent.click(closeButton);
     await waitForElementToBeRemoved(closeButton);
     expect(callBackFunc).toBeCalledTimes(1);
+  });
+
+  it("Confirm modal input test", () => {
+    const DummyForm = (
+      <form>
+        <label>
+          Input test
+          <input placeholder="test" />
+        </label>
+      </form>
+    );
+    render(
+      <RecoilRoot>
+        <DummyComponent title="Hello" content={DummyForm} isConfirm={true} />
+      </RecoilRoot>
+    );
+    modalOpen();
+
+    expect(screen.getByText("Confirm").classList.contains("btn-primary")).toBe(true);
+    expect(screen.getByLabelText("Input test")).toBeInTheDocument();
+  });
+
+  it("Confirm modal button color test", () => {
+    render(
+      <RecoilRoot>
+        <DummyComponent title="Hello" content="Modal Test" isConfirm={true} buttonColor="warning" />
+      </RecoilRoot>
+    );
+    modalOpen();
+
+    expect(screen.getByText("Confirm").classList.contains("btn-warning")).toBe(true);
   });
 });
