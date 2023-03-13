@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { useModal } from "../../states/ModalState";
+import { useToast } from "../../states/ToastState";
 import styled from "styled-components";
 import { Col, Stack, Button } from "react-bootstrap";
 
@@ -51,6 +52,7 @@ const PostSubCategory = ({ isEdit, categoryData, setCategoryData }: Props) => {
   const userData = useRecoilValue(loginData);
   const categoryRef = useRef<HTMLInputElement>(null);
   const { openModal } = useModal();
+  const { openToast } = useToast();
 
   const setCategoryChange = async (name: string, mainID: number = -1) => {
     const targetCategory = categoryRef.current?.value ?? "";
@@ -58,15 +60,20 @@ const PostSubCategory = ({ isEdit, categoryData, setCategoryData }: Props) => {
     let copyArray = [...categoryData];
 
     // handle exception
-    if (!uid) return;
+    if (!uid) return openToast("Error", "Using corrupt data.", "danger");
+    if ((name.includes("add") || name.includes("delete")) && mainID === -1)
+      return openToast("Error", "Using corrupt data.", "danger");
+
     if (name.includes("add") || name.includes("edit")) {
-      if (!targetCategory) return;
-      if (name.includes("sub") && mainID === -1) return;
+      if (!targetCategory) return openToast("Error", "Using corrupt data.", "danger");
       for (const category of categoryData) {
-        if (name.includes("Main") && category.mainField === name) return;
-        else if (category.subField.includes(name)) return;
+        if (
+          (name.includes("Main") && category.mainField === targetCategory) ||
+          category.subField.includes(targetCategory)
+        )
+          return openToast("Error", "You entered duplicated category name.", "warning");
       }
-    } else if (name.includes("delete") && mainID === -1) return;
+    }
 
     try {
       switch (name) {
@@ -104,6 +111,7 @@ const PostSubCategory = ({ isEdit, categoryData, setCategoryData }: Props) => {
       }
     } catch (error) {
       console.log(error);
+      openToast("Error", "Category edit failed.", "danger");
     }
   };
 

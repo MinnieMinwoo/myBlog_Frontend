@@ -1,7 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { useModal } from "../../states/ModalState";
+import { useToast } from "../../states/ToastState";
 import { Card, Stack, Button } from "react-bootstrap";
 import styled from "styled-components";
 
@@ -34,6 +36,12 @@ const CategoryContainer = styled(Card)`
     object-fit: cover;
     object-position: center;
   }
+  a {
+    font-size: 18px;
+    font-weight: 500;
+    color: #111;
+    text-decoration: none;
+  }
 `;
 
 interface Props {
@@ -56,11 +64,13 @@ const PostCategoryCard = ({
   setCategoryData,
 }: Props) => {
   const userData = useRecoilValue(loginData);
+  // React ref for receive modal form data
   const categoryRef = useRef<HTMLInputElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const thumbnailRef = useRef<HTMLImageElement>(null);
   const imageRef = useRef("");
   const { openModal } = useModal();
+  const { openToast } = useToast();
 
   const onError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
     event.currentTarget.src = altImage;
@@ -72,12 +82,12 @@ const PostCategoryCard = ({
     let copyArray = [...categoryData];
 
     // handle exception
-    if (!uid) return;
-    if (mainID === -1) return;
+    if (!uid || mainID === -1) return openToast("Error", "Using corrupt data.", "danger");
     if (name.includes("edit") && name.includes("Sub")) {
-      if (!targetCategory) return;
+      if (!targetCategory) return openToast("Error", "Using corrupt data.", "danger");
       for (const category of categoryData) {
-        if (category.subField.includes(name)) return;
+        if (category.subField.includes(targetCategory))
+          return openToast("Error", "You entered duplicated category name.", "warning");
       }
     }
 
@@ -118,6 +128,7 @@ const PostCategoryCard = ({
       }
     } catch (error) {
       console.log(error);
+      openToast("Error", "Category edit failed.", "danger");
     }
   };
 
@@ -173,9 +184,11 @@ const PostCategoryCard = ({
 
   return (
     <CategoryContainer key={index}>
-      <Card.Img src={imgLink} onError={onError} alt="Thumbnail" />
+      <Link to={`${id}-${index}`}>
+        <Card.Img src={imgLink} onError={onError} alt="Thumbnail" />
+      </Link>
       <Card.Body>
-        <Card.Title>{`${subData}`}</Card.Title>
+        <Card.Title as={Link} to={`${id}-${index}`}>{`${subData}`}</Card.Title>
         <Stack direction="horizontal" hidden={!isEdit}>
           <Button
             id={`${id},${index},1`}

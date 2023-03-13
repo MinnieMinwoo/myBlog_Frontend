@@ -2,14 +2,16 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
+import { useModal } from "../../states/ModalState";
+import { useToast } from "../../states/ToastState";
 import { Stack, Button } from "react-bootstrap";
 import styled from "styled-components";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
 import { getCategoryData, setMainCategoryData } from "../../logic/getSetCategoryInfo";
-import { useModal } from "../../states/ModalState";
 
 import AlertModal from "../Share/AlertModal";
+import AlertToast from "../Share/Toast";
 import PostSubCategory from "./PostSubCategory";
 import { CategoryNameForm as inputForm } from "./PostCategoryForm";
 
@@ -48,12 +50,17 @@ const PostCategoryList = () => {
   const categoryRef = useRef<HTMLInputElement>(null);
   const params = useParams();
   const { openModal } = useModal();
+  const { openToast } = useToast();
 
   useEffect(() => {
     if (!params.userID) throw console.log("no params");
-    getUserUID(params.userID).then((uid) => {
-      getCategoryData(uid).then((data) => setCategoryData(data));
-    });
+    getUserUID(params.userID)
+      .then((uid) => {
+        getCategoryData(uid).then((data) => setCategoryData(data));
+      })
+      .catch(() => {
+        openToast("Warning", "Category loading failed", "warning");
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -61,14 +68,15 @@ const PostCategoryList = () => {
     setIsEdit((prev) => !prev);
   };
 
-  const setCategoryChange = async (name: string) => {
+  const setCategoryChange = async () => {
     const targetCategory = categoryRef.current?.value ?? "";
     const uid = userData.uid;
 
     // handle exception
-    if (!uid || !targetCategory) return;
+    if (!uid || !targetCategory) return openToast("Error", "Using corrupt data.", "danger");
     for (const category of categoryData) {
-      if (category.mainField === name) return;
+      if (category.mainField === targetCategory)
+        return openToast("Error", "You entered duplicated category name.", "warning");
     }
 
     try {
@@ -83,14 +91,15 @@ const PostCategoryList = () => {
       ]);
     } catch (error) {
       console.log(error);
+      openToast("Error", "Category add failed.", "danger");
     }
   };
 
-  const onCategoryModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onCategoryModal = () => {
     const modalTitle = "Add category";
     const modalContent = inputForm(categoryRef);
     const callBack = () => {
-      setCategoryChange("addMainCategory");
+      setCategoryChange();
     };
     openModal(modalTitle, modalContent, callBack, true);
   };
@@ -98,6 +107,7 @@ const PostCategoryList = () => {
   return (
     <MainContainer className="PostCategoryList">
       <AlertModal />
+      <AlertToast />
       <HeaderBox>
         <Stack direction="horizontal" gap={1}>
           <h2>{"Categories"}</h2>
