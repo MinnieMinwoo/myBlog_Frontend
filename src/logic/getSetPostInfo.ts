@@ -23,7 +23,38 @@ export const getUserPostList = async (uid: string): Promise<PostData[]> => {
   );
   try {
     const querySnapshot = await getDocs(q);
-    let docList: PostData[] = [];
+    const docList: PostData[] = [];
+    querySnapshot.forEach((doc) => {
+      docList.push({
+        id: doc.id,
+        createdAt: doc.data().createdAt,
+        createdBy: doc.data().createdBy,
+        tag: doc.data().tag,
+        thumbnailData: doc.data().thumbnailData,
+        thumbnailImageURL: doc.data().thumbnailImageURL,
+        title: doc.data().title,
+      });
+    });
+    return docList;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getPostListByCategory = async (
+  uid: string,
+  mainCategory: string,
+  subCategory: string
+): Promise<PostData[]> => {
+  const q = query(
+    collection(dbService, "posts"),
+    where("createdBy", "==", uid),
+    where("category", "==", [mainCategory, subCategory]),
+    orderBy("createdAt", "desc")
+  );
+  try {
+    const querySnapshot = await getDocs(q);
+    const docList: PostData[] = [];
     querySnapshot.forEach((doc) => {
       docList.push({
         id: doc.id,

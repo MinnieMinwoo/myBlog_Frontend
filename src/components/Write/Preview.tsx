@@ -9,7 +9,7 @@ import { useToast } from "../../states/ToastState";
 
 import altImage from "../../assets/images/altThumbnail.jpg";
 import { deleteImg, uploadImg } from "../../logic/getSetImage";
-import { getCategoryData } from "../../logic/getSetCategoryInfo";
+import { getCategoryList } from "../../logic/getSetCategoryInfo";
 
 const PreviewContainer = styled.div`
   display: flex;
@@ -109,7 +109,7 @@ const Preview = ({
 
   useEffect(() => {
     userData.uid &&
-      getCategoryData(userData.uid).then((result) => {
+      getCategoryList(userData.uid).then((result) => {
         setCategoryData(result);
         if (!postContent.category.length) return;
         const categoryArray = postContent.category;

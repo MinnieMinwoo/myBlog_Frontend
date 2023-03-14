@@ -46,20 +46,18 @@ const CategoryContainer = styled(Card)`
 
 interface Props {
   isEdit: boolean;
-  subData: string;
   imgLink: string;
-  id: number;
-  index: number;
+  mainID: number;
+  subID: number;
   categoryData: CategoryData[];
   setCategoryData: React.Dispatch<React.SetStateAction<CategoryData[]>>;
 }
 
 const PostCategoryCard = ({
   isEdit,
-  subData,
   imgLink,
-  id,
-  index,
+  mainID: id,
+  subID: index,
   categoryData,
   setCategoryData,
 }: Props) => {
@@ -184,11 +182,14 @@ const PostCategoryCard = ({
 
   return (
     <CategoryContainer key={index}>
-      <Link to={`${id}-${index}`}>
+      <Link to={`${categoryData[id].mainField}/${categoryData[id].subField[index]}`}>
         <Card.Img src={imgLink} onError={onError} alt="Thumbnail" />
       </Link>
       <Card.Body>
-        <Card.Title as={Link} to={`${id}-${index}`}>{`${subData}`}</Card.Title>
+        <Card.Title
+          as={Link}
+          to={`${categoryData[id].mainField}/${categoryData[id].subField[index]}`}
+        >{`${categoryData[id].subField[index]}`}</Card.Title>
         <Stack direction="horizontal" hidden={!isEdit}>
           <Button
             id={`${id},${index},1`}

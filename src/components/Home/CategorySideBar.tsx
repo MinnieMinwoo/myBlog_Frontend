@@ -4,7 +4,7 @@ import CategorySideContent from "./CategorySideContent";
 import styled from "styled-components";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
-import { getCategoryData } from "../../logic/getSetCategoryInfo";
+import { getCategoryList } from "../../logic/getSetCategoryInfo";
 
 const AsideTab = styled.aside`
   padding-left: 30px;
@@ -34,7 +34,7 @@ const CategorySideBar = () => {
     if (!params.userID) throw console.log("no params");
     getUserUID(params.userID)
       .then((uid) => {
-        return getCategoryData(uid);
+        return getCategoryList(uid);
       })
       .then((data) => {
         setCategoryList(data);

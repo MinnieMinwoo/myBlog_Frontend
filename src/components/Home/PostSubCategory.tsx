@@ -191,14 +191,13 @@ const PostSubCategory = ({ isEdit, categoryData, setCategoryData }: Props) => {
                 ) : null}
               </Stack>
             </HeaderBox>
-            {data.subField.map((subData, index) => (
+            {data.subField.map((e, subID) => (
               <PostCategoryCard
-                key={index}
+                key={subID}
                 isEdit={isEdit}
-                subData={subData}
-                imgLink={data.thumbnailLink[index]}
-                id={id}
-                index={index}
+                imgLink={data.thumbnailLink[subID]}
+                mainID={id}
+                subID={subID}
                 categoryData={categoryData}
                 setCategoryData={setCategoryData}
               />

@@ -8,7 +8,7 @@ import { Stack, Button } from "react-bootstrap";
 import styled from "styled-components";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
-import { getCategoryData, setMainCategoryData } from "../../logic/getSetCategoryInfo";
+import { getCategoryList, setMainCategoryData } from "../../logic/getSetCategoryInfo";
 
 import AlertModal from "../Share/AlertModal";
 import AlertToast from "../Share/Toast";
@@ -56,7 +56,7 @@ const PostCategoryList = () => {
     if (!params.userID) throw console.log("no params");
     getUserUID(params.userID)
       .then((uid) => {
-        getCategoryData(uid).then((data) => setCategoryData(data));
+        getCategoryList(uid).then((data) => setCategoryData(data));
       })
       .catch(() => {
         openToast("Warning", "Category loading failed", "warning");

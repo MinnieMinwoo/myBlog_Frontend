@@ -15,8 +15,8 @@ import { dbService } from "./firebase";
 import { uuidv4 } from "@firebase/util";
 import { uploadImg } from "./getSetImage";
 
-/** Get Category Data by user uid*/
-export const getCategoryData = async (uid: string) => {
+/** Get Category List by user uid*/
+export const getCategoryList = async (uid: string) => {
   const categoryRef = doc(dbService, `users/${uid}/category`, uid);
   try {
     const categoryList = (await getDoc(categoryRef)).data();
@@ -34,6 +34,24 @@ export const getCategoryData = async (uid: string) => {
       })
     );
     return categoryData;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+/** Get Category Thumbnail*/
+export const getCategoryThumbnail = async (
+  uid: string,
+  mainCategory: string,
+  subCategory: string
+) => {
+  const subCategoryRef = doc(dbService, `users/${uid}/category`, mainCategory);
+  try {
+    const categoryList = (await getDoc(subCategoryRef)).data();
+    if (!(categoryList?.subfield && categoryList?.thumbnailLink)) return "";
+    const { subfield, thumbnailLink } = categoryList;
+    return subfield.indexOf(subCategory) ? thumbnailLink[subfield.indexOf(subCategory)] : "";
   } catch (error) {
     console.log(error);
     return [];
