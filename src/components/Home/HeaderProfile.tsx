@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginData } from "../../states/LoginState";
-import { Button } from "react-bootstrap";
+import { Button, ButtonGroup } from "react-bootstrap";
 import styled from "styled-components";
 
 import { signOutUser } from "../../logic/authSetting";
@@ -27,23 +27,20 @@ const ProfileButton = styled.button<{ url: string | null }>`
   cursor: Pointer;
 `;
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled(ButtonGroup).attrs(() => ({
+  vertical: true,
+}))`
   position: absolute;
-  transform: translateX(-25px);
+  transform: translate(-75px, 50px);
+  width: 98px;
   @media (max-width: 767px) {
-    transform: translateX(-49px);
+    transform: translateX(-49px, -50px);
   }
   margin-top: 5px;
   z-index: 1;
-`;
-
-const SelectButton = styled(Button).attrs(() => ({
-  variant: "outline-secondary",
-}))`
-  display: block;
-  width: 98px;
-  border-radius: 0;
-  background-color: #fff;
+  & button {
+    background-color: #fff;
+  }
 `;
 
 const HomeProfile = () => {
@@ -56,8 +53,9 @@ const HomeProfile = () => {
     setIsHidden((prev) => !prev);
   };
 
-  const onClick = async (event: Event) => {
-    const { name } = event.target as HTMLButtonElement;
+  const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (!("name" in event.target)) return;
+    const { name } = event.target;
     switch (name) {
       case "write":
         navigate("/write");
@@ -91,15 +89,15 @@ const HomeProfile = () => {
       <ProfileButton url={userData.photoURL ?? ""} onClick={onToggle} />
       {isHidden ? null : (
         <ButtonContainer>
-          <SelectButton name="write" onClick={onClick}>
+          <Button name="write" variant="outline-secondary" onClick={onClick}>
             Post
-          </SelectButton>
-          <SelectButton name="setting" onClick={onClick}>
+          </Button>
+          <Button name="setting" variant="outline-secondary" onClick={onClick}>
             Setting
-          </SelectButton>
-          <SelectButton name="logout" onClick={onClick}>
+          </Button>
+          <Button name="logout" variant="outline-secondary" onClick={onClick}>
             Sign Out
-          </SelectButton>
+          </Button>
         </ButtonContainer>
       )}
     </ProfileBox>
