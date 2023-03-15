@@ -51,7 +51,7 @@ export const getCategoryThumbnail = async (
     const categoryList = (await getDoc(subCategoryRef)).data();
     if (!(categoryList?.subfield && categoryList?.thumbnailLink)) return "";
     const { subfield, thumbnailLink } = categoryList;
-    return subfield.indexOf(subCategory) ? thumbnailLink[subfield.indexOf(subCategory)] : "";
+    return subfield.indexOf(subCategory) !== -1 ? thumbnailLink[subfield.indexOf(subCategory)] : "";
   } catch (error) {
     console.log(error);
     return [];

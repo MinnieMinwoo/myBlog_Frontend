@@ -11,6 +11,7 @@ import { getUserPostList } from "../../logic/getSetPostInfo";
 import { getUserUID } from "../../logic/getSetUserInfo";
 import AlertToast from "../Share/Toast";
 import { useToast } from "../../states/ToastState";
+import PostThumbnailBox from "./PostThumbnailBox";
 
 const PostArticle = styled.section`
   padding: 0 30px;
@@ -135,24 +136,7 @@ const PostContainer = () => {
           <span className="text-primary">{`(${String(postList.length)})`}</span>
         </Stack>
       </HeaderBox>
-      <article className="PostItemList" hidden={isLoading}>
-        <Stack>
-          {postList.map((post) => (
-            <PostBox className="PostItem" key={post.id} to={`/home/${params.userID}/${post.id}`}>
-              <Stack gap={1}>
-                {post.thumbnailImageURL !== "" ? (
-                  <div>
-                    <ImageBox fluid={true} src={post.thumbnailImageURL} alt="post" />
-                  </div>
-                ) : null}
-                <Title>{post.title}</Title>
-                <TextData>{post.thumbnailData}</TextData>
-                <Date>{getDate(post.createdAt)}</Date>
-              </Stack>
-            </PostBox>
-          ))}
-        </Stack>
-      </article>
+      <PostThumbnailBox postList={postList} />
     </PostArticle>
   );
 };

@@ -57,7 +57,6 @@ const MDPreview = styled(MarkdownPreview)`
     margin-left: 20px;
     min-height: 200px;
     max-height: calc(100% - 300px);
-    border-left: 1px solid #eee;
     overflow-y: auto;
     &::-webkit-scrollbar {
       width: 2px;
@@ -72,6 +71,7 @@ const MDPreview = styled(MarkdownPreview)`
   .page-list {
     list-style: none;
     padding-left: 20px;
+    border-left: 1px solid #eee;
   }
   .page-listItem > a {
     font-size: 13px;

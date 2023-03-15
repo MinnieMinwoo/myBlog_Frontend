@@ -34,6 +34,7 @@ const ButtonContainer = styled.div`
     transform: translateX(-49px);
   }
   margin-top: 5px;
+  z-index: 1;
 `;
 
 const SelectButton = styled(Button).attrs(() => ({

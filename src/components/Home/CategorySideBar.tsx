@@ -15,14 +15,13 @@ const AsideTab = styled.aside`
   }
 `;
 
-const Title = styled(Link)`
+const Title = styled.p`
   color: #555;
   font-weight: bold;
   font-size: 15px;
   text-decoration: none;
   &:hover {
-    text-decoration: underline;
-    cursor: pointer;
+    text-decoration: none;
   }
 `;
 
@@ -45,7 +44,7 @@ const CategorySideBar = () => {
   return (
     <AsideTab className="CategorySideBar">
       <nav className="category_navigation">
-        <Title as="p">All Categories</Title>
+        <Title>Categories</Title>
         {categoryList.map((element, id) => (
           <CategorySideContent key={id} data={element} />
         ))}

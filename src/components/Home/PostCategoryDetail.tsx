@@ -9,6 +9,7 @@ import { getUserUID } from "../../logic/getSetUserInfo";
 import AlertToast from "../Share/Toast";
 import { getPostListByCategory } from "../../logic/getSetPostInfo";
 import { getCategoryThumbnail } from "../../logic/getSetCategoryInfo";
+import PostThumbnailBox from "./PostThumbnailBox";
 
 const PostTitleBackground = styled.section<{ imageLink: string }>`
   height: 340px;
@@ -17,6 +18,7 @@ const PostTitleBackground = styled.section<{ imageLink: string }>`
   background-position: center;
   background-repeat: no-repeat;
   padding: 0 20px;
+  margin-bottom: 30px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url(${(props) => props.imageLink});
   background-color: rgba(255, 255, 255, 0.5);
@@ -69,6 +71,7 @@ const PostCategoryDetail = () => {
             postList.length && postList.length !== 1 ? "posts" : "post"
           }`}</span>
         </PostTitleBackground>
+        <PostThumbnailBox postList={postList} />
       </main>
     </>
   );

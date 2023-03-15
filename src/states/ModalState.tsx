@@ -60,11 +60,11 @@ export const useModal = () => {
   }, [setModalDataState]);
 
   const closeModalWithCallback = useCallback(async () => {
-    if (modalDataState.closeCallBack) await modalDataState.closeCallBack();
     setModalDataState((prev) => ({
       ...prev,
       isOpen: false,
     }));
+    if (modalDataState.closeCallBack) await modalDataState.closeCallBack();
   }, [modalDataState, setModalDataState]);
 
   return { modalDataState, openModal, closeModal, closeModalWithCallback };
