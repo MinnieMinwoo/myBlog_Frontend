@@ -1,9 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Outlet, useParams } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
-
-import { FooterAlign } from "../styles/PageView";
 
 import Header from "../components/Home/Header";
 import Footer from "../components/Share/Footer";
@@ -12,26 +9,22 @@ import CategorySideBar from "../components/Home/CategorySideBar";
 const Home = () => {
   const params = useParams();
   return (
-    <FooterAlign className="Home">
+    <div className="Home d-flex flex-column min-vh-100 overflow-x-hidden">
       <header className="home_header">
         <Header />
       </header>
-      <section className="home_section">
-        <Row>
-          <Col
-            sm={{ span: 10, offset: 1 }}
-            lg={{ span: 8, offset: 2 }}
-            xxl={{ span: 6, offset: 3 }}
-          >
+      <section className="home_section flex-grow-1">
+        <div className="row">
+          <div className="col col-sm-10 offset-sm-1 col-lg-8 offset-lg-2 col-xxl-6 offset-xxl-3">
             <Outlet />
-          </Col>
-          <Col>{params["docID"] ? null : <CategorySideBar />}</Col>
-        </Row>
+          </div>
+          <div className="col">{params["docID"] ? null : <CategorySideBar />}</div>
+        </div>
       </section>
       <footer className="home_footer">
         <Footer />
       </footer>
-    </FooterAlign>
+    </div>
   );
 };
 

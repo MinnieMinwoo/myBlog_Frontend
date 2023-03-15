@@ -8,7 +8,6 @@ import styled from "styled-components";
 const ImgContainer = styled.div`
   flex-basis: 210px;
   padding: 0 24px;
-  border-right: 1px solid #eee;
 `;
 
 const ProfileImg = styled(Image)`

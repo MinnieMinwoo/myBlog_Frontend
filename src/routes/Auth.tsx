@@ -3,23 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { isLoadingData } from "../states/LoadingState";
 import { FirebaseError } from "firebase/app";
-import { Button, Col, Form, Stack, Spinner } from "react-bootstrap";
-import styled from "styled-components";
 
 import { signInEmail, signUpEmail } from "../logic/authSetting";
 
 import { useModal } from "../states/ModalState";
 import AlertModal from "../components/Share/AlertModal";
-
-const AuthBox = styled.div`
-  margin-top: 40vh;
-  transform: translateY(-50%);
-`;
-
-const AuthButton = styled(Button)`
-  width: 80%;
-  align-self: center;
-`;
 
 const Auth = () => {
   const [signIn, setSignIn] = useState(true);
@@ -94,59 +82,62 @@ const Auth = () => {
   };
 
   return (
-    <AuthBox className="Auth">
-      <AlertModal />
-      <Col md={{ span: 6, offset: 3 }} lg={{ span: 4, offset: 4 }}>
-        <Stack gap={3}>
-          <h1>MyBlog</h1>
-          <Form onSubmit={onSubmit}>
-            <Stack gap={3}>
-              <Form.Group controlId="email">
-                <Form.Label>Email adress</Form.Label>
-                <Form.Control
-                  name="email"
-                  type="text"
-                  placeholder="email"
-                  value={email}
-                  required
-                  onChange={onChange}
-                />
-              </Form.Group>
-              <Form.Group controlId="password">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  name="password"
-                  type="password"
-                  placeholder="password"
-                  value={password}
-                  autoComplete="off"
-                  required
-                  onChange={onChange}
-                />
-              </Form.Group>
-              <AuthButton type="submit" disabled={isLoading}>
-                {isLoading ? (
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                ) : signIn ? (
-                  "Sign In"
-                ) : (
-                  "Create Account"
-                )}
-              </AuthButton>
-            </Stack>
-          </Form>
-          <AuthButton variant="secondary" onClick={toggleAccount}>
-            {signIn ? "Create Account" : "Sign In"}
-          </AuthButton>
-        </Stack>
-      </Col>
-    </AuthBox>
+    <div className="Auth h-100 d-flex col-md-6 offset-md-3 col-lg-4 offset-md-4">
+      <div className="vstack gap-3 align-self-center">
+        <AlertModal />
+        <h1>MyBlog</h1>
+        <form onSubmit={onSubmit}>
+          <div className="vstack gap-3">
+            <div>
+              <label className="form-label">Email adress</label>
+              <input
+                className="form-control"
+                name="email"
+                type="text"
+                placeholder="email"
+                value={email}
+                required
+                onChange={onChange}
+              />
+            </div>
+            <div>
+              <label className="form-label">Password</label>
+              <input
+                className="form-control"
+                name="password"
+                type="password"
+                placeholder="password"
+                value={password}
+                autoComplete="off"
+                required
+                onChange={onChange}
+              />
+            </div>
+            <button
+              type="submit"
+              className="btn btn-primary col-8 offset-2"
+              style={{ height: "36px" }}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="d-flex justify-content-center">
+                  <div className="spinner-border spinner-border-sm" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              ) : signIn ? (
+                "Sign In"
+              ) : (
+                "Create Account"
+              )}
+            </button>
+          </div>
+        </form>
+        <button type="submit" className="btn btn-secondary col-8 offset-2" onClick={toggleAccount}>
+          {signIn ? "Create Account" : "Sign In"}
+        </button>
+      </div>
+    </div>
   );
 };
 

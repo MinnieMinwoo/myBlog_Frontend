@@ -12,16 +12,19 @@ Make my own blog project.
 
   - Get blog posts list by user nickname
   - View post thumbnail With images
+  - Sort posts by category
 
 - Post read
 
   - Read post written by markdown
+  - View table on contents in sidebar
 
 - Post edit & write
 
   - Set title and thumbnail data
   - Write blog posts using markdown
   - Drag & Drop image to fit the cursor during post edit
+  - Set category group
 
 - Setting
   - Edit profile images
@@ -34,8 +37,7 @@ Make my own blog project.
 - React Router
 - Typescript
 - Recoil
-- React Bootstrap
-- styled-components
+- Bootstrap
 - react-md-editor
 - Jest
 - React Testing Library

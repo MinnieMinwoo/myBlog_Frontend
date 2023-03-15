@@ -1,20 +1,19 @@
 import React from "react";
-import styled from "styled-components";
 
-import { FooterAlign } from "../styles/PageView";
 import MainHeader from "../components/Main/MainHeader";
 import Footer from "../components/Share/Footer";
 import MainSection from "../components/Main/MainSection";
 
-const MainContainer = styled(FooterAlign)``;
-
 const Main = () => {
   return (
-    <MainContainer className="Main">
+    <div
+      className="Main d-flex flex-column min-vh-100 overflow-x-hidden"
+      style={{ minHeight: "100vh" }}
+    >
       <MainHeader />
       <MainSection />
       <Footer />
-    </MainContainer>
+    </div>
   );
 };
 

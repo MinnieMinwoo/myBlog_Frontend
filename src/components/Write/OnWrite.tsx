@@ -32,6 +32,22 @@ const WriteContainer = styled(Col)`
       opacity: 1;
     }
   }
+  input {
+    width: 100%;
+    color: #777;
+    border: 0;
+    border-bottom: 1px solid #eee;
+    &:focus {
+      outline: none;
+      border-bottom: 2px solid #777;
+    }
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  button {
+    margin: 0;
+    margin-top: 20px;
+  }
 `;
 
 const Logo = styled.img`
@@ -39,25 +55,6 @@ const Logo = styled.img`
   height: 40px;
   margin-right: 20px;
   cursor: pointer;
-`;
-
-const PostTitle = styled.input`
-  width: 100%;
-  color: #777;
-  border: 0;
-  border-bottom: 1px solid #eee;
-  &:focus {
-    outline: none;
-    border-bottom: 2px solid #777;
-  }
-  font-size: 36px;
-  margin-bottom: 20px;
-`;
-
-const Submit = styled(Button)`
-  margin: 0;
-  margin-top: 20px;
-  float: right;
 `;
 
 const Editor = styled(MDEditor)`
@@ -203,7 +200,7 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
             defaultValue={""}
             onChange={onInputImgChange}
           />
-          <PostTitle
+          <input
             placeholder="Write post title"
             value={postContent.title}
             onChange={onTitleChange}
@@ -233,7 +230,10 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
               }}
             />
           </div>
-          <Submit onClick={onPreview}>{isEdit ? "Edit" : "Write up"}</Submit>
+          <Button variant="secondary">Quit</Button>
+          <Button className="float-end" onClick={onPreview}>
+            {isEdit ? "Edit" : "Write up"}
+          </Button>
         </section>
       </WriteContainer>
     </OnDragCheck>

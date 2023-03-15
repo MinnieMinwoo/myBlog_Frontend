@@ -46,7 +46,7 @@ const MainSection = () => {
     }
   };
   return (
-    <MainContainer className="MainSection">
+    <MainContainer className="MainSection flex-grow-1">
       <TextData fontSize="45px" fontWeight="bold">
         Publish your stroy, your way
       </TextData>
