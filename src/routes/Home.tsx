@@ -9,7 +9,7 @@ import CategorySideBar from "../components/Home/CategorySideBar";
 const Home = () => {
   const params = useParams();
   return (
-    <div className="Home d-flex flex-column min-vh-100 overflow-x-hidden">
+    <div className="Home d-flex flex-column min-vh-100 overflow-hidden">
       <header className="home_header">
         <Header />
       </header>
