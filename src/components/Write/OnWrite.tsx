@@ -159,6 +159,15 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
     }
   };
 
+  const onQuit = () => {
+    const warningTitle = "Warning";
+    const warningMessage = "Post data will not be saved when you leave the window.";
+    const confirmCallback = () => {
+      navigate(-1);
+    };
+    openModal(warningTitle, warningMessage, confirmCallback, true);
+  };
+
   const onExit = () => {
     const warningTitle = "Warning";
     const warningMessage = "Post data will not be saved when you leave the window.";
@@ -230,7 +239,9 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
               }}
             />
           </div>
-          <Button variant="secondary">Quit</Button>
+          <Button variant="secondary" onClick={onQuit}>
+            Quit
+          </Button>
           <Button className="float-end" onClick={onPreview}>
             {isEdit ? "Edit" : "Write up"}
           </Button>

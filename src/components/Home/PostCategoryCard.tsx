@@ -92,13 +92,15 @@ const PostCategoryCard = ({
     try {
       switch (name) {
         case "editSubCategory":
-          const editedSubCategory = await editSubCategoryData(
+          await editSubCategoryData(
             categoryData[mainID],
             categoryData[mainID].subField[subID],
             targetCategory,
             uid
           );
-          copyArray[mainID].subField = editedSubCategory;
+          copyArray[mainID].subField = copyArray[mainID].subField.map((element) =>
+            element === categoryData[mainID].subField[subID] ? targetCategory : element
+          );
           setCategoryData(copyArray);
           break;
         case "editCategoryImage":
@@ -112,12 +114,16 @@ const PostCategoryCard = ({
           setCategoryData(copyArray);
           break;
         case "deleteSubCategory":
-          const deletedCategory = await deleteSubCategoryData(
+          await deleteSubCategoryData(
             categoryData[mainID],
             categoryData[mainID].subField[subID],
             uid
           );
-          copyArray[mainID] = deletedCategory;
+          copyArray[mainID] = {
+            ...copyArray[mainID],
+            subField: copyArray[mainID].subField.filter((e, i) => i !== subID),
+            thumbnailLink: copyArray[mainID].thumbnailLink.filter((e, i) => i !== subID),
+          };
           setCategoryData(copyArray);
           break;
 

@@ -75,16 +75,21 @@ export const setMainCategoryData = async (name: string, uid: string) => {
 
 /** Add Sub Category Data*/
 export const setSubCategoryData = async (mainCategory: CategoryData, name: string, uid: string) => {
-  const copyCategory = mainCategory;
+  // deep copy (nested objects that like subField does not deep copy on use only spread operator)
+  const copyCategory = {
+    mainField: mainCategory.mainField,
+    subField: [...mainCategory.subField],
+    thumbnailLink: [...mainCategory.thumbnailLink],
+  };
   copyCategory.subField.push(name);
   copyCategory.thumbnailLink.push("");
+  console.log(copyCategory);
   try {
     const subCategoryRef = doc(dbService, `users/${uid}/category`, `${copyCategory.mainField}`);
     await setDoc(subCategoryRef, {
       subfield: copyCategory.subField,
       thumbnailLink: copyCategory.thumbnailLink,
     });
-    return copyCategory;
   } catch (error) {
     throw error;
   }
@@ -160,7 +165,7 @@ export const editMainCategoryData = async (
   name: string,
   uid: string
 ) => {
-  const { mainField, subField, thumbnailLink } = mainCategory;
+  const { mainField } = mainCategory;
   try {
     await deleteMainCategoryData(mainField, uid);
     const categoryRef = doc(dbService, `users/${uid}/category`, `${uid}`);
@@ -170,11 +175,6 @@ export const editMainCategoryData = async (
       subfield: mainCategory.subField,
       thumbnailLink: mainCategory.thumbnailLink,
     });
-    return {
-      mainField: name,
-      subField: subField,
-      thumbnailLink: thumbnailLink,
-    };
   } catch (error) {
     throw error;
   }
@@ -194,7 +194,6 @@ export const editSubCategoryData = async (
     await updateDoc(subCategoryRef, {
       subfield: newSubField,
     });
-    return newSubField;
   } catch (error) {
     throw error;
   }

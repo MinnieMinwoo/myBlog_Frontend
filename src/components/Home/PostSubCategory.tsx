@@ -75,19 +75,17 @@ const PostSubCategory = ({ isEdit, categoryData, setCategoryData }: Props) => {
       }
     }
 
+    console.log(name);
     try {
       switch (name) {
         case "addSubCategory":
-          const changedCategory = await setSubCategoryData(
-            categoryData[mainID],
-            targetCategory,
-            uid
-          );
-          copyArray[mainID] = changedCategory;
+          await setSubCategoryData(categoryData[mainID], targetCategory, uid);
+          copyArray[mainID].subField.push(targetCategory);
+          copyArray[mainID].thumbnailLink.push("");
           setCategoryData(copyArray);
           break;
         case "editMainCategory":
-          const editedCategoryData = await editMainCategoryData(
+          await editMainCategoryData(
             categoryData.map((element, index) =>
               index === mainID ? targetCategory : element.mainField
             ),
@@ -95,7 +93,10 @@ const PostSubCategory = ({ isEdit, categoryData, setCategoryData }: Props) => {
             targetCategory,
             uid
           );
-          copyArray[mainID] = editedCategoryData;
+          copyArray[mainID] = {
+            ...copyArray[mainID],
+            mainField: targetCategory,
+          };
           setCategoryData(copyArray);
           break;
         case "deleteMainCategory":
