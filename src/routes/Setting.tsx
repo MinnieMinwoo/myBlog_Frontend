@@ -4,7 +4,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useModal } from "../states/ModalState";
 import { loginData } from "../states/LoginState";
 import { isLoadingData } from "../states/LoadingState";
-import { Navbar, Container } from "react-bootstrap";
 
 import { deleteUserData } from "../logic/getSetUserInfo";
 
@@ -66,10 +65,10 @@ const Setting = () => {
       {loading ? <Loading /> : null}
       <AlertModal />
       <header>
-        <Navbar bg="light">
-          <Container>
-            <Navbar.Brand>
-              <Link to="/">
+        <nav className="navbar bg-light">
+          <div className="container">
+            <div className="navbar-brand">
+              <Link to="/" className="">
                 <img
                   className="me-2 pe-auto"
                   style={{ width: "40px", height: "40px" }}
@@ -78,9 +77,9 @@ const Setting = () => {
                 />
               </Link>
               Setting
-            </Navbar.Brand>
-          </Container>
-        </Navbar>
+            </div>
+          </div>
+        </nav>
       </header>
       <main className="EditProfile">
         <section className="py-4 col col-lg-10 offset-lg-1 col-xxl-8 offset-xxl-2">

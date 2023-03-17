@@ -1,9 +1,9 @@
 import React, { ChangeEvent, DragEvent, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { uuidv4 } from "@firebase/util";
 import MDEditor, { commands, ICommand } from "@uiw/react-md-editor";
-import { Button, Container, Navbar, Col } from "react-bootstrap";
 import styled from "styled-components";
 
 import { useModal } from "../../states/ModalState";
@@ -11,7 +11,6 @@ import { useToast } from "../../states/ToastState";
 
 import { uploadImg } from "../../logic/getSetImage";
 import blogIcon from "../../assets/images/logo.png";
-import { useNavigate } from "react-router-dom";
 
 const OnDragCheck = styled.div`
   &.Drag {
@@ -19,8 +18,7 @@ const OnDragCheck = styled.div`
   }
 `;
 
-const WriteContainer = styled(Col)`
-  margin-top: 20px;
+const WriteAnimation = styled.div`
   animation-name: init;
   animation-duration: 1s;
   animation-duration: linear;
@@ -32,32 +30,23 @@ const WriteContainer = styled(Col)`
       opacity: 1;
     }
   }
-  input {
-    width: 100%;
-    color: #777;
-    border: 0;
-    border-bottom: 1px solid #eee;
-    &:focus {
-      outline: none;
-      border-bottom: 2px solid #777;
-    }
-    font-size: 36px;
-    margin-bottom: 20px;
-  }
-  button {
-    margin: 0;
-    margin-top: 20px;
-  }
 `;
 
-const Logo = styled.img`
-  width: 40px;
-  height: 40px;
-  margin-right: 20px;
-  cursor: pointer;
+const InputBar = styled.input`
+  width: 100%;
+  font-size: 36px;
+  margin-bottom: 20px;
+  color: #777;
+  border: 0;
+  border-bottom: 1px solid #eee;
+  &:focus {
+    outline: none;
+    border-bottom: 2px solid #777;
+  }
 `;
 
 const Editor = styled(MDEditor)`
+  min-height: 200px;
   height: calc(100vh - 260px) !important;
 `;
 
@@ -87,32 +76,31 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
   };
 
   // drag & drop image
-  const onDragEnter = (event: DragEvent) => {
+  const onDrag = (event: DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    setIsDragging(true);
-  };
-  const onDragLeave = (event: DragEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsDragging(false);
-  };
-  const onDragOver = (event: DragEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    if (event.dataTransfer.files) {
-      setIsDragging(true);
+    const { type } = event;
+    switch (type) {
+      case "dragenter":
+        setIsDragging(true);
+        break;
+      case "dragleave":
+        setIsDragging(false);
+        break;
+      case "dragover":
+        if (event.dataTransfer.files) {
+          setIsDragging(true);
+        }
+        break;
+      case "drop":
+        const file = event.dataTransfer.files[0];
+        if (!file?.type.includes("image/")) {
+          setIsDragging(false);
+          return;
+        }
+        onImgUpload(file);
+        break;
     }
-  };
-  const onDrop = async (event: DragEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const file = event.dataTransfer.files[0];
-    if (!file?.type.includes("image/")) {
-      setIsDragging(false);
-      return;
-    }
-    onImgUpload(file);
   };
 
   const uploadImgCommand: ICommand = {
@@ -168,7 +156,8 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
     openModal(warningTitle, warningMessage, confirmCallback, true);
   };
 
-  const onExit = () => {
+  const onExit = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
     const warningTitle = "Warning";
     const warningMessage = "Post data will not be saved when you leave the window.";
     const confirmCallback = () => {
@@ -180,73 +169,72 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
   return (
     <OnDragCheck className={isDragging ? "OnWrite Drag" : "OnWrite"}>
       <header>
-        <Navbar bg="light">
-          <Container>
-            <Navbar.Brand>
-              <Logo src={blogIcon} alt="blog logo" onClick={onExit} />
+        <nav className="navbar bg-light">
+          <div className="container">
+            <div className="navbar-brand">
+              <a href="/" onClick={onExit}>
+                <img
+                  className="me-2 pe-auto"
+                  style={{ width: "40px", height: "40px", cursor: "pointer" }}
+                  src={blogIcon}
+                  alt="blog logo"
+                />
+              </a>
               {isEdit ? "Edit post" : "Write your Story"}
-            </Navbar.Brand>
-          </Container>
-        </Navbar>
-      </header>
-      <WriteContainer
-        sm={{ span: 10, offset: 1 }}
-        lg={{ span: 8, offset: 2 }}
-        xxl={{ span: 6, offset: 3 }}
-        className="OnWrite"
-      >
-        <section
-          onDragEnter={onDragEnter}
-          onDragLeave={onDragLeave}
-          onDragOver={onDragOver}
-          onDrop={onDrop}
-        >
-          <input
-            hidden
-            type="file"
-            accept="image/*"
-            ref={imageRef}
-            defaultValue={""}
-            onChange={onInputImgChange}
-          />
-          <input
-            placeholder="Write post title"
-            value={postContent.title}
-            onChange={onTitleChange}
-            maxLength={50}
-            required
-          />
-          <div ref={inputRef}>
-            <Editor
-              data-color-mode="light"
-              value={postContent.postData}
-              commands={[
-                commands.title,
-                commands.bold,
-                commands.italic,
-                commands.strikethrough,
-                commands.quote,
-                commands.link,
-                uploadImgCommand,
-                commands.code,
-                commands.fullscreen,
-              ]}
-              onChange={(value = "") => {
-                setPostContent((prev) => ({
-                  ...prev,
-                  postData: value,
-                }));
-              }}
-            />
+            </div>
           </div>
-          <Button variant="secondary" onClick={onQuit}>
-            Quit
-          </Button>
-          <Button className="float-end" onClick={onPreview}>
-            {isEdit ? "Edit" : "Write up"}
-          </Button>
-        </section>
-      </WriteContainer>
+        </nav>
+      </header>
+      <WriteAnimation>
+        <div className="OnWrite mt-3 col col-sm-10 offset-sm-1 col-lg-8 offset-lg-2 col-xxl-6 offset-xxl-3">
+          <section onDragEnter={onDrag} onDragLeave={onDrag} onDragOver={onDrag} onDrop={onDrag}>
+            <input
+              hidden
+              type="file"
+              accept="image/*"
+              ref={imageRef}
+              defaultValue={""}
+              onChange={onInputImgChange}
+            />
+            <InputBar
+              placeholder="Write post title"
+              value={postContent.title}
+              onChange={onTitleChange}
+              maxLength={50}
+              required
+            />
+            <div ref={inputRef}>
+              <Editor
+                data-color-mode="light"
+                value={postContent.postData}
+                commands={[
+                  commands.title,
+                  commands.bold,
+                  commands.italic,
+                  commands.strikethrough,
+                  commands.quote,
+                  commands.link,
+                  uploadImgCommand,
+                  commands.code,
+                  commands.fullscreen,
+                ]}
+                onChange={(value = "") => {
+                  setPostContent((prev) => ({
+                    ...prev,
+                    postData: value,
+                  }));
+                }}
+              />
+            </div>
+            <button className="btn btn-secondary mt-3" onClick={onQuit}>
+              Quit
+            </button>
+            <button className="btn btn-primary float-end mt-3" onClick={onPreview}>
+              {isEdit ? "Edit" : "Write up"}
+            </button>
+          </section>
+        </div>
+      </WriteAnimation>
     </OnDragCheck>
   );
 };
