@@ -11,6 +11,7 @@ import { useToast } from "../../states/ToastState";
 
 import { uploadImg } from "../../logic/getSetImage";
 import blogIcon from "../../assets/images/logo.png";
+import Header from "../Share/Header";
 
 const OnDragCheck = styled.div`
   &.Drag {
@@ -156,35 +157,9 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
     openModal(warningTitle, warningMessage, confirmCallback, true);
   };
 
-  const onExit = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    const warningTitle = "Warning";
-    const warningMessage = "Post data will not be saved when you leave the window.";
-    const confirmCallback = () => {
-      navigate("/");
-    };
-    openModal(warningTitle, warningMessage, confirmCallback, true);
-  };
-
   return (
     <OnDragCheck className={isDragging ? "OnWrite Drag" : "OnWrite"}>
-      <header>
-        <nav className="navbar bg-light">
-          <div className="container">
-            <div className="navbar-brand">
-              <a href="/" onClick={onExit}>
-                <img
-                  className="me-2 pe-auto"
-                  style={{ width: "40px", height: "40px", cursor: "pointer" }}
-                  src={blogIcon}
-                  alt="blog logo"
-                />
-              </a>
-              {isEdit ? "Edit post" : "Write your Story"}
-            </div>
-          </div>
-        </nav>
-      </header>
+      <Header title={isEdit ? "Edit post" : "Write your story"} isWarningAlert={true} />
       <WriteAnimation>
         <div className="OnWrite mt-3 col col-sm-10 offset-sm-1 col-lg-8 offset-lg-2 col-xxl-6 offset-xxl-3">
           <section onDragEnter={onDrag} onDragLeave={onDrag} onDragOver={onDrag} onDrop={onDrag}>

@@ -5,7 +5,8 @@ import { Outlet, useParams } from "react-router-dom";
 import { getUserUID } from "../logic/getSetUserInfo";
 import { getCategoryList } from "../logic/getSetCategoryInfo";
 
-import Header from "../components/Home/Header";
+import Header from "../components/Share/Header";
+import HeaderProfile from "../components/Home/HeaderProfile";
 import Footer from "../components/Share/Footer";
 import CategorySideBar from "../components/Home/CategorySideBar";
 
@@ -27,7 +28,11 @@ const Home = () => {
   return (
     <div className="Home d-flex flex-column min-vh-100 overflow-hidden">
       <header className="home_header">
-        <Header />
+        <Header
+          title={`${params.userID}'s Blog`}
+          userName={params.userID}
+          outlet={<HeaderProfile />}
+        />
       </header>
       <section className="home_section flex-grow-1">
         <div className="row">

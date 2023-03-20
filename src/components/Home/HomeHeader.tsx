@@ -12,7 +12,7 @@ const Logo = styled.img`
   margin-right: 20px;
 `;
 
-const Header = () => {
+const HomeHeader = () => {
   const params = useParams();
   return (
     <header className="Header">
@@ -43,4 +43,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HomeHeader;

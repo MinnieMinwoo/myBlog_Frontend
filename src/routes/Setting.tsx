@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useModal } from "../states/ModalState";
 import { loginData } from "../states/LoginState";
@@ -12,7 +12,7 @@ import ProfileImageEdit from "../components/Setting/ProfileImageEdit";
 import ProfileInfoEdit from "../components/Setting/ProfileInfoEdit";
 import SettingData from "../components/Setting/SettingData";
 import AlertModal from "../components/Share/AlertModal";
-import blogIcon from "../assets/images/logo.png";
+import Header from "../components/Share/Header";
 
 const Setting = () => {
   const [userData, setUserData] = useRecoilState(loginData);
@@ -64,23 +64,7 @@ const Setting = () => {
     <>
       {loading ? <Loading /> : null}
       <AlertModal />
-      <header>
-        <nav className="navbar bg-light">
-          <div className="container">
-            <div className="navbar-brand">
-              <Link to="/" className="">
-                <img
-                  className="me-2 pe-auto"
-                  style={{ width: "40px", height: "40px" }}
-                  src={blogIcon}
-                  alt="blog logo"
-                />
-              </Link>
-              Setting
-            </div>
-          </div>
-        </nav>
-      </header>
+      <Header title="Setting" />
       <main className="EditProfile">
         <section className="py-4 col col-lg-10 offset-lg-1 col-xxl-8 offset-xxl-2">
           <div className="hstack">
