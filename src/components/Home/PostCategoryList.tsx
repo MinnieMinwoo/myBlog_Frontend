@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { useModal } from "../../states/ModalState";
@@ -46,7 +46,8 @@ const HeaderBox = styled.div`
 const PostCategoryList = () => {
   const userData = useRecoilValue(loginData);
   const [isEdit, setIsEdit] = useState(false);
-  const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
+  type CategoryState = [CategoryData[], React.Dispatch<React.SetStateAction<CategoryData[]>>];
+  const [categoryList, setCategoryList] = useOutletContext<CategoryState>();
   const categoryRef = useRef<HTMLInputElement>(null);
   const params = useParams();
   const { openModal } = useModal();
@@ -56,7 +57,7 @@ const PostCategoryList = () => {
     if (!params.userID) throw console.log("no params");
     getUserUID(params.userID)
       .then((uid) => {
-        getCategoryList(uid).then((data) => setCategoryData(data));
+        getCategoryList(uid).then((data) => setCategoryList(data));
       })
       .catch(() => {
         openToast("Warning", "Category loading failed", "warning");
@@ -74,14 +75,14 @@ const PostCategoryList = () => {
 
     // handle exception
     if (!uid || !targetCategory) return openToast("Error", "Using corrupt data.", "danger");
-    for (const category of categoryData) {
+    for (const category of categoryList) {
       if (category.mainField === targetCategory)
         return openToast("Error", "You entered duplicated category name.", "warning");
     }
 
     try {
       await setMainCategoryData(targetCategory, uid);
-      setCategoryData((prev) => [
+      setCategoryList((prev) => [
         ...prev,
         {
           mainField: targetCategory,
@@ -111,7 +112,7 @@ const PostCategoryList = () => {
       <HeaderBox>
         <Stack direction="horizontal" gap={1}>
           <h2>{"Categories"}</h2>
-          <span className="text-primary">({categoryData.length})</span>
+          <span className="text-primary">({categoryList.length})</span>
           {isEdit ? (
             <Button
               name="addMainCategory"
@@ -129,8 +130,8 @@ const PostCategoryList = () => {
       </HeaderBox>
       <PostSubCategory
         isEdit={isEdit}
-        categoryData={categoryData}
-        setCategoryData={setCategoryData}
+        categoryData={categoryList}
+        setCategoryData={setCategoryList}
       />
     </MainContainer>
   );

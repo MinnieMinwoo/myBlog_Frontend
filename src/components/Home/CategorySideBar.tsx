@@ -25,8 +25,12 @@ const Title = styled.p`
   }
 `;
 
-const CategorySideBar = () => {
-  const [categoryList, setCategoryList] = useState<CategoryData[]>([]);
+interface Props {
+  categoryList: CategoryData[];
+  setCategoryList: React.Dispatch<React.SetStateAction<CategoryData[]>>;
+}
+
+const CategorySideBar = ({ categoryList, setCategoryList }: Props) => {
   const params = useParams();
 
   useEffect(() => {
