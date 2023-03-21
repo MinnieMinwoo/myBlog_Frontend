@@ -1,29 +1,9 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CategorySideContent from "./CategorySideContent";
-import styled from "styled-components";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
 import { getCategoryList } from "../../logic/getSetCategoryInfo";
-
-const AsideTab = styled.aside`
-  padding-left: 30px;
-  margin: 35px 0;
-  border-left: 1px solid #eee;
-  @media (max-width: 991px) {
-    display: none;
-  }
-`;
-
-const Title = styled.p`
-  color: #555;
-  font-weight: bold;
-  font-size: 15px;
-  text-decoration: none;
-  &:hover {
-    text-decoration: none;
-  }
-`;
 
 interface Props {
   categoryList: CategoryData[];
@@ -46,14 +26,19 @@ const CategorySideBar = ({ categoryList, setCategoryList }: Props) => {
   }, []);
 
   return (
-    <AsideTab className="CategorySideBar">
+    <aside
+      className="CategorySideBar d-none d-lg-block ps-4 my-5"
+      style={{ borderLeft: "1px solid #eee" }}
+    >
       <nav className="category_navigation">
-        <Title>Categories</Title>
+        <p className="fs-6 fw-bold text-decoration-none mb-3" style={{ color: "#555" }}>
+          Categories
+        </p>
         {categoryList.map((element, id) => (
           <CategorySideContent key={id} data={element} />
         ))}
       </nav>
-    </AsideTab>
+    </aside>
   );
 };
 

@@ -7,10 +7,6 @@ const CategoryContent = styled.div``;
 const RouteContent = styled(Link)`
   text-decoration: none;
   font-size: 15px;
-  &:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
 `;
 
 const Title = styled(RouteContent)`
@@ -27,6 +23,8 @@ const DetailData = styled(RouteContent)`
   margin: 0;
   &:hover {
     color: #777;
+    text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
