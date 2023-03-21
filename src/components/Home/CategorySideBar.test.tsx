@@ -18,8 +18,8 @@ describe("Category side bar test", () => {
   });
 
   it("rendering test", async () => {
-    const spyOne = jest.spyOn(getUID, "getUserUID").mockResolvedValue("test");
-    const spyTwo = jest.spyOn(getCategory, "getCategoryList").mockResolvedValue([
+    jest.spyOn(getUID, "getUserUID").mockResolvedValue("test");
+    jest.spyOn(getCategory, "getCategoryList").mockResolvedValue([
       {
         mainField: "Frontend",
         subField: ["fe1", "fe2", "fe3", "fe4", "fe5"],
