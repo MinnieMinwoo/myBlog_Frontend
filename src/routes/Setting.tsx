@@ -13,14 +13,72 @@ import ProfileInfoEdit from "../components/Setting/ProfileInfoEdit";
 import SettingData from "../components/Setting/SettingData";
 import AlertModal from "../components/Share/AlertModal";
 import Header from "../components/Share/Header";
+import { updateUserEmail } from "../logic/authSetting";
 
 const Setting = () => {
   const [userData, setUserData] = useRecoilState(loginData);
   const loading = useRecoilValue(isLoadingData);
   const { openModal, closeModal } = useModal();
-  const passwordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
+  const emailRef = useRef<HTMLInputElement>(null);
+  const emailAuthRef = useRef<HTMLInputElement>(null);
+  const onEmailChange = async () => {
+    openModal(
+      "Email Change",
+      <>
+        <p>Enter your new email.</p>
+        <form onSubmit={(e) => e.preventDefault()}>
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <input
+              className="form-control"
+              name="email"
+              type="string"
+              placeholder="enter your email"
+              autoComplete="off"
+              ref={emailRef}
+              required
+            />
+          </div>
+          <label className="form-label">Current Password</label>
+          <input
+            className="form-control"
+            name="password"
+            type="password"
+            placeholder="enter your password"
+            autoComplete="off"
+            ref={emailAuthRef}
+            required
+          />
+          <div className="form-text">Password is required when you change email address.</div>
+        </form>
+      </>,
+      async () => {
+        try {
+          if (!userData.uid) throw console.log("No userData");
+          if (!emailRef.current?.value) return;
+          const newEmail = emailRef.current.value;
+          if (!emailAuthRef.current?.value) return;
+          const password = emailAuthRef.current.value;
+          await updateUserEmail(newEmail, password);
+          closeModal();
+          setUserData({ isLoggedIn: false });
+          openModal(
+            "Email update complete",
+            "Please complete email verification if you want to login",
+            () => navigate("/")
+          );
+        } catch (error) {
+          if (error) console.log(error);
+          openModal("Error", "Withdrawal failed");
+        }
+      },
+      true
+    );
+  };
+
+  const passwordRef = useRef<HTMLInputElement>(null);
   const onQuit = async () => {
     openModal(
       "Warning",
@@ -81,7 +139,7 @@ const Setting = () => {
             "
             buttonMessage="Change"
             currentData={userData.email}
-            onClick={() => {}}
+            onClick={onEmailChange}
           />
           <SettingData
             title="Withdrawal"

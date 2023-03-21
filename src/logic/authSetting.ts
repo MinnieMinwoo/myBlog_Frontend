@@ -8,6 +8,9 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   sendEmailVerification,
+  updateEmail,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from "firebase/auth";
 
 import { getUserNickname, getUserData, addUserData } from "./getSetUserInfo";
@@ -34,10 +37,7 @@ export const useAuthObserver = async () => {
   }
 };
 
-export const signInEmail = async (
-  email: string,
-  password: string
-): Promise<string | null> => {
+export const signInEmail = async (email: string, password: string): Promise<string | null> => {
   return new Promise(async (resolve, reject) => {
     try {
       const auth = getAuth();
@@ -58,10 +58,7 @@ export const signInEmail = async (
   });
 };
 
-export const signUpEmail = async (
-  email: string,
-  password: string
-): Promise<null> => {
+export const signUpEmail = async (email: string, password: string): Promise<null> => {
   return new Promise(async (resolve, reject) => {
     try {
       const auth = getAuth();
@@ -86,4 +83,22 @@ export const signOutUser = async () => {
   } catch (error) {
     throw error;
   }
+};
+
+export const updateUserEmail = async (newEmail: string, password: string) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (!user?.email) throw console.log("Email update error: wrong email data");
+  const credential = EmailAuthProvider.credential(user.email, password);
+  try {
+    await reauthenticateWithCredential(user, credential);
+  } catch {
+    throw console.log("Withdrawal error: wrong password");
+  }
+  await updateEmail(user, newEmail);
+  const actionCodeSettings = {
+    url: "http://localhost:3000/myBlog_Frontend#/",
+    handleCodeInApp: true,
+  };
+  await sendEmailVerification(user, actionCodeSettings);
 };

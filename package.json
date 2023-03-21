@@ -1,6 +1,6 @@
 {
   "name": "myblog-frontend",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "private": false,
   "homepage": "https://minnieminwoo.github.io/myBlog_Frontend/",
   "dependencies": {
