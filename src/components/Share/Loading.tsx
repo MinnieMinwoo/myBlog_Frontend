@@ -1,34 +1,19 @@
 import React from "react";
-import styled from "styled-components";
-import { Spinner } from "react-bootstrap";
-
-const Container = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: white;
-  opacity: 50%;
-  z-index: 10;
-`;
-
-const Animation = styled(Spinner)`
-  box-sizing: border-box;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 96px;
-  height: 96px;
-  margin-top: -48px;
-  margin-left: -48px;
-`;
 
 const Loading = () => {
   return (
-    <Container>
-      <Animation animation="border" />
-    </Container>
+    <div className="Loading d-inline-block position-fixed top-0 start-0 vw-100 vh-100 bg-light bg-opacity-50 z-10">
+      <div
+        className="spinner-grow text-secondary position-absolute top-50 start-50 translate-middle"
+        style={{
+          width: "100px",
+          height: "100px",
+        }}
+        role="status"
+      >
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
   );
 };
 
