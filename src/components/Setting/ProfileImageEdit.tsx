@@ -2,19 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { updateUserImage } from "../../logic/getSetUserInfo";
-import { Stack, Button, Image } from "react-bootstrap";
-import styled from "styled-components";
 
-const ImgContainer = styled.div`
-  flex-basis: 210px;
-  padding: 0 24px;
-`;
-
-const ProfileImg = styled(Image)`
-  width: 128px;
-  height: 128px;
-  margin: auto;
-`;
 const ProfileImageEdit = () => {
   const [userData, setUserData] = useRecoilState(loginData);
   const [imageLink, setImageLink] = useState("");
@@ -47,23 +35,28 @@ const ProfileImageEdit = () => {
   };
 
   return (
-    <ImgContainer className="ProfileImageEdit">
-      <Stack gap={3}>
-        <ProfileImg src={imageLink} alt="Profile" roundedCircle={true} thumbnail={true} />
-        <input
-          hidden
-          type="file"
-          accept="image/*"
-          ref={inputRef}
-          src={imageLink}
-          onChange={onChange}
-        />
-        <Button onClick={onUpload}>Upload Image</Button>
-        <Button variant="outline-primary" onClick={onDelete}>
-          Delete Image
-        </Button>
-      </Stack>
-    </ImgContainer>
+    <div className="ProfileImageEdit px-4 vstack gap-3" style={{ flexBasis: "210px" }}>
+      <img
+        className="img-thumbnail rounded-circle"
+        style={{ width: "128px", height: "128px" }}
+        src={imageLink}
+        alt="Profile"
+      />
+      <input
+        hidden
+        type="file"
+        accept="image/*"
+        ref={inputRef}
+        src={imageLink}
+        onChange={onChange}
+      />
+      <button type="button" className="btn btn-primary" onClick={onUpload}>
+        Upload Image
+      </button>
+      <button type="button" className="btn btn-outline-primary" onClick={onDelete}>
+        Delete Image
+      </button>
+    </div>
   );
 };
 

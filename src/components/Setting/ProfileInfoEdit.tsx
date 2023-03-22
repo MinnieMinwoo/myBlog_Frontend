@@ -2,27 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { updateUserProfile } from "../../logic/getSetUserInfo";
 import { loginData } from "../../states/LoginState";
-import { Container, Form, Button, Stack } from "react-bootstrap";
-import styled from "styled-components";
-
-const ProfileInfo = styled(Container)`
-  padding: 0 24px;
-`;
-
-const Nickname = styled.p`
-  font-size: 36px;
-  font-weight: 500;
-  margin: 0;
-  color: #111;
-`;
-
-const Description = styled.div`
-  color: #333;
-`;
-
-const SelectButton = styled(Button)`
-  width: 96px;
-`;
 
 const ProfileInfoEdit = () => {
   const [userData, setUserData] = useRecoilState(loginData);
@@ -59,45 +38,52 @@ const ProfileInfoEdit = () => {
   };
 
   return (
-    <ProfileInfo>
-      <div hidden={!hidden}>
-        <Stack gap={2}>
-          <Nickname>{userData.nickname}</Nickname>
-          <Description>{userData.description}</Description>
-          <SelectButton variant="outline-primary" onClick={onToggle}>
-            Edit
-          </SelectButton>
-        </Stack>
+    <div className="ProfileInfoEdit container px-4">
+      <div className="vstack gap-2" hidden={!hidden}>
+        <p className="fs-2 fw-semibold m-0" style={{ color: "#111" }}>
+          {userData.nickname}
+        </p>
+        <div style={{ color: "#333" }}>{userData.description}</div>
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          style={{ width: "96px" }}
+          onClick={onToggle}
+        >
+          Edit
+        </button>
       </div>
-      <Form hidden={hidden} onSubmit={onSubmit}>
-        <Stack gap={3}>
-          <Form.Group controlId="nickname">
-            <Form.Label>Nickname</Form.Label>
-            <Form.Control
-              type="text"
-              name="nickname"
-              placeholder="nickname"
-              value={nickname}
-              maxLength={20}
-              onChange={onChange}
-              required
-            />
-          </Form.Group>
-          <Form.Group controlId="description">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              type="text"
-              name="description"
-              placeholder="description"
-              value={description}
-              maxLength={100}
-              onChange={onChange}
-            />
-          </Form.Group>
-          <SelectButton type="submit">Save</SelectButton>
-        </Stack>
-      </Form>
-    </ProfileInfo>
+      <form hidden={hidden} onSubmit={onSubmit}>
+        <div className="mb-3">
+          <label className="form-label">Nickname</label>
+          <input
+            className="form-control"
+            type="text"
+            name="nickname"
+            placeholder="nickname"
+            value={nickname}
+            maxLength={20}
+            onChange={onChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Description</label>
+          <input
+            className="form-control"
+            type="text"
+            name="description"
+            placeholder="description"
+            value={description}
+            maxLength={100}
+            onChange={onChange}
+          />
+        </div>
+        <button type="submit" style={{ width: "96px" }} className="btn btn-primary">
+          Save
+        </button>
+      </form>
+    </div>
   );
 };
 
