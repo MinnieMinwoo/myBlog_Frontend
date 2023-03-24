@@ -1,43 +1,5 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
-import styled from "styled-components";
-
-const CategoryContent = styled.div``;
-
-const RouteContent = styled(Link)`
-  text-decoration: none;
-  font-size: 15px;
-`;
-
-const Title = styled(RouteContent)`
-  color: #555;
-  margin: 5px 0;
-  &:hover {
-    color: #555;
-  }
-`;
-
-const DetailData = styled(RouteContent)`
-  color: #777;
-  padding: 3px 0;
-  margin: 0;
-  &:hover {
-    color: #777;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-`;
-
-const ListBox = styled.ul`
-  list-style: none;
-  padding: 5px 0 3px 0;
-  margin: 0;
-`;
-
-const ListData = styled.li`
-  border-left: 2px solid #eee;
-  padding-left: 9px;
-`;
 
 interface Props {
   data: {
@@ -50,20 +12,26 @@ const CategorySideContent = ({ data }: Props) => {
   const params = useParams();
 
   return (
-    <CategoryContent className="CategorySideContent">
-      <Title as="p">{data.mainField}</Title>
+    <div className="CategorySideContent">
+      <p className="my-1 mx-0" style={{ color: "#555" }}>
+        {data.mainField}
+      </p>
       {data.subField && (
-        <ListBox>
+        <ul className="m-0 list-unstyled" style={{ padding: "5px 0 3px 0" }}>
           {data.subField.map((content, id) => (
-            <ListData key={id}>
-              <DetailData to={`/home/${params.userID}/category/${data.mainField}/${content}`}>
+            <li key={id} className="ps-2" style={{ borderLeft: "2px solid #eee" }}>
+              <Link
+                className="fs-6 text-decoration-none"
+                style={{ color: "#777" }}
+                to={`/home/${params.userID}/category/${data.mainField}/${content}`}
+              >
                 {content}
-              </DetailData>
-            </ListData>
+              </Link>
+            </li>
           ))}
-        </ListBox>
+        </ul>
       )}
-    </CategoryContent>
+    </div>
   );
 };
 

@@ -3,43 +3,16 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginData } from "../../states/LoginState";
-import { Button, ButtonGroup } from "react-bootstrap";
 import styled from "styled-components";
 
 import { signOutUser } from "../../logic/authSetting";
 import { useModal } from "../../states/ModalState";
 import AlertModal from "../Share/AlertModal";
+import altImage from "../../assets/images/altThumbnail.jpg";
 
-const ProfileBox = styled.div`
-  display: inline-block;
-`;
-
-const ProfileButton = styled.button<{ url: string | null }>`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 1px solid #eee;
-  background-image: url(${(props) => (props.url ? props.url : "")});
-  background-color: #fff;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  cursor: Pointer;
-`;
-
-const ButtonContainer = styled(ButtonGroup).attrs(() => ({
-  vertical: true,
-}))`
-  position: absolute;
-  transform: translate(-75px, 50px);
-  width: 98px;
+const ButtonContainer = styled.div`
   @media (max-width: 767px) {
     transform: translateX(-49px, -50px);
-  }
-  margin-top: 5px;
-  z-index: 1;
-  & button {
-    background-color: #fff;
   }
 `;
 
@@ -83,24 +56,41 @@ const HomeProfile = () => {
   };
 
   return (
-    <ProfileBox className="HeaderProfile">
+    <div className="HeaderProfile d-inline-block">
       <AlertModal />
 
-      <ProfileButton url={userData.photoURL ?? ""} onClick={onToggle} />
+      <img
+        className="img-thumbnail rounded-circle"
+        style={{
+          width: "50px",
+          height: "50px",
+        }}
+        src={userData.photoURL ?? altImage}
+        alt="Profile"
+        role="button"
+        onClick={onToggle}
+      />
       {isHidden ? null : (
-        <ButtonContainer>
-          <Button name="write" variant="outline-secondary" onClick={onClick}>
+        <ButtonContainer
+          className="btn-group-vertical mt-2 position-absolute z-1"
+          role="group"
+          style={{
+            transform: "translate(-75px, 50px)",
+            width: "98px",
+          }}
+        >
+          <button className="btn btn-primary" name="write" onClick={onClick}>
             Post
-          </Button>
-          <Button name="setting" variant="outline-secondary" onClick={onClick}>
+          </button>
+          <button className="btn btn-primary" name="setting" onClick={onClick}>
             Setting
-          </Button>
-          <Button name="logout" variant="outline-secondary" onClick={onClick}>
+          </button>
+          <button className="btn btn-primary" name="logout" onClick={onClick}>
             Sign Out
-          </Button>
+          </button>
         </ButtonContainer>
       )}
-    </ProfileBox>
+    </div>
   );
 };
 
