@@ -4,11 +4,16 @@ import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { isLoadingData } from "../../states/LoadingState";
 
-import { getUserPostList } from "../../logic/getSetPostInfo";
+import {
+  getUserPostInit,
+  getUserAllPost,
+  getUserPostListWithCursor,
+} from "../../logic/getSetPostInfo";
 import { getUserUID } from "../../logic/getSetUserInfo";
 import AlertToast from "../Share/Toast";
 import { useToast } from "../../states/ToastState";
 import PostThumbnailBox from "./PostThumbnailBox";
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
 const Dummy = () => {
   const repeat = 3;
@@ -37,6 +42,8 @@ const Dummy = () => {
 const PostContainer = () => {
   const [isLoading, setIsLoading] = useRecoilState(isLoadingData);
   const [postList, setPostList] = useState<PostData[]>([]);
+  const [postIndex, setPostIndex] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+  const [postNum, setPostNum] = useState(0);
   const { openToast } = useToast();
   const params = useParams();
 
@@ -44,11 +51,12 @@ const PostContainer = () => {
     setIsLoading(true);
     if (!params.userID) throw console.log("no params");
     getUserUID(params.userID)
-      .then((uid) => {
-        return getUserPostList(uid);
-      })
-      .then((docList) => {
-        setPostList(docList);
+      .then(async (uid) => {
+        const { count, index, data } = await getUserPostInit(uid);
+        setPostNum(count);
+        setPostIndex(index);
+        const docList = await getUserPostListWithCursor(uid, index);
+        setPostList((current) => [data, ...docList]);
       })
       .catch((error) => {
         console.log(error);
@@ -68,7 +76,7 @@ const PostContainer = () => {
       <AlertToast />
       <div className="PostHeader mb-3 hstack gap-1" hidden={isLoading}>
         <h2 className="fw-bold d-inline-block">{title}</h2>
-        <span className="text-primary fs-5">{`(${String(postList.length)})`}</span>
+        <span className="text-primary fs-5">{`(${String(postNum)})`}</span>
       </div>
       <PostThumbnailBox postList={postList} />
     </section>

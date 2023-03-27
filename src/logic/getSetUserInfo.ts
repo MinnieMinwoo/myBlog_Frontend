@@ -19,7 +19,7 @@ import {
 } from "firebase/auth";
 
 import { deleteImg, uploadImg } from "./getSetImage";
-import { getUserPostList, deletePost } from "./getSetPostInfo";
+import { getUserAllPost, deletePost } from "./getSetPostInfo";
 
 interface DocData {
   nickname?: string;
@@ -119,7 +119,7 @@ export const deleteUserData = async (uid: string, password: string) => {
   } catch {
     throw console.log("Withdrawal error: wrong password");
   }
-  const docList = await getUserPostList(uid);
+  const docList = await getUserAllPost(uid);
   docList.forEach((doc) => {
     deletePost(doc.id);
   });

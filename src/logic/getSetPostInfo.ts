@@ -11,15 +11,86 @@ import {
   where,
   orderBy,
   updateDoc,
+  limit,
+  getCountFromServer,
+  QueryDocumentSnapshot,
+  DocumentData,
+  startAfter,
 } from "firebase/firestore";
 
 import { getUserNickname } from "./getSetUserInfo";
 
-export const getUserPostList = async (uid: string): Promise<PostData[]> => {
+export const getUserPostInit = async (
+  uid: string
+): Promise<{
+  count: number;
+  index: QueryDocumentSnapshot<DocumentData>;
+  data: PostData;
+}> => {
+  const numberQuery = query(collection(dbService, "posts"), where("createdBy", "==", uid));
+  const initQuery = query(
+    collection(dbService, "posts"),
+    where("createdBy", "==", uid),
+    orderBy("createdAt", "desc"),
+    limit(1)
+  );
+
+  try {
+    const numSnapShot = await getCountFromServer(numberQuery);
+    const docSnapShot = await getDocs(initQuery);
+    const doc = docSnapShot.docs[0];
+    const docData = {
+      id: doc.id,
+      createdAt: doc.data().createdAt,
+      createdBy: doc.data().createdBy,
+      tag: doc.data().tag,
+      thumbnailData: doc.data().thumbnailData,
+      thumbnailImageURL: doc.data().thumbnailImageURL,
+      title: doc.data().title,
+    };
+    return { count: numSnapShot.data().count, index: docSnapShot.docs[0], data: docData };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserAllPost = async (uid: string): Promise<PostData[]> => {
   const q = query(
     collection(dbService, "posts"),
     where("createdBy", "==", uid),
-    orderBy("createdAt", "desc")
+    orderBy("createdAt", "desc"),
+    limit(10)
+  );
+  try {
+    const querySnapshot = await getDocs(q);
+    const docList: PostData[] = [];
+    querySnapshot.forEach((doc) => {
+      docList.push({
+        id: doc.id,
+        createdAt: doc.data().createdAt,
+        createdBy: doc.data().createdBy,
+        tag: doc.data().tag,
+        thumbnailData: doc.data().thumbnailData,
+        thumbnailImageURL: doc.data().thumbnailImageURL,
+        title: doc.data().title,
+      });
+    });
+    return docList;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserPostListWithCursor = async (
+  uid: string,
+  postIndex: QueryDocumentSnapshot<DocumentData>
+): Promise<PostData[]> => {
+  const q = query(
+    collection(dbService, "posts"),
+    where("createdBy", "==", uid),
+    orderBy("createdAt", "desc"),
+    startAfter(postIndex),
+    limit(10)
   );
   try {
     const querySnapshot = await getDocs(q);
