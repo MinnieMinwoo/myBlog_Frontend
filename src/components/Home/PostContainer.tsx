@@ -1,14 +1,10 @@
 /* eslint-disable jsx-a11y/heading-has-content */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { isLoadingData } from "../../states/LoadingState";
 
-import {
-  getUserPostInit,
-  getUserAllPost,
-  getUserPostListWithCursor,
-} from "../../logic/getSetPostInfo";
+import { getUserPostInit, getUserPostListWithCursor } from "../../logic/getSetPostInfo";
 import { getUserUID } from "../../logic/getSetUserInfo";
 import AlertToast from "../Share/Toast";
 import { useToast } from "../../states/ToastState";
@@ -44,8 +40,19 @@ const PostContainer = () => {
   const [postList, setPostList] = useState<PostData[]>([]);
   const [postIndex, setPostIndex] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [postNum, setPostNum] = useState(0);
+  const [isLastPost, setIsLastPost] = useState(false);
   const { openToast } = useToast();
   const params = useParams();
+
+  const observeRef = useRef<HTMLDivElement>(null);
+  const onPagination = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+    if (!entries[0].isIntersecting) return;
+    console.log(entries);
+    console.log(observer);
+  };
+  const observer = new IntersectionObserver(onPagination, {
+    threshold: 0.1,
+  });
 
   useEffect(() => {
     setIsLoading(true);
@@ -56,13 +63,14 @@ const PostContainer = () => {
         setPostNum(count);
         setPostIndex(index);
         const docList = await getUserPostListWithCursor(uid, index);
-        setPostList((current) => [data, ...docList]);
+        setPostList([data, ...docList]);
       })
       .catch((error) => {
         console.log(error);
         openToast("Error", "Read post list failed.", "warning");
       })
       .finally(() => {
+        observeRef.current && observer.observe(observeRef.current);
         setIsLoading(false);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,6 +87,16 @@ const PostContainer = () => {
         <span className="text-primary fs-5">{`(${String(postNum)})`}</span>
       </div>
       <PostThumbnailBox postList={postList} />
+      {isLoading ? null : (
+        <div
+          className="spinner-border text-secondary"
+          style={{ marginLeft: "47%" }}
+          ref={observeRef}
+          role="status"
+        >
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      )}
     </section>
   );
 };
