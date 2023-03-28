@@ -72,11 +72,12 @@ const HomeProfile = () => {
       />
       {isHidden ? null : (
         <ButtonContainer
-          className="btn-group-vertical mt-2 position-absolute z-1"
+          className="btn-group-vertical mt-2 position-absolute"
           role="group"
           style={{
             transform: "translate(-75px, 50px)",
             width: "98px",
+            zIndex: "1",
           }}
         >
           <button className="btn btn-primary" name="write" onClick={onClick}>

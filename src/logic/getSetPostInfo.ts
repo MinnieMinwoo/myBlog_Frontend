@@ -84,7 +84,10 @@ export const getUserAllPost = async (uid: string): Promise<PostData[]> => {
 export const getUserPostListWithCursor = async (
   uid: string,
   postIndex: QueryDocumentSnapshot<DocumentData>
-): Promise<PostData[]> => {
+): Promise<{
+  index: QueryDocumentSnapshot<DocumentData>;
+  data: PostData[];
+}> => {
   const q = query(
     collection(dbService, "posts"),
     where("createdBy", "==", uid),
@@ -94,9 +97,9 @@ export const getUserPostListWithCursor = async (
   );
   try {
     const querySnapshot = await getDocs(q);
-    const docList: PostData[] = [];
+    const docData: PostData[] = [];
     querySnapshot.forEach((doc) => {
-      docList.push({
+      docData.push({
         id: doc.id,
         createdAt: doc.data().createdAt,
         createdBy: doc.data().createdBy,
@@ -106,7 +109,7 @@ export const getUserPostListWithCursor = async (
         title: doc.data().title,
       });
     });
-    return docList;
+    return { index: querySnapshot.docs[querySnapshot.docs.length - 1], data: docData };
   } catch (error) {
     throw error;
   }

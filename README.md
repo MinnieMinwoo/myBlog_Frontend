@@ -12,6 +12,7 @@ Make my own blog project.
 
   - Get blog posts list by user nickname
   - View post thumbnail With images
+  - Get post data using infinite scroll
   - Sort posts by category
 
 - Post read

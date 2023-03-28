@@ -38,19 +38,29 @@ const Dummy = () => {
 const PostContainer = () => {
   const [isLoading, setIsLoading] = useRecoilState(isLoadingData);
   const [postList, setPostList] = useState<PostData[]>([]);
-  const [postIndex, setPostIndex] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [postNum, setPostNum] = useState(0);
   const [isLastPost, setIsLastPost] = useState(false);
   const { openToast } = useToast();
   const params = useParams();
 
+  const [isPagination, setIsPagination] = useState(false);
+  const postIndex = useRef<QueryDocumentSnapshot<DocumentData>>();
   const observeRef = useRef<HTMLDivElement>(null);
-  const onPagination = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
-    if (!entries[0].isIntersecting) return;
-    console.log(entries);
-    console.log(observer);
+
+  const onPagination = async (entries: IntersectionObserverEntry[]) => {
+    if (!entries[0].isIntersecting || !postIndex.current || !params.userID) return;
+    if (isPagination || isLastPost) return;
+    setIsPagination(true);
+    const uid = await getUserUID(params.userID);
+    const { index, data } = await getUserPostListWithCursor(uid, postIndex.current);
+    setPostList((prev) => [...prev, ...data]);
+    postIndex.current = index;
+    if (data.length !== 10) setIsLastPost(true);
+    setIsPagination(false);
   };
+
   const observer = new IntersectionObserver(onPagination, {
+    rootMargin: "100px",
     threshold: 0.1,
   });
 
@@ -61,9 +71,10 @@ const PostContainer = () => {
       .then(async (uid) => {
         const { count, index, data } = await getUserPostInit(uid);
         setPostNum(count);
-        setPostIndex(index);
-        const docList = await getUserPostListWithCursor(uid, index);
+        const { index: docIndex, data: docList } = await getUserPostListWithCursor(uid, index);
         setPostList([data, ...docList]);
+        postIndex.current = docIndex;
+        if (docList.length !== 10) setIsLastPost(true);
       })
       .catch((error) => {
         console.log(error);
@@ -76,18 +87,16 @@ const PostContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let title = "Posts";
-
   return (
     <section className="PostContainer px-3 m-4">
       {isLoading ? <Dummy /> : null}
       <AlertToast />
       <div className="PostHeader mb-3 hstack gap-1" hidden={isLoading}>
-        <h2 className="fw-bold d-inline-block">{title}</h2>
+        <h2 className="fw-bold d-inline-block">Posts</h2>
         <span className="text-primary fs-5">{`(${String(postNum)})`}</span>
       </div>
       <PostThumbnailBox postList={postList} />
-      {isLoading ? null : (
+      {isLastPost || isLoading ? null : (
         <div
           className="spinner-border text-secondary"
           style={{ marginLeft: "47%" }}
