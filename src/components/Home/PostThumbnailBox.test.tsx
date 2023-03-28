@@ -3,7 +3,6 @@ import { MemoryRouter } from "react-router-dom";
 import { cleanup, render, screen } from "@testing-library/react";
 import { RecoilRoot } from "recoil";
 import PostThumbnailBox from "./PostThumbnailBox";
-import userEvent from "@testing-library/user-event";
 
 describe("Post thumbnailBox test", () => {
   const postData = [

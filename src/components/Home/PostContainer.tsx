@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { isLoadingData } from "../../states/LoadingState";
 
-import { getUserPostInit, getUserPostListWithCursor } from "../../logic/getSetPostInfo";
+import { getUserPostNumber, getUserPostList } from "../../logic/getSetPostInfo";
 import { getUserUID } from "../../logic/getSetUserInfo";
 import AlertToast from "../Share/Toast";
 import { useToast } from "../../states/ToastState";
@@ -39,11 +39,11 @@ const PostContainer = () => {
   const [isLoading, setIsLoading] = useRecoilState(isLoadingData);
   const [postList, setPostList] = useState<PostData[]>([]);
   const [postNum, setPostNum] = useState(0);
-  const [isLastPost, setIsLastPost] = useState(false);
   const { openToast } = useToast();
   const params = useParams();
 
   const [isPagination, setIsPagination] = useState(false);
+  const [isLastPost, setIsLastPost] = useState(false);
   const postIndex = useRef<QueryDocumentSnapshot<DocumentData>>();
   const observeRef = useRef<HTMLDivElement>(null);
 
@@ -52,7 +52,7 @@ const PostContainer = () => {
     if (isPagination || isLastPost) return;
     setIsPagination(true);
     const uid = await getUserUID(params.userID);
-    const { index, data } = await getUserPostListWithCursor(uid, postIndex.current);
+    const { index, data } = await getUserPostList(uid, postIndex.current);
     setPostList((prev) => [...prev, ...data]);
     postIndex.current = index;
     if (data.length !== 10) setIsLastPost(true);
@@ -69,10 +69,10 @@ const PostContainer = () => {
     if (!params.userID) throw console.log("no params");
     getUserUID(params.userID)
       .then(async (uid) => {
-        const { count, index, data } = await getUserPostInit(uid);
+        const count = await getUserPostNumber(uid);
         setPostNum(count);
-        const { index: docIndex, data: docList } = await getUserPostListWithCursor(uid, index);
-        setPostList([data, ...docList]);
+        const { index: docIndex, data: docList } = await getUserPostList(uid);
+        setPostList(docList);
         postIndex.current = docIndex;
         if (docList.length !== 10) setIsLastPost(true);
       })

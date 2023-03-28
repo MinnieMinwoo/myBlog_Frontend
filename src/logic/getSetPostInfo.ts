@@ -20,35 +20,29 @@ import {
 
 import { getUserNickname } from "./getSetUserInfo";
 
-export const getUserPostInit = async (
-  uid: string
-): Promise<{
-  count: number;
-  index: QueryDocumentSnapshot<DocumentData>;
-  data: PostData;
-}> => {
-  const numberQuery = query(collection(dbService, "posts"), where("createdBy", "==", uid));
-  const initQuery = query(
+export const getUserPostNumber = async (uid: string): Promise<number> => {
+  const q = query(collection(dbService, "posts"), where("createdBy", "==", uid));
+  try {
+    const snapShot = await getCountFromServer(q);
+    return snapShot.data().count;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getPostNumByCategory = async (
+  uid: string,
+  mainCategory: string,
+  subCategory: string
+): Promise<number> => {
+  const q = query(
     collection(dbService, "posts"),
     where("createdBy", "==", uid),
-    orderBy("createdAt", "desc"),
-    limit(1)
+    where("category", "==", [mainCategory, subCategory])
   );
-
   try {
-    const numSnapShot = await getCountFromServer(numberQuery);
-    const docSnapShot = await getDocs(initQuery);
-    const doc = docSnapShot.docs[0];
-    const docData = {
-      id: doc.id,
-      createdAt: doc.data().createdAt,
-      createdBy: doc.data().createdBy,
-      tag: doc.data().tag,
-      thumbnailData: doc.data().thumbnailData,
-      thumbnailImageURL: doc.data().thumbnailImageURL,
-      title: doc.data().title,
-    };
-    return { count: numSnapShot.data().count, index: docSnapShot.docs[0], data: docData };
+    const snapShot = await getCountFromServer(q);
+    return snapShot.data().count;
   } catch (error) {
     throw error;
   }
@@ -81,9 +75,9 @@ export const getUserAllPost = async (uid: string): Promise<PostData[]> => {
   }
 };
 
-export const getUserPostListWithCursor = async (
+export const getUserPostList = async (
   uid: string,
-  postIndex: QueryDocumentSnapshot<DocumentData>
+  postIndex?: QueryDocumentSnapshot<DocumentData>
 ): Promise<{
   index: QueryDocumentSnapshot<DocumentData>;
   data: PostData[];
@@ -92,7 +86,7 @@ export const getUserPostListWithCursor = async (
     collection(dbService, "posts"),
     where("createdBy", "==", uid),
     orderBy("createdAt", "desc"),
-    startAfter(postIndex),
+    startAfter(postIndex ?? ""),
     limit(10)
   );
   try {
@@ -118,13 +112,19 @@ export const getUserPostListWithCursor = async (
 export const getPostListByCategory = async (
   uid: string,
   mainCategory: string,
-  subCategory: string
-): Promise<PostData[]> => {
+  subCategory: string,
+  index?: QueryDocumentSnapshot<DocumentData>
+): Promise<{
+  index: QueryDocumentSnapshot<DocumentData>;
+  data: PostData[];
+}> => {
   const q = query(
     collection(dbService, "posts"),
     where("createdBy", "==", uid),
     where("category", "==", [mainCategory, subCategory]),
-    orderBy("createdAt", "desc")
+    orderBy("createdAt", "desc"),
+    startAfter(index ?? ""),
+    limit(10)
   );
   try {
     const querySnapshot = await getDocs(q);
@@ -140,7 +140,7 @@ export const getPostListByCategory = async (
         title: doc.data().title,
       });
     });
-    return docList;
+    return { index: querySnapshot.docs[querySnapshot.docs.length - 1], data: docList };
   } catch (error) {
     throw error;
   }
