@@ -14,6 +14,7 @@ import SettingData from "../components/Setting/SettingData";
 import AlertModal from "../components/Share/AlertModal";
 import Header from "../components/Share/Header";
 import { updateUserEmail } from "../logic/authSetting";
+import SocialLoginEdit from "../components/Setting/SocialLoginEdit";
 
 const Setting = () => {
   const [userData, setUserData] = useRecoilState(loginData);
@@ -135,17 +136,16 @@ const Setting = () => {
         <section className="col col-lg-10 offset-lg-1 col-xxl-8 offset-xxl-2">
           <SettingData
             title="Email address"
-            description="Email address that receives authentication or notification.
-            "
+            description="Email address that receives authentication or notification."
             buttonMessage="Change"
             currentData={userData.email}
             onClick={onEmailChange}
           />
+          <SocialLoginEdit />
           <SettingData
             title="Withdrawal"
             description="All posts and comments you created upon withdrawal will be deleted and will not be
-            recovered.
-            "
+            recovered."
             buttonMessage="Quit"
             buttonColor="danger"
             onClick={onQuit}
