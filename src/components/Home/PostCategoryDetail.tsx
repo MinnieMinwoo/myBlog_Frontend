@@ -69,11 +69,6 @@ const PostCategoryDetail = () => {
     setIsPagination(false);
   };
 
-  const observer = new IntersectionObserver(onPagination, {
-    rootMargin: "100px",
-    threshold: 0.1,
-  });
-
   useEffect(() => {
     setIsLoading(true);
     const { mainName, subName } = params;
@@ -95,12 +90,23 @@ const PostCategoryDetail = () => {
         openToast("Error", "Post loading failed.", "warning");
       })
       .finally(() => {
-        observeRef.current && observer.observe(observeRef.current);
         setIsLoading(false);
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(onPagination, {
+      root: null,
+      rootMargin: "100px",
+      threshold: 0.1,
+    });
+    observeRef.current && observer.observe(observeRef.current);
+    return () => {
+      observeRef.current && observer.unobserve(observeRef.current);
+    };
+  }, [observeRef.current]);
 
   return (
     <>
@@ -132,16 +138,15 @@ const PostCategoryDetail = () => {
             </section>
             <PostThumbnailBox postList={postList} />
           </main>
-          {isLastPost || isLoading ? null : (
-            <div
-              className="spinner-border text-secondary"
-              style={{ marginLeft: "47%" }}
-              ref={observeRef}
-              role="status"
-            >
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          )}
+          <div
+            id="pagination"
+            className="spinner-border text-secondary"
+            style={{ marginLeft: "47%", display: `${isLastPost || isLoading ? "none" : "block"}` }}
+            ref={observeRef}
+            role="status"
+          >
+            <span className="visually-hidden">Loading...</span>
+          </div>
         </>
       )}
     </>
