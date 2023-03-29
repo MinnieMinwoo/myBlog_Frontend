@@ -48,6 +48,7 @@ const PostContainer = () => {
   const observeRef = useRef<HTMLDivElement>(null);
 
   const onPagination = async (entries: IntersectionObserverEntry[]) => {
+    console.log(entries);
     if (!entries[0].isIntersecting || !postIndex.current || !params.userID) return;
     if (isPagination || isLastPost) return;
     setIsPagination(true);
@@ -88,7 +89,7 @@ const PostContainer = () => {
   }, []);
 
   return (
-    <section className="PostContainer px-3 m-4">
+    <section className="PostContainer px-md-3 my-4 mx-md-4">
       {isLoading ? <Dummy /> : null}
       <AlertToast />
       <div className="PostHeader mb-3 hstack gap-1" hidden={isLoading}>

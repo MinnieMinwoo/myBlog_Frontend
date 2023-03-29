@@ -15,11 +15,6 @@ import AlertToast from "../Share/Toast";
 import PostSubCategory from "./PostSubCategory";
 import { CategoryNameForm as inputForm } from "./PostCategoryForm";
 
-const MainContainer = styled(Stack)`
-  padding: 0 30px;
-  margin: 30px;
-`;
-
 const HeaderBox = styled.div`
   margin-bottom: 20px;
 
@@ -106,7 +101,7 @@ const PostCategoryList = () => {
   };
 
   return (
-    <MainContainer className="PostCategoryList">
+    <div className="PostCategoryList my-4 mx-md-4 px-md-4">
       <AlertModal />
       <AlertToast />
       <HeaderBox>
@@ -133,7 +128,7 @@ const PostCategoryList = () => {
         categoryData={categoryList}
         setCategoryData={setCategoryList}
       />
-    </MainContainer>
+    </div>
   );
 };
 

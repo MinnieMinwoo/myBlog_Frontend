@@ -11,6 +11,37 @@ import { getCategoryThumbnail } from "../../logic/getSetCategoryInfo";
 import PostThumbnailBox from "./PostThumbnailBox";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
+const Dummy = () => {
+  const repeat = 3;
+  return (
+    <div aria-hidden="true">
+      <section
+        className="w-100 bg-secondary px-4 mb-4"
+        style={{
+          height: "340px",
+        }}
+      >
+        <div style={{ paddingTop: "140px" }}>
+          <h2 className="placeholder d-block col-5" />
+          <p className="placeholder col-4" />
+        </div>
+      </section>
+      {[...Array(repeat)].map((e, index) => (
+        <div className="mb-3 d-flex vstack gap-1 placeholder-wave placeholder-lg" key={index}>
+          <hr />
+          <h3 className="placeholder col-3 bg-secondary" />
+          <div>
+            <p className="placeholder col-11 bg-secondary" />
+            <p className="placeholder col-12 bg-secondary" />
+            <p className="placeholder col-8 bg-secondary" />
+          </div>
+          <span className="placeholder col-2 bg-secondary" />
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const PostCategoryDetail = () => {
   const [isLoading, setIsLoading] = useRecoilState(isLoadingData);
   const [imageURL, setImageURL] = useState("");
@@ -74,38 +105,52 @@ const PostCategoryDetail = () => {
   return (
     <>
       <AlertToast />
-      <main className="read_section" hidden={isLoading}>
-        <section
-          className="bg-image w-100 bg-opacity-50 px-4 mb-4"
-          style={{
-            height: "340px",
-            background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-            url(${imageURL}) no-repeat center / cover`,
-            backgroundColor: "rgba(255, 255, 255, 0.5)",
-          }}
-        >
-          <h2
-            className="fs-1 fw-middle mb-3 text-white"
-            style={{ paddingTop: "140px" }}
-          >{`${params.mainName} - ${params.subName}`}</h2>
-          <span className="fs-5 text-white">{`${postNum} ${
-            postList.length && postList.length !== 1 ? "posts" : "post"
-          }`}</span>
-        </section>
-        <PostThumbnailBox postList={postList} />
-      </main>
-      {isLastPost || isLoading ? null : (
-        <div
-          className="spinner-border text-secondary"
-          style={{ marginLeft: "47%" }}
-          ref={observeRef}
-          role="status"
-        >
-          <span className="visually-hidden">Loading...</span>
-        </div>
+      {isLoading ? (
+        <Dummy />
+      ) : (
+        <>
+          <main className="read_section" hidden={isLoading}>
+            <section
+              className="bg-image w-100 bg-opacity-50 px-4 mb-4"
+              style={{
+                height: "340px",
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+            url(${imageURL})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
+              }}
+            >
+              <h2
+                className="fs-1 fw-middle mb-3 text-white"
+                style={{ paddingTop: "140px" }}
+              >{`${params.mainName} - ${params.subName}`}</h2>
+              <span className="fs-5 text-white">{`${postNum} ${
+                postList.length && postList.length !== 1 ? "posts" : "post"
+              }`}</span>
+            </section>
+            <PostThumbnailBox postList={postList} />
+          </main>
+          {isLastPost || isLoading ? null : (
+            <div
+              className="spinner-border text-secondary"
+              style={{ marginLeft: "47%" }}
+              ref={observeRef}
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          )}
+        </>
       )}
     </>
   );
 };
 
 export default PostCategoryDetail;
+
+/*
+<>
+          
+*/

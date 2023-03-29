@@ -82,7 +82,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="Auth vh-100 d-flex col-md-6 offset-md-3 col-lg-4 offset-md-4">
+    <div className="Auth vh-100 d-flex col-10 offset-1 col-md-6 offset-md-3 col-lg-4 offset-md-4">
       <div className="vstack gap-3 align-self-center">
         <AlertModal />
         <h1>MyBlog</h1>

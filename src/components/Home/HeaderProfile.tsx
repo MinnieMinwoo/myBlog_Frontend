@@ -11,8 +11,9 @@ import AlertModal from "../Share/AlertModal";
 import altImage from "../../assets/images/altThumbnail.jpg";
 
 const ButtonContainer = styled.div`
-  @media (max-width: 767px) {
-    transform: translateX(-49px, -50px);
+  transform: translate(-75px, 50px);
+  @media (max-width: 575px) {
+    transform: translate(-96px, 50px);
   }
 `;
 
@@ -75,7 +76,6 @@ const HomeProfile = () => {
           className="btn-group-vertical mt-2 position-absolute"
           role="group"
           style={{
-            transform: "translate(-75px, 50px)",
             width: "98px",
             zIndex: "1",
           }}

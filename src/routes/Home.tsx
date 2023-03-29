@@ -36,7 +36,7 @@ const Home = () => {
       </header>
       <section className="home_section flex-grow-1">
         <div className="row">
-          <div className="col col-sm-10 offset-sm-1 col-lg-8 offset-lg-2 col-xxl-6 offset-xxl-3">
+          <div className="col col-10 offset-1 col-lg-8 offset-lg-2 col-xxl-6 offset-xxl-3">
             <Outlet context={[categoryList, setCategoryList]} />
           </div>
           <div className="col">
