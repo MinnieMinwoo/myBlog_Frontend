@@ -50,25 +50,6 @@ const PostCategoryDetail = () => {
   const { openToast } = useToast();
   const params = useParams();
 
-  const [isPagination, setIsPagination] = useState(false);
-  const [isLastPost, setIsLastPost] = useState(false);
-  const postIndex = useRef<QueryDocumentSnapshot<DocumentData>>();
-  const observeRef = useRef<HTMLDivElement>(null);
-
-  const onPagination = async (entries: IntersectionObserverEntry[]) => {
-    const { userID, mainName, subName } = params;
-    if (!userID || !mainName || !subName) return;
-    if (!entries[0].isIntersecting || !postIndex.current) return;
-    if (isPagination || isLastPost) return;
-    setIsPagination(true);
-    const uid = await getUserUID(userID);
-    const { index, data } = await getPostListByCategory(uid, mainName, subName, postIndex.current);
-    setPostList((prev) => [...prev, ...data]);
-    postIndex.current = index;
-    if (data.length !== 10) setIsLastPost(true);
-    setIsPagination(false);
-  };
-
   useEffect(() => {
     setIsLoading(true);
     const { mainName, subName } = params;
@@ -96,16 +77,36 @@ const PostCategoryDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [isPagination, setIsPagination] = useState(false);
+  const [isLastPost, setIsLastPost] = useState(false);
+  const postIndex = useRef<QueryDocumentSnapshot<DocumentData>>();
+  const observeRef = useRef<HTMLDivElement>(null);
+
+  const onPagination = async (entries: IntersectionObserverEntry[]) => {
+    const { userID, mainName, subName } = params;
+    if (!userID || !mainName || !subName) return;
+    if (!entries[0].isIntersecting || !postIndex.current) return;
+    if (isPagination || isLastPost) return;
+    setIsPagination(true);
+    const uid = await getUserUID(userID);
+    const { index, data } = await getPostListByCategory(uid, mainName, subName, postIndex.current);
+    setPostList((prev) => [...prev, ...data]);
+    postIndex.current = index;
+    if (data.length !== 10) setIsLastPost(true);
+    setIsPagination(false);
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(onPagination, {
-      root: null,
       rootMargin: "100px",
       threshold: 0.1,
     });
-    observeRef.current && observer.observe(observeRef.current);
+    const currentRef = observeRef.current;
+    currentRef && observer.observe(currentRef);
     return () => {
-      observeRef.current && observer.unobserve(observeRef.current);
+      currentRef && observer.unobserve(currentRef);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [observeRef.current]);
 
   return (

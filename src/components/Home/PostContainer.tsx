@@ -42,6 +42,28 @@ const PostContainer = () => {
   const { openToast } = useToast();
   const params = useParams();
 
+  useEffect(() => {
+    setIsLoading(true);
+    if (!params.userID) throw console.log("no params");
+    getUserUID(params.userID)
+      .then(async (uid) => {
+        const count = await getUserPostNumber(uid);
+        setPostNum(count);
+        const { index: docIndex, data: docList } = await getUserPostList(uid);
+        setPostList(docList);
+        postIndex.current = docIndex;
+        if (docList.length !== 10) setIsLastPost(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        openToast("Error", "Read post list failed.", "warning");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const [isPagination, setIsPagination] = useState(false);
   const [isLastPost, setIsLastPost] = useState(false);
   const postIndex = useRef<QueryDocumentSnapshot<DocumentData>>();
@@ -60,33 +82,18 @@ const PostContainer = () => {
     setIsPagination(false);
   };
 
-  const observer = new IntersectionObserver(onPagination, {
-    rootMargin: "100px",
-    threshold: 0.1,
-  });
-
   useEffect(() => {
-    setIsLoading(true);
-    if (!params.userID) throw console.log("no params");
-    getUserUID(params.userID)
-      .then(async (uid) => {
-        const count = await getUserPostNumber(uid);
-        setPostNum(count);
-        const { index: docIndex, data: docList } = await getUserPostList(uid);
-        setPostList(docList);
-        postIndex.current = docIndex;
-        if (docList.length !== 10) setIsLastPost(true);
-      })
-      .catch((error) => {
-        console.log(error);
-        openToast("Error", "Read post list failed.", "warning");
-      })
-      .finally(() => {
-        observeRef.current && observer.observe(observeRef.current);
-        setIsLoading(false);
-      });
+    const observer = new IntersectionObserver(onPagination, {
+      rootMargin: "100px",
+      threshold: 0.1,
+    });
+    const currentRef = observeRef.current;
+    currentRef && observer.observe(currentRef);
+    return () => {
+      currentRef && observer.unobserve(currentRef);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [observeRef.current]);
 
   return (
     <section className="PostContainer px-md-3 my-4 mx-md-4">
