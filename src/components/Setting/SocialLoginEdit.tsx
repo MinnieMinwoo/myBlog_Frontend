@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 
-import { linkSocialLogin } from "../../logic/authSetting";
+import { linkSocialLogin, unLInkSocialLogin } from "../../logic/authSetting";
 import { loginData } from "../../states/LoginState";
 import { useToast } from "../../states/ToastState";
 
@@ -12,34 +12,76 @@ import facebookGray from "../../assets/images/facebookGray.png";
 import twitter from "../../assets/images/twitter.png";
 import twitterGray from "../../assets/images/twitterGray.png";
 import AlertToast from "../Share/AlertToast";
+import { useModal } from "../../states/ModalState";
 
 const SocialLoginEdit = () => {
   const [userData, setUserData] = useRecoilState(loginData);
   const { openToast } = useToast();
+  const { openModal } = useModal();
+
+  const viewModal = (provider: string) => {
+    openModal(
+      "Warning",
+      `Are you sure you want to unlink your ${provider} account?`,
+      async () => {
+        try {
+          await unLInkSocialLogin(provider);
+          switch (provider) {
+            case "google":
+              setUserData((prev) => ({ ...prev, isGoogleLink: false }));
+              break;
+            case "facebook":
+              break;
+            case "twitter":
+              break;
+            default:
+              break;
+          }
+        } catch (error) {
+          console.log(error);
+          openToast("Error", "Social account unlink failed.", "danger");
+        }
+      },
+      true,
+      "warning"
+    );
+  };
 
   const onClick = async (event: React.MouseEvent<HTMLImageElement>) => {
     if (!(event.target instanceof HTMLImageElement)) return;
     const {
       target: { alt },
     } = event;
+
     try {
-      await linkSocialLogin(alt);
       switch (alt) {
         case "google":
-          setUserData((prev) => ({ ...prev, isGoogleLink: true }));
+          if (userData.isGoogleLink) viewModal("google");
+          else {
+            await linkSocialLogin(alt);
+            setUserData((prev) => ({ ...prev, isGoogleLink: true }));
+          }
           break;
         case "facebook":
-          setUserData((prev) => ({ ...prev, isFacebookLink: true }));
+          if (userData.isFacebookLink) viewModal("facebook");
+          else {
+            await linkSocialLogin(alt);
+            setUserData((prev) => ({ ...prev, isFacebookLink: true }));
+          }
           break;
         case "twitter":
-          setUserData((prev) => ({ ...prev, isTwitterLink: true }));
+          if (userData.isTwitterLink) viewModal("twitter");
+          else {
+            await linkSocialLogin(alt);
+            setUserData((prev) => ({ ...prev, isTwitterLink: true }));
+          }
           break;
         default:
           break;
       }
     } catch (error) {
       console.log(error);
-      openToast("Error", "Social account linkage failed", "danger");
+      openToast("Error", "Social account linkage failed.", "danger");
     }
   };
 

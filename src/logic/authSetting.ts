@@ -15,6 +15,7 @@ import {
   linkWithPopup,
   FacebookAuthProvider,
   TwitterAuthProvider,
+  unlink,
 } from "firebase/auth";
 
 import { getUserNickname, getUserData, addUserData } from "./getSetUserInfo";
@@ -127,6 +128,29 @@ export const linkSocialLogin = async (provider: string) => {
         break;
       case "twitter":
         await linkWithPopup(auth.currentUser, twitterProvider);
+        break;
+      default:
+        break;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const unLInkSocialLogin = async (provider: string) => {
+  const auth = getAuth();
+  if (!auth.currentUser) return;
+
+  try {
+    switch (provider) {
+      case "google":
+        await unlink(auth.currentUser, "google.com");
+        break;
+      case "facebook":
+        await unlink(auth.currentUser, "facebook.com");
+        break;
+      case "twitter":
+        await unlink(auth.currentUser, "twitter.com");
         break;
       default:
         break;

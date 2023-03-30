@@ -59,14 +59,13 @@ const HomeProfile = () => {
   return (
     <div className="HeaderProfile d-inline-block">
       <AlertModal />
-
       <img
         className="img-thumbnail rounded-circle"
         style={{
           width: "50px",
           height: "50px",
         }}
-        src={userData.photoURL ?? altImage}
+        src={userData.photoURL ? userData.photoURL : altImage}
         alt="Profile"
         role="button"
         onClick={onToggle}
