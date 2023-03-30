@@ -5,7 +5,7 @@ import { isLoadingData } from "../../states/LoadingState";
 import { useToast } from "../../states/ToastState";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
-import AlertToast from "../Share/Toast";
+import AlertToast from "../Share/AlertToast";
 import { getPostListByCategory, getPostNumByCategory } from "../../logic/getSetPostInfo";
 import { getCategoryThumbnail } from "../../logic/getSetCategoryInfo";
 import PostThumbnailBox from "./PostThumbnailBox";

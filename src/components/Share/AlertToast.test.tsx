@@ -1,7 +1,7 @@
 import React from "react";
 import { screen, render, cleanup, waitForElementToBeRemoved, act } from "@testing-library/react";
 
-import AlertToast from "./Toast";
+import AlertToast from "./AlertToast";
 import { useToast } from "../../states/ToastState";
 import userEvent from "@testing-library/user-event";
 import { RecoilRoot } from "recoil";

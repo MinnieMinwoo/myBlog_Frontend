@@ -11,7 +11,7 @@ import { getUserUID } from "../../logic/getSetUserInfo";
 import { getCategoryList, setMainCategoryData } from "../../logic/getSetCategoryInfo";
 
 import AlertModal from "../Share/AlertModal";
-import AlertToast from "../Share/Toast";
+import AlertToast from "../Share/AlertToast";
 import PostSubCategory from "./PostSubCategory";
 import { CategoryNameForm as inputForm } from "./PostCategoryForm";
 

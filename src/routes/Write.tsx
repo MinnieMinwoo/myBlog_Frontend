@@ -13,7 +13,7 @@ import AlertModal from "../components/Share/AlertModal";
 import OnWrite from "../components/Write/OnWrite";
 import Preview from "../components/Write/Preview";
 import Loading from "../components/Share/Loading";
-import AlertToast from "../components/Share/Toast";
+import AlertToast from "../components/Share/AlertToast";
 
 const Write = () => {
   const [loading, setLoading] = useRecoilState(isLoadingData);

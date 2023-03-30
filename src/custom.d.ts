@@ -39,6 +39,9 @@ interface UserData {
   nickname?: string;
   description?: string;
   accessToken?: string;
+  isGoogleLink?: boolean;
+  isFacebookLink?: boolean;
+  isTwitterLink?: boolean;
 }
 
 interface CategoryData {

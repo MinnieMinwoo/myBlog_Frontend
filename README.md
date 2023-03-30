@@ -7,6 +7,7 @@ Make my own blog project.
 - Auth
 
   - Email with verification
+  - Social login with google, facebook, twitter
 
 - Blog home
 
@@ -30,6 +31,8 @@ Make my own blog project.
 - Setting
   - Edit profile images
   - Edit user description
+  - Edit user email address
+  - Link and unlink social account
   - Withdrawal
 
 ## project stack

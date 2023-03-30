@@ -11,6 +11,10 @@ import {
   updateEmail,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  GoogleAuthProvider,
+  linkWithPopup,
+  FacebookAuthProvider,
+  TwitterAuthProvider,
 } from "firebase/auth";
 
 import { getUserNickname, getUserData, addUserData } from "./getSetUserInfo";
@@ -21,8 +25,19 @@ export const useAuthObserver = async () => {
   try {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        let [isGoogleLink, isFacebookLink, isTwitterLink] = [false, false, false];
+        user.providerData.forEach((element) => {
+          if (element.providerId === "google.com") isGoogleLink = true;
+          if (element.providerId === "facebook.com") isFacebookLink = true;
+          if (element.providerId === "twitter.com") isTwitterLink = true;
+        });
         const userData = await getUserData(user);
-        setUserData(userData);
+        setUserData({
+          ...userData,
+          isGoogleLink: isGoogleLink,
+          isFacebookLink: isFacebookLink,
+          isTwitterLink: isTwitterLink,
+        });
       } else {
         setUserData({
           isLoggedIn: false,
@@ -76,15 +91,6 @@ export const signUpEmail = async (email: string, password: string): Promise<null
   });
 };
 
-export const signOutUser = async () => {
-  const auth = getAuth();
-  try {
-    await signOut(auth);
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const updateUserEmail = async (newEmail: string, password: string) => {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -101,4 +107,40 @@ export const updateUserEmail = async (newEmail: string, password: string) => {
     handleCodeInApp: true,
   };
   await sendEmailVerification(user, actionCodeSettings);
+};
+
+export const linkSocialLogin = async (provider: string) => {
+  const auth = getAuth();
+  if (!auth.currentUser) return;
+
+  const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
+  const twitterProvider = new TwitterAuthProvider();
+
+  try {
+    switch (provider) {
+      case "google":
+        await linkWithPopup(auth.currentUser, googleProvider);
+        break;
+      case "facebook":
+        await linkWithPopup(auth.currentUser, facebookProvider);
+        break;
+      case "twitter":
+        await linkWithPopup(auth.currentUser, twitterProvider);
+        break;
+      default:
+        break;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const signOutUser = async () => {
+  const auth = getAuth();
+  try {
+    await signOut(auth);
+  } catch (error) {
+    throw error;
+  }
 };

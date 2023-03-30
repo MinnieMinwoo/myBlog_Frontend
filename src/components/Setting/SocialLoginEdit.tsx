@@ -1,18 +1,46 @@
 import React from "react";
+import { useRecoilState } from "recoil";
+
+import { linkSocialLogin } from "../../logic/authSetting";
+import { loginData } from "../../states/LoginState";
+import { useToast } from "../../states/ToastState";
+
 import google from "../../assets/images/google.png";
 import googleGray from "../../assets/images/googleGray.png";
 import facebook from "../../assets/images/facebook.png";
 import facebookGray from "../../assets/images/facebookGray.png";
 import twitter from "../../assets/images/twitter.png";
 import twitterGray from "../../assets/images/twitterGray.png";
+import AlertToast from "../Share/AlertToast";
 
 const SocialLoginEdit = () => {
-  const onClick = (event: React.MouseEvent<HTMLImageElement>) => {
+  const [userData, setUserData] = useRecoilState(loginData);
+  const { openToast } = useToast();
+
+  const onClick = async (event: React.MouseEvent<HTMLImageElement>) => {
     if (!(event.target instanceof HTMLImageElement)) return;
     const {
       target: { alt },
     } = event;
-    console.log(alt);
+    try {
+      await linkSocialLogin(alt);
+      switch (alt) {
+        case "google":
+          setUserData((prev) => ({ ...prev, isGoogleLink: true }));
+          break;
+        case "facebook":
+          setUserData((prev) => ({ ...prev, isFacebookLink: true }));
+          break;
+        case "twitter":
+          setUserData((prev) => ({ ...prev, isTwitterLink: true }));
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.log(error);
+      openToast("Error", "Social account linkage failed", "danger");
+    }
   };
 
   const SocialButton = ({ name, img }: { name: string; img: string }) => {
@@ -29,22 +57,24 @@ const SocialLoginEdit = () => {
   };
 
   return (
-    <div className="SettingData px-3 py-4" style={{ borderBottom: "1px solid #eee" }}>
-      <h3 className="d-inline-block fs-5" style={{ width: "170px", color: "#111" }}>
-        Social Login
-      </h3>
-      <span className="d-inline-block float-end">
-        <div className="hstack">
-          <SocialButton name="google" img={google} />
-          <SocialButton name="facebook" img={facebook} />
-          <SocialButton name="twitter" img={twitter} />
-        </div>
-      </span>
-
-      <p className="mt-2 mb-0" style={{ fontSize: "14px", color: "#777" }}>
-        You can set up a social login method.
-      </p>
-    </div>
+    <>
+      <AlertToast />
+      <div className="SettingData px-3 py-4" style={{ borderBottom: "1px solid #eee" }}>
+        <h3 className="d-inline-block fs-5" style={{ width: "170px", color: "#111" }}>
+          Social Login
+        </h3>
+        <span className="d-inline-block float-end">
+          <div className="hstack">
+            <SocialButton name="google" img={userData.isGoogleLink ? google : googleGray} />
+            <SocialButton name="facebook" img={userData.isFacebookLink ? facebook : facebookGray} />
+            <SocialButton name="twitter" img={userData.isTwitterLink ? twitter : twitterGray} />
+          </div>
+        </span>
+        <p className="mt-2 mb-0" style={{ fontSize: "14px", color: "#777" }}>
+          You can set up social login method.
+        </p>
+      </div>
+    </>
   );
 };
 

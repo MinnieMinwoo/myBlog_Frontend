@@ -6,7 +6,7 @@ import { isLoadingData } from "../../states/LoadingState";
 
 import { getUserPostNumber, getUserPostList } from "../../logic/getSetPostInfo";
 import { getUserUID } from "../../logic/getSetUserInfo";
-import AlertToast from "../Share/Toast";
+import AlertToast from "../Share/AlertToast";
 import { useToast } from "../../states/ToastState";
 import PostThumbnailBox from "./PostThumbnailBox";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
@@ -70,7 +70,6 @@ const PostContainer = () => {
   const observeRef = useRef<HTMLDivElement>(null);
 
   const onPagination = async (entries: IntersectionObserverEntry[]) => {
-    console.log(entries);
     if (!entries[0].isIntersecting || !postIndex.current || !params.userID) return;
     if (isPagination || isLastPost) return;
     setIsPagination(true);

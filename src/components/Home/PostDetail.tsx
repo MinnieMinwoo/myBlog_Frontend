@@ -13,7 +13,7 @@ import getDate from "../../logic/getDate";
 import { getPostData, deletePost } from "../../logic/getSetPostInfo";
 import { isLoadingData } from "../../states/LoadingState";
 import { deleteImg } from "../../logic/getSetImage";
-import AlertToast from "../Share/Toast";
+import AlertToast from "../Share/AlertToast";
 import AlertModal from "../Share/AlertModal";
 
 const PostTitleBackground = styled.section<{ imageLink: string }>`
