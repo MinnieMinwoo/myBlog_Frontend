@@ -82,7 +82,7 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
       <form onSubmit={onSubmit}>
         <div className="vstack gap-3">
           <div>
-            <label className="form-label">Email adress</label>
+            <label className="form-label">Email address</label>
             <input
               className="form-control"
               name="email"

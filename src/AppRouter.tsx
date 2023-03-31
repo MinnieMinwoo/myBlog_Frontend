@@ -1,9 +1,10 @@
 import React, { Suspense, lazy } from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 
-import Loading from "./components/Share/Loading";
+const Loading = lazy(() => import("./components/Share/Loading"));
 const Main = lazy(() => import("./routes/Main"));
 const Auth = lazy(() => import("./routes/Auth"));
+const SignUp = lazy(() => import("./routes/SignUp"));
 const Home = lazy(() => import("./routes/Home"));
 const Write = lazy(() => import("./routes/Write"));
 const Setting = lazy(() => import("./routes/Setting"));
@@ -28,6 +29,7 @@ const AppRouter = () => {
             <Route path="/home/:userID/:docID" element={<PostDetail />} />
           </Route>
           <Route path="/auth" element={<Auth />} />
+          <Route path="/auth/create" element={<SignUp />} />
           <Route path="/write/*" element={<Write />} />
           <Route path="/setting" element={<Setting />} />
         </Routes>

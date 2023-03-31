@@ -1,9 +1,5 @@
-import { useSetRecoilState } from "recoil";
-import { loginData } from "../states/LoginState";
-
 import {
   getAuth,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
@@ -18,42 +14,10 @@ import {
   unlink,
   signInWithPopup,
   UserCredential,
+  linkWithCredential,
 } from "firebase/auth";
 
-import { getUserNickname, getUserData, addUserData } from "./getSetUserInfo";
-
-export const useAuthObserver = async () => {
-  const auth = getAuth();
-  const setUserData = useSetRecoilState(loginData);
-  try {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        let [isGoogleLink, isFacebookLink, isTwitterLink] = [false, false, false];
-        user.providerData.forEach((element) => {
-          if (element.providerId === "google.com") isGoogleLink = true;
-          if (element.providerId === "facebook.com") isFacebookLink = true;
-          if (element.providerId === "twitter.com") isTwitterLink = true;
-        });
-        const userData = await getUserData(user);
-        setUserData({
-          ...userData,
-          isGoogleLink: isGoogleLink,
-          isFacebookLink: isFacebookLink,
-          isTwitterLink: isTwitterLink,
-        });
-      } else {
-        setUserData({
-          isLoggedIn: false,
-        });
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    setUserData({
-      isLoggedIn: false,
-    });
-  }
-};
+import { getUserNickname, addUserData } from "./getSetUserInfo";
 
 export const signInEmail = async (email: string, password: string): Promise<string | null> => {
   return new Promise(async (resolve, reject) => {
@@ -145,9 +109,28 @@ export const updateUserEmail = async (newEmail: string, password: string) => {
   try {
     await reauthenticateWithCredential(user, credential);
   } catch {
-    throw console.log("Withdrawal error: wrong password");
+    throw console.log("Password error: wrong password");
   }
   await updateEmail(user, newEmail);
+  const actionCodeSettings = {
+    url: "http://localhost:3000/myBlog_Frontend#/",
+    handleCodeInApp: true,
+  };
+  await sendEmailVerification(user, actionCodeSettings);
+};
+
+export const linkEmail = async (email: string, password: string) => {
+  const auth = getAuth();
+  if (!auth.currentUser) return;
+  const user = auth.currentUser;
+
+  await addUserData(user.uid);
+  const credential = EmailAuthProvider.credential(email, password);
+  try {
+    await linkWithCredential(user, credential);
+  } catch (error) {
+    throw error;
+  }
   const actionCodeSettings = {
     url: "http://localhost:3000/myBlog_Frontend#/",
     handleCodeInApp: true,

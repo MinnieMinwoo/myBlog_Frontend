@@ -19,7 +19,7 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
   const navigate = useNavigate();
   const { openModal } = useModal();
 
-  const onLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     if (!(event.target instanceof HTMLButtonElement)) return;
     const {
       target: { value },
@@ -34,11 +34,10 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
           const nickname = await signInSocialAccount(value.toLowerCase());
           navigate(`/home/${nickname}`);
         } catch (error) {
-          console.log(error);
           if (!(error instanceof Error)) return;
           switch (error.message) {
             case "No Account":
-              openModal("No registered account", "Please sign up first.");
+              navigate("/auth/create");
               break;
             case "Email Verification":
               openModal(
@@ -47,21 +46,17 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
               );
               break;
             default:
+              console.log(error);
               openModal("Something wrong", "Please try again later.");
           }
         }
-
         break;
     }
   };
 
   const SocialButton = ({ name, img }: { name: string; img: string }) => {
     return (
-      <button
-        className="btn btn-light w-100 text-start"
-        value={name}
-        onClick={signIn ? onLogin : () => {}}
-      >
+      <button className="btn btn-light w-100 text-start" value={name} onClick={onClick}>
         <img
           className="img-fluid offset-1 me-4"
           style={{ width: "40px", height: "40px" }}
