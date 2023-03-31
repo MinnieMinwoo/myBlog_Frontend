@@ -16,6 +16,8 @@ import {
   FacebookAuthProvider,
   TwitterAuthProvider,
   unlink,
+  signInWithPopup,
+  UserCredential,
 } from "firebase/auth";
 
 import { getUserNickname, getUserData, addUserData } from "./getSetUserInfo";
@@ -72,6 +74,49 @@ export const signInEmail = async (email: string, password: string): Promise<stri
       reject(error);
     }
   });
+};
+
+export const signInSocialAccount = async (provider: string) => {
+  const auth = getAuth();
+
+  const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
+  const twitterProvider = new TwitterAuthProvider();
+
+  let data: UserCredential;
+  try {
+    switch (provider) {
+      case "google":
+        data = await signInWithPopup(auth, googleProvider);
+        break;
+      case "facebook":
+        data = await signInWithPopup(auth, facebookProvider);
+        break;
+      case "twitter":
+        data = await signInWithPopup(auth, twitterProvider);
+        break;
+      default:
+        return;
+    }
+
+    let isEmail = false;
+    data.user.providerData.forEach((e) => {
+      if (e.providerId === "password") isEmail = true;
+    });
+    if (!isEmail) throw new Error("No Account");
+    if (!data.user.emailVerified) {
+      const actionCodeSettings = {
+        url: "http://localhost:3000/myBlog_Frontend#/",
+        handleCodeInApp: true,
+      };
+      await sendEmailVerification(data.user, actionCodeSettings);
+      throw new Error("Email Verification");
+    }
+    const nickname = await getUserNickname(data.user.uid);
+    return nickname;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const signUpEmail = async (email: string, password: string): Promise<null> => {
