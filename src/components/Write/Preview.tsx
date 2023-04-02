@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Stack, Col, Image, Button, Form, InputGroup } from "react-bootstrap";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import styled from "styled-components";
@@ -57,21 +56,21 @@ const PreviewContainer = styled.div`
   }
 `;
 
-const LeftContainer = styled(Col)`
+const LeftContainer = styled.div`
   padding: 0 30px;
   border-right: 1px solid #eee;
   align-self: center;
 `;
 
-const RightContainer = styled(Col)`
+const RightContainer = styled.div`
   padding: 0 30px;
   align-self: center;
 `;
 
-const ButtonContainer = styled(Stack)`
+const ButtonContainer = styled.div`
   float: right;
 `;
-const ImageContainer = styled(Image)`
+const ImageContainer = styled.img`
   background-color: #eee;
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -79,7 +78,7 @@ const ImageContainer = styled(Image)`
   object-position: center center;
 `;
 
-const ThumbnailText = styled(InputGroup)`
+const ThumbnailText = styled.div`
   height: 200px;
 `;
 
@@ -179,20 +178,30 @@ const Preview = ({
     const index = value.split(",").map(Number);
     setPostContent((prev) => ({
       ...prev,
-      category: [categoryData[index[0]].mainField, categoryData[index[0]].subField[index[1]]] ?? [],
+      category:
+        [
+          categoryData[index[0]].mainField,
+          categoryData[index[0]].subField[index[1]],
+        ] ?? [],
     }));
   };
 
   return (
-    <PreviewContainer className={`Preview ${isPreview ? "open" : firstOpen ? "close" : ""}`}>
-      <LeftContainer md={{ span: 5, offset: 1 }} xxl={{ span: 4, offset: 2 }}>
-        <Stack gap={3}>
+    <PreviewContainer
+      className={`Preview row ${isPreview ? "open" : firstOpen ? "close" : ""}`}
+    >
+      <LeftContainer className="col-10 offset-1 col-md-5 offset-md-1 col-xxl-4 offset-xxl-2">
+        <div className="vstack gap-3">
           <h3>Preview</h3>
           <ImageContainer
-            src={postContent.thumbnailImgLink ? postContent.thumbnailImgLink : altImage}
+            className="img-fluid img-thumbnail"
+            src={
+              postContent.thumbnailImgLink
+                ? postContent.thumbnailImgLink
+                : altImage
+            }
             alt="Thumbnail"
-            thumbnail={true}
-          ></ImageContainer>
+          />
           <input
             hidden
             type="file"
@@ -201,32 +210,38 @@ const Preview = ({
             src={postContent.thumbnailImgLink}
             onChange={onImgUpload}
           />
-          <Stack gap={2} direction="horizontal">
-            <Button onClick={onUpload}>Upload Image</Button>
-            <Button
-              variant="outline-primary"
+          <div className="hstack gap-2">
+            <button className="btn btn-primary" onClick={onUpload}>
+              Upload Image
+            </button>
+            <button
+              className="btn btn-outline-primary"
               onClick={onDelete}
               hidden={!postContent.thumbnailImgLink}
             >
               Delete Image
-            </Button>
-          </Stack>
+            </button>
+          </div>
           <h3>{postContent.title}</h3>
-          <ThumbnailText size="lg">
-            <Form.Control
-              as="textarea"
+          <ThumbnailText className="input-group input-group-lg">
+            <textarea
+              className="form-control"
               value={postContent.thumbnailData}
               maxLength={150}
               onChange={onEditDescription}
             />
           </ThumbnailText>
           <p>{postContent.thumbnailData.length}/150</p>
-        </Stack>
+        </div>
       </LeftContainer>
-      <RightContainer xs={0} md={5} xxl={4}>
-        <Stack gap={1}>
+      <RightContainer className="col-10 offset-1 col-md-5 col-xxl-4">
+        <div className="vstack gap-1">
           <h4>Category Setting</h4>
-          <Form.Select value={categoryIndex} onChange={onCategoryChange}>
+          <select
+            className="form-select"
+            value={categoryIndex}
+            onChange={onCategoryChange}
+          >
             <option value={""}>None</option>
             {categoryData &&
               categoryData.map((category, id) => {
@@ -236,13 +251,15 @@ const Preview = ({
                   </option>
                 ));
               })}
-          </Form.Select>
-        </Stack>
-        <ButtonContainer gap={3} direction="horizontal">
-          <Button variant="outline-primary" onClick={onPreview}>
+          </select>
+        </div>
+        <ButtonContainer className="hstack gap-3">
+          <button className="btn btn-outline-primary" onClick={onPreview}>
             Cancel
-          </Button>
-          <Button onClick={onSubmit}>{isEdit ? "Edit" : "Write Up"}</Button>
+          </button>
+          <button className="btn btn-primary" onClick={onSubmit}>
+            {isEdit ? "Edit" : "Write Up"}
+          </button>
         </ButtonContainer>
       </RightContainer>
     </PreviewContainer>

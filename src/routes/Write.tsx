@@ -9,11 +9,9 @@ import { getAuth } from "firebase/auth";
 import { setPost, getPostData, updatePost } from "../logic/getSetPostInfo";
 import { useOnPreventLeave } from "../logic/useOnPreventLeave";
 
-import AlertModal from "../components/Share/AlertModal";
 import OnWrite from "../components/Write/OnWrite";
 import Preview from "../components/Write/Preview";
 import Loading from "../components/Share/Loading";
-import AlertToast from "../components/Share/AlertToast";
 
 const Write = () => {
   const [loading, setLoading] = useRecoilState(isLoadingData);
@@ -110,8 +108,6 @@ const Write = () => {
   return (
     <div className="Write">
       {loading ? <Loading /> : null}
-      <AlertModal />
-      <AlertToast />
       <Preview
         isEdit={Boolean(params["*"])}
         isPreview={isPreview}

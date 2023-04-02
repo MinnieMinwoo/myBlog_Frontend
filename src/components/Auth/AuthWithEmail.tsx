@@ -7,7 +7,6 @@ import { FirebaseError } from "firebase/app";
 import { signInEmail, signUpEmail } from "../../logic/authSetting";
 
 import { useModal } from "../../states/ModalState";
-import AlertModal from "../../components/Share/AlertModal";
 
 const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
   const [email, setEmail] = useState("");
@@ -20,12 +19,15 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const nickname = await (signIn ? signInEmail(email, password) : signUpEmail(email, password));
+      const nickname = await (signIn
+        ? signInEmail(email, password)
+        : signUpEmail(email, password));
       if (nickname) {
         navigate(`/home/${nickname}`);
       } else {
         const errorTitle = "Email Verification";
-        const errorText = "Please complete email verification if you want to login.";
+        const errorText =
+          "Please complete email verification if you want to login.";
         openModal(errorTitle, errorText);
       }
     } catch (error) {
@@ -53,7 +55,8 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
             errorText = "The email address you entered already exists.";
             break;
           default:
-            errorText = "Server does not work properly. Please try again later.";
+            errorText =
+              "Server does not work properly. Please try again later.";
             break;
         }
       } else {
@@ -78,7 +81,6 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
 
   return (
     <div className="AuthWithEmail vstack gap-3">
-      <AlertModal />
       <form onSubmit={onSubmit}>
         <div className="vstack gap-3">
           <div>

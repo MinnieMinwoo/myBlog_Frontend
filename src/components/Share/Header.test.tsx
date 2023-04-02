@@ -84,7 +84,7 @@ describe("Header component test", () => {
     const homeImage = screen.getByRole("img");
     userEvent.click(homeImage);
     expect(navigate).toBeCalledTimes(0);
-    const confirmButton = screen.getByRole("button", { name: "Confirm" });
+    const confirmButton = screen.getByText("Confirm");
     userEvent.click(confirmButton);
     expect(navigate).toBeCalledTimes(1);
   });

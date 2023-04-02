@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/heading-has-content */
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -5,8 +6,10 @@ import { isLoadingData } from "../../states/LoadingState";
 import { useToast } from "../../states/ToastState";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
-import AlertToast from "../Share/AlertToast";
-import { getPostListByCategory, getPostNumByCategory } from "../../logic/getSetPostInfo";
+import {
+  getPostListByCategory,
+  getPostNumByCategory,
+} from "../../logic/getSetPostInfo";
 import { getCategoryThumbnail } from "../../logic/getSetCategoryInfo";
 import PostThumbnailBox from "./PostThumbnailBox";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
@@ -29,7 +32,10 @@ const Dummy = () => {
         </div>
       </section>
       {[...Array(repeat)].map((e, index) => (
-        <div className="mb-3 d-flex vstack gap-1 placeholder-wave placeholder-lg" key={index}>
+        <div
+          className="mb-3 d-flex vstack gap-1 placeholder-wave placeholder-lg"
+          key={index}
+        >
           <hr />
           <h3 className="placeholder col-3 bg-secondary" />
           <div>
@@ -59,13 +65,19 @@ const PostCategoryDetail = () => {
     getUserUID(params.userID)
       .then(async (uid) => {
         await Promise.all([
-          getCategoryThumbnail(uid, mainName, subName).then((url) => setImageURL(url)),
-          getPostNumByCategory(uid, mainName, subName).then((postNum) => setPostNum(postNum)),
-          getPostListByCategory(uid, mainName, subName).then(({ data, index }) => {
-            setPostList(data);
-            postIndex.current = index;
-            if (data.length !== 10) setIsLastPost(true);
-          }),
+          getCategoryThumbnail(uid, mainName, subName).then((url) =>
+            setImageURL(url)
+          ),
+          getPostNumByCategory(uid, mainName, subName).then((postNum) =>
+            setPostNum(postNum)
+          ),
+          getPostListByCategory(uid, mainName, subName).then(
+            ({ data, index }) => {
+              setPostList(data);
+              postIndex.current = index;
+              if (data.length !== 10) setIsLastPost(true);
+            }
+          ),
         ]);
       })
       .catch((error) => {
@@ -91,7 +103,12 @@ const PostCategoryDetail = () => {
     if (isPagination || isLastPost) return;
     setIsPagination(true);
     const uid = await getUserUID(userID);
-    const { index, data } = await getPostListByCategory(uid, mainName, subName, postIndex.current);
+    const { index, data } = await getPostListByCategory(
+      uid,
+      mainName,
+      subName,
+      postIndex.current
+    );
     setPostList((prev) => [...prev, ...data]);
     postIndex.current = index;
     if (data.length !== 10) setIsLastPost(true);
@@ -113,7 +130,6 @@ const PostCategoryDetail = () => {
 
   return (
     <>
-      <AlertToast />
       {isLoading ? (
         <Dummy />
       ) : (
@@ -124,7 +140,9 @@ const PostCategoryDetail = () => {
               style={{
                 height: "340px",
                 background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-                url(${!!imageURL ? imageURL : altImage}) center/cover no-repeat`,
+                url(${
+                  !!imageURL ? imageURL : altImage
+                }) center/cover no-repeat`,
                 color: "#eee",
               }}
             >
@@ -141,7 +159,10 @@ const PostCategoryDetail = () => {
           <div
             id="pagination"
             className="spinner-border text-secondary"
-            style={{ marginLeft: "47%", display: `${isLastPost || isLoading ? "none" : "block"}` }}
+            style={{
+              marginLeft: "47%",
+              display: `${isLastPost || isLoading ? "none" : "block"}`,
+            }}
             ref={observeRef}
             role="status"
           >

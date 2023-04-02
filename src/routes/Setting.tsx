@@ -11,7 +11,6 @@ import Loading from "../components/Share/Loading";
 import ProfileImageEdit from "../components/Setting/ProfileImageEdit";
 import ProfileInfoEdit from "../components/Setting/ProfileInfoEdit";
 import SettingData from "../components/Setting/SettingData";
-import AlertModal from "../components/Share/AlertModal";
 import Header from "../components/Share/Header";
 import { updateUserEmail } from "../logic/authSetting";
 import SocialLoginEdit from "../components/Setting/SocialLoginEdit";
@@ -52,7 +51,9 @@ const Setting = () => {
             ref={emailAuthRef}
             required
           />
-          <div className="form-text">Password is required when you change email address.</div>
+          <div className="form-text">
+            Password is required when you change email address.
+          </div>
         </form>
       </>,
       async () => {
@@ -106,8 +107,10 @@ const Setting = () => {
           await deleteUserData(userData.uid, password);
           closeModal();
           setUserData({ isLoggedIn: false });
-          openModal("Withdrawal complete", "Your withdrawal has been completed", () =>
-            navigate("/")
+          openModal(
+            "Withdrawal complete",
+            "Your withdrawal has been completed",
+            () => navigate("/")
           );
         } catch (error) {
           if (error) console.log(error);
@@ -122,7 +125,6 @@ const Setting = () => {
   return (
     <>
       {loading ? <Loading /> : null}
-      <AlertModal />
       <Header title="Setting" />
       <main className="EditProfile">
         <section className="py-4 col col-lg-10 offset-lg-1 col-xxl-8 offset-xxl-2">

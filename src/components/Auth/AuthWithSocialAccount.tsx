@@ -8,7 +8,6 @@ import facebook from "../../assets/images/facebook.png";
 import twitter from "../../assets/images/twitter.png";
 import email from "../../assets/images/email.png";
 import { useModal } from "../../states/ModalState";
-import AlertModal from "../Share/AlertModal";
 
 interface Props {
   signIn: boolean;
@@ -56,7 +55,11 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
 
   const SocialButton = ({ name, img }: { name: string; img: string }) => {
     return (
-      <button className="btn btn-light w-100 text-start" value={name} onClick={onClick}>
+      <button
+        className="btn btn-light w-100 text-start"
+        value={name}
+        onClick={onClick}
+      >
         <img
           className="img-fluid offset-1 me-4"
           style={{ width: "40px", height: "40px" }}
@@ -72,7 +75,6 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
 
   return (
     <div className="AuthWithSocialAccount vstack gap-3">
-      <AlertModal />
       <SocialButton name="Google" img={google} />
       <SocialButton name="Facebook" img={facebook} />
       <SocialButton name="Twitter" img={twitter} />

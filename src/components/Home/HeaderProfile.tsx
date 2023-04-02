@@ -7,7 +7,6 @@ import styled from "styled-components";
 
 import { signOutUser } from "../../logic/authSetting";
 import { useModal } from "../../states/ModalState";
-import AlertModal from "../Share/AlertModal";
 import altImage from "../../assets/images/altThumbnail.jpg";
 
 const ButtonContainer = styled.div`
@@ -58,7 +57,6 @@ const HomeProfile = () => {
 
   return (
     <div className="HeaderProfile d-inline-block">
-      <AlertModal />
       <img
         className="img-thumbnail rounded-circle"
         style={{

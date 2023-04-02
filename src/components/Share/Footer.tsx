@@ -9,7 +9,7 @@ const Footer = () => {
             2023 My own blog project
           </p>
           <p className="my-1" style={{ fontSize: "14px", color: "#777" }}>
-            © SnowCat
+            © Snowcat
           </p>
         </div>
       </nav>

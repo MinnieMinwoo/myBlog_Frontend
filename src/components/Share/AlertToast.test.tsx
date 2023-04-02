@@ -1,5 +1,11 @@
 import React from "react";
-import { screen, render, cleanup, waitForElementToBeRemoved, act } from "@testing-library/react";
+import {
+  screen,
+  render,
+  cleanup,
+  waitForElementToBeRemoved,
+  act,
+} from "@testing-library/react";
 
 import AlertToast from "./AlertToast";
 import { useToast } from "../../states/ToastState";
@@ -57,7 +63,6 @@ describe("Toast test", () => {
     act(() => {
       jest.runAllTimers();
     });
-    await waitForElementToBeRemoved(Title);
     expect(Title).not.toBeInTheDocument();
   });
 });

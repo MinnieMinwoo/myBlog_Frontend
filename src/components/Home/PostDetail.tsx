@@ -13,8 +13,6 @@ import getDate from "../../logic/getDate";
 import { getPostData, deletePost } from "../../logic/getSetPostInfo";
 import { isLoadingData } from "../../states/LoadingState";
 import { deleteImg } from "../../logic/getSetImage";
-import AlertToast from "../Share/AlertToast";
-import AlertModal from "../Share/AlertModal";
 import altImage from "../../assets/images/altThumbnail.jpg";
 
 const MDPreview = styled(MarkdownPreview)`
@@ -56,7 +54,10 @@ const Dummy = () => {
   const repeat = 5;
   return (
     <div aria-hidden="true">
-      <div className="w-100 ps-4" style={{ height: "340px", backgroundColor: "#999" }}>
+      <div
+        className="w-100 ps-4"
+        style={{ height: "340px", backgroundColor: "#999" }}
+      >
         <div className="pb-1" style={{ paddingTop: "140px" }} />
         <div className="vstack placeholder-wave">
           <h2 className="placeholder placeholder-lg col-5 bg-light mb-3" />
@@ -103,7 +104,10 @@ const PostDetail = () => {
       .then((postDetail) => {
         setPostData(postDetail);
         const auth = getAuth();
-        if (auth.currentUser?.uid && postDetail?.createdBy === auth.currentUser.uid) {
+        if (
+          auth.currentUser?.uid &&
+          postDetail?.createdBy === auth.currentUser.uid
+        ) {
           setHidden(false);
         }
         setOnLoading(false);
@@ -120,7 +124,13 @@ const PostDetail = () => {
   };
 
   const onDelete = () => {
-    openModal("Warning", "Do you really want delete This post?", onDeletePost, true, "danger");
+    openModal(
+      "Warning",
+      "Do you really want delete This post?",
+      onDeletePost,
+      true,
+      "danger"
+    );
   };
 
   const onDeletePost = async () => {
@@ -145,8 +155,6 @@ const PostDetail = () => {
   return (
     <>
       {onLoading ? <Dummy /> : null}
-      <AlertModal />
-      <AlertToast />
       <main className="read_section" hidden={onLoading}>
         <div className="w-100" style={{ height: "340px" }}>
           <div
@@ -154,7 +162,9 @@ const PostDetail = () => {
             style={{
               background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
               url(${
-                !!postData?.thumbnailImageURL ? postData.thumbnailImageURL : altImage
+                !!postData?.thumbnailImageURL
+                  ? postData.thumbnailImageURL
+                  : altImage
               }) center/cover no-repeat`,
               color: "#eee",
             }}
@@ -164,9 +174,15 @@ const PostDetail = () => {
                 <span>{`${postData.category[0]} - ${postData.category[1]}`}</span>
               ) : null}
             </div>
-            {postData?.title ? <h2 className="fs-1 fw-normal mb-2">{postData?.title}</h2> : null}
-            {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
-            {postData?.createdAt ? <span>{` ∙  ${getDate(postData?.createdAt)}`}</span> : null}
+            {postData?.title ? (
+              <h2 className="fs-1 fw-normal mb-2">{postData?.title}</h2>
+            ) : null}
+            {postData?.nickname ? (
+              <span>{`by ${postData.nickname}`}</span>
+            ) : null}
+            {postData?.createdAt ? (
+              <span>{` ∙  ${getDate(postData?.createdAt)}`}</span>
+            ) : null}
             <span
               className="pe-auto"
               style={{ cursor: "pointer" }}

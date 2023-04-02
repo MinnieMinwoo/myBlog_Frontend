@@ -7,6 +7,8 @@ import AppRouter from "./AppRouter";
 import { loginData } from "./states/LoginState";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUserData } from "./logic/getSetUserInfo";
+import AlertToast from "./components/Share/AlertToast";
+import AlertModal from "./components/Share/AlertModal";
 
 const App = () => {
   const [init, setInit] = useRecoilState(isInit);
@@ -17,7 +19,11 @@ const App = () => {
     try {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
-          let [isGoogleLink, isFacebookLink, isTwitterLink] = [false, false, false];
+          let [isGoogleLink, isFacebookLink, isTwitterLink] = [
+            false,
+            false,
+            false,
+          ];
           user.providerData.forEach((element) => {
             if (element.providerId === "google.com") isGoogleLink = true;
             if (element.providerId === "facebook.com") isFacebookLink = true;
@@ -49,6 +55,8 @@ const App = () => {
   return (
     <div className={`App`}>
       {init ? null : <Loading />}
+      <AlertModal />
+      <AlertToast />
       <AppRouter />
     </div>
   );

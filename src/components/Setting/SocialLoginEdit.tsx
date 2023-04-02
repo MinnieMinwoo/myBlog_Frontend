@@ -11,7 +11,6 @@ import facebook from "../../assets/images/facebook.png";
 import facebookGray from "../../assets/images/facebookGray.png";
 import twitter from "../../assets/images/twitter.png";
 import twitterGray from "../../assets/images/twitterGray.png";
-import AlertToast from "../Share/AlertToast";
 import { useModal } from "../../states/ModalState";
 
 const SocialLoginEdit = () => {
@@ -100,16 +99,30 @@ const SocialLoginEdit = () => {
 
   return (
     <>
-      <AlertToast />
-      <div className="SettingData px-3 py-4" style={{ borderBottom: "1px solid #eee" }}>
-        <h3 className="d-inline-block fs-5" style={{ width: "170px", color: "#111" }}>
+      <div
+        className="SettingData px-3 py-4"
+        style={{ borderBottom: "1px solid #eee" }}
+      >
+        <h3
+          className="d-inline-block fs-5"
+          style={{ width: "170px", color: "#111" }}
+        >
           Social Login
         </h3>
         <span className="d-inline-block float-end">
           <div className="hstack">
-            <SocialButton name="google" img={userData.isGoogleLink ? google : googleGray} />
-            <SocialButton name="facebook" img={userData.isFacebookLink ? facebook : facebookGray} />
-            <SocialButton name="twitter" img={userData.isTwitterLink ? twitter : twitterGray} />
+            <SocialButton
+              name="google"
+              img={userData.isGoogleLink ? google : googleGray}
+            />
+            <SocialButton
+              name="facebook"
+              img={userData.isFacebookLink ? facebook : facebookGray}
+            />
+            <SocialButton
+              name="twitter"
+              img={userData.isTwitterLink ? twitter : twitterGray}
+            />
           </div>
         </span>
         <p className="mt-2 mb-0" style={{ fontSize: "14px", color: "#777" }}>

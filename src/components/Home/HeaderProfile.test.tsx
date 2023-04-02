@@ -20,11 +20,11 @@ const initialize = () => {
 describe("Header Profile Test", () => {
   it("rendering test", () => {
     initialize();
-    expect(screen.getByRole("button")).toBeInTheDocument();
+    expect(screen.getByAltText("Profile")).toBeInTheDocument();
   });
   it("button click test", () => {
     initialize();
-    const button = screen.getByRole("button");
+    const button = screen.getByAltText("Profile");
     fireEvent.click(button);
     expect(screen.getByText("Post")).toBeInTheDocument();
     expect(screen.getByText("Setting")).toBeInTheDocument();

@@ -7,8 +7,6 @@ import { FirebaseError } from "firebase/app";
 
 import { linkEmail } from "../logic/authSetting";
 
-import AlertModal from "../components/Share/AlertModal";
-
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,7 +43,8 @@ const SignUp = () => {
             errorText = "The email address you entered already exists.";
             break;
           default:
-            errorText = "Server does not work properly. Please try again later.";
+            errorText =
+              "Server does not work properly. Please try again later.";
             break;
         }
       } else {
@@ -73,7 +72,6 @@ const SignUp = () => {
       <div className="vstack gap-3 ">
         <h1>Create Account</h1>
         <div className="vstack gap-3">
-          <AlertModal />
           <form onSubmit={onSubmit}>
             <div className="vstack gap-3">
               <div>
@@ -109,7 +107,10 @@ const SignUp = () => {
               >
                 {isLoading ? (
                   <div className="d-flex justify-content-center">
-                    <div className="spinner-border spinner-border-sm" role="status">
+                    <div
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                    >
                       <span className="visually-hidden">Loading...</span>
                     </div>
                   </div>

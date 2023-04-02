@@ -6,17 +6,21 @@ import { useModal } from "../../states/ModalState";
 import { useToast } from "../../states/ToastState";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
-import { getCategoryList, setMainCategoryData } from "../../logic/getSetCategoryInfo";
+import {
+  getCategoryList,
+  setMainCategoryData,
+} from "../../logic/getSetCategoryInfo";
 
-import AlertModal from "../Share/AlertModal";
-import AlertToast from "../Share/AlertToast";
 import PostCategorySection from "./PostCategorySection";
 import { CategoryNameForm as inputForm } from "./PostCategoryForm";
 
 const PostCategoryList = () => {
   const userData = useRecoilValue(loginData);
   const [isEdit, setIsEdit] = useState(false);
-  type CategoryState = [CategoryData[], React.Dispatch<React.SetStateAction<CategoryData[]>>];
+  type CategoryState = [
+    CategoryData[],
+    React.Dispatch<React.SetStateAction<CategoryData[]>>
+  ];
   const [categoryList, setCategoryList] = useOutletContext<CategoryState>();
   const categoryRef = useRef<HTMLInputElement>(null);
   const params = useParams();
@@ -44,10 +48,15 @@ const PostCategoryList = () => {
     const uid = userData.uid;
 
     // handle exception
-    if (!uid || !targetCategory) return openToast("Error", "Using corrupt data.", "danger");
+    if (!uid || !targetCategory)
+      return openToast("Error", "Using corrupt data.", "danger");
     for (const category of categoryList) {
       if (category.mainField === targetCategory)
-        return openToast("Error", "You entered duplicated category name.", "warning");
+        return openToast(
+          "Error",
+          "You entered duplicated category name.",
+          "warning"
+        );
     }
 
     try {
@@ -77,8 +86,6 @@ const PostCategoryList = () => {
 
   return (
     <div className="PostCategoryList my-4 mx-md-4 px-md-4">
-      <AlertModal />
-      <AlertToast />
       <div className="mb-3">
         <div className="hstack gap-1">
           <h2 className="fw-bold d-inline-block">{"Categories"}</h2>
@@ -93,7 +100,10 @@ const PostCategoryList = () => {
               Add
             </button>
           ) : null}
-          <button className={`btn btn-primary ${isEdit ? null : "ms-auto"}`} onClick={onEdit}>
+          <button
+            className={`btn btn-primary ${isEdit ? null : "ms-auto"}`}
+            onClick={onEdit}
+          >
             {isEdit ? "Complete" : "Edit"}
           </button>
         </div>

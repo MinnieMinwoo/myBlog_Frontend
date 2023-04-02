@@ -53,25 +53,17 @@ export const useModal = () => {
   );
 
   const closeModal = useCallback(() => {
-    setModalDataState({
+    setModalDataState((prev) => ({
+      ...prev,
       isOpen: false,
-      title: "",
-      content: "",
-      closeCallBack: () => {},
-      isConfirm: false,
-      buttonColor: "primary",
-    });
+    }));
   }, [setModalDataState]);
 
   const closeModalWithCallback = useCallback(async () => {
-    setModalDataState({
+    setModalDataState((prev) => ({
+      ...prev,
       isOpen: false,
-      title: "",
-      content: "",
-      closeCallBack: () => {},
-      isConfirm: false,
-      buttonColor: "primary",
-    });
+    }));
     if (modalDataState.closeCallBack) await modalDataState.closeCallBack();
   }, [modalDataState, setModalDataState]);
 

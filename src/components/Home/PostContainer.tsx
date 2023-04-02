@@ -6,7 +6,6 @@ import { isLoadingData } from "../../states/LoadingState";
 
 import { getUserPostNumber, getUserPostList } from "../../logic/getSetPostInfo";
 import { getUserUID } from "../../logic/getSetUserInfo";
-import AlertToast from "../Share/AlertToast";
 import { useToast } from "../../states/ToastState";
 import PostThumbnailBox from "./PostThumbnailBox";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
@@ -20,7 +19,10 @@ const Dummy = () => {
         <span className="fs-5 placeholder col-1 bg-primary" />
       </div>
       {[...Array(repeat)].map((e, index) => (
-        <div className="mb-3 d-flex vstack gap-1 placeholder-wave placeholder-lg" key={index}>
+        <div
+          className="mb-3 d-flex vstack gap-1 placeholder-wave placeholder-lg"
+          key={index}
+        >
           <hr />
           <h3 className="placeholder col-3 bg-secondary" />
           <div>
@@ -70,7 +72,8 @@ const PostContainer = () => {
   const observeRef = useRef<HTMLDivElement>(null);
 
   const onPagination = async (entries: IntersectionObserverEntry[]) => {
-    if (!entries[0].isIntersecting || !postIndex.current || !params.userID) return;
+    if (!entries[0].isIntersecting || !postIndex.current || !params.userID)
+      return;
     if (isPagination || isLastPost) return;
     setIsPagination(true);
     const uid = await getUserUID(params.userID);
@@ -97,7 +100,6 @@ const PostContainer = () => {
   return (
     <section className="PostContainer px-md-3 my-4 mx-md-4">
       {isLoading ? <Dummy /> : null}
-      <AlertToast />
       <div className="PostHeader mb-3 hstack gap-1" hidden={isLoading}>
         <h2 className="fw-bold d-inline-block">Posts</h2>
         <span className="text-primary fs-5">{`(${String(postNum)})`}</span>
