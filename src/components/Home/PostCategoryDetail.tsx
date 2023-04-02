@@ -11,6 +11,8 @@ import { getCategoryThumbnail } from "../../logic/getSetCategoryInfo";
 import PostThumbnailBox from "./PostThumbnailBox";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
+import altImage from "../../assets/images/altThumbnail.jpg";
+
 const Dummy = () => {
   const repeat = 3;
   return (
@@ -121,12 +123,9 @@ const PostCategoryDetail = () => {
               className="bg-image w-100 bg-opacity-50 px-4 mb-4"
               style={{
                 height: "340px",
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-            url(${imageURL})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                url(${!!imageURL ? imageURL : altImage}) center/cover no-repeat`,
+                color: "#eee",
               }}
             >
               <h2

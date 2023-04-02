@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/heading-has-content */
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -6,7 +7,6 @@ import { useModal } from "../../states/ModalState";
 import { getAuth } from "firebase/auth";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import toc from "@jsdevtools/rehype-toc";
-import { Stack, Placeholder } from "react-bootstrap";
 import styled from "styled-components";
 
 import getDate from "../../logic/getDate";
@@ -15,38 +15,7 @@ import { isLoadingData } from "../../states/LoadingState";
 import { deleteImg } from "../../logic/getSetImage";
 import AlertToast from "../Share/AlertToast";
 import AlertModal from "../Share/AlertModal";
-
-const PostTitleBackground = styled.section<{ imageLink: string }>`
-  height: 340px;
-  width: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 0 20px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url(${(props) => props.imageLink});
-  background-color: rgba(255, 255, 255, 0.5);
-  color: #eee;
-`;
-
-const Category = styled.div`
-  padding-top: 140px;
-  padding-bottom: 10px;
-`;
-
-const Title = styled.h2`
-  font-size: 35px;
-  font-weight: 400;
-  margin-bottom: 20px;
-`;
-
-const EditData = styled.span`
-  cursor: pointer;
-`;
-
-const PostBox = styled.article`
-  padding: 30px 0;
-`;
+import altImage from "../../assets/images/altThumbnail.jpg";
 
 const MDPreview = styled(MarkdownPreview)`
   .page-outline {
@@ -86,37 +55,35 @@ const MDPreview = styled(MarkdownPreview)`
 const Dummy = () => {
   const repeat = 5;
   return (
-    <>
-      <PostTitleBackground imageLink="">
-        <Placeholder animation="wave">
-          <Category />
-          <Stack>
-            <Placeholder as={Title} xs={5} bg="light" />
-            <Stack direction="horizontal" gap={1}>
-              <Placeholder as="span" xs={1} bg="light" />
-              <Placeholder as="span" xs={1} bg="light" />
-            </Stack>
-          </Stack>
-        </Placeholder>
-      </PostTitleBackground>
-      <PostBox />
-      <Placeholder animation="wave">
-        <Stack gap={4}>
-          {[...Array(repeat)].map((e, index) => (
-            <div key={index}>
-              <Placeholder as="h1" xs={6} size="lg" />
-              <Stack>
-                <Placeholder as="p" xs={10} />
-                <Placeholder as="p" xs={8} />
-                <Placeholder as="p" xs={12} />
-                <Placeholder as="p" xs={7} />
-                <Placeholder as="p" xs={5} />
-              </Stack>
+    <div aria-hidden="true">
+      <div className="w-100 ps-4" style={{ height: "340px", backgroundColor: "#999" }}>
+        <div className="pb-1" style={{ paddingTop: "140px" }} />
+        <div className="vstack placeholder-wave">
+          <h2 className="placeholder placeholder-lg col-5 bg-light mb-3" />
+          <div className="hstack gap-1">
+            <span className="placeholder placeholder-lg col-1 bg-light" />
+            <span className="placeholder placeholder-lg col-1 bg-light" />
+          </div>
+        </div>
+      </div>
+      <article className="py-3" />
+      <div className="vstack gap-4">
+        {[...Array(repeat)].map((e, index) => (
+          <div key={index}>
+            <div className="placeholder-wave">
+              <h2 className="placeholder placeholder-lg col-6 mb-3" />
+              <div className="vstack">
+                <p className="placeholder col-10" />
+                <p className="placeholder col-8" />
+                <p className="placeholder col-12" />
+                <p className="placeholder col-7" />
+                <p className="placeholder col-5" />
+              </div>
             </div>
-          ))}
-        </Stack>
-      </Placeholder>
-    </>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 const PostDetail = () => {
@@ -152,11 +119,11 @@ const PostDetail = () => {
     navigate(`/write/${params.docID}`);
   };
 
-  const deleteModal = () => {
-    openModal("Warning", "Do you really want delete This post?", onDelete, true, "danger");
+  const onDelete = () => {
+    openModal("Warning", "Do you really want delete This post?", onDeletePost, true, "danger");
   };
 
-  const onDelete = async () => {
+  const onDeletePost = async () => {
     if (!params.docID) throw window.alert("wrong url data");
     await deletePost(params.docID);
     postData?.thumbnailImageURL && deleteImg(postData.thumbnailImageURL);
@@ -181,23 +148,44 @@ const PostDetail = () => {
       <AlertModal />
       <AlertToast />
       <main className="read_section" hidden={onLoading}>
-        <PostTitleBackground imageLink={postData?.thumbnailImageURL ?? ""}>
-          <Category>
-            {postData?.category?.length ? (
-              <span>{`${postData.category[0]} - ${postData.category[1]}`}</span>
-            ) : null}
-          </Category>
-          {postData?.title ? <Title>{postData?.title}</Title> : null}
-          {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
-          {postData?.createdAt ? <span>{` ∙  ${getDate(postData?.createdAt)}`}</span> : null}
-          <EditData hidden={hidden} onClick={onEdit}>
-            ∙ Edit
-          </EditData>
-          <EditData hidden={hidden} onClick={deleteModal}>
-            ∙ Delete
-          </EditData>
-        </PostTitleBackground>
-        <PostBox data-color-mode="light">
+        <div className="w-100" style={{ height: "340px" }}>
+          <div
+            className="w-100 h-100 px-4 py-0 position-relative"
+            style={{
+              background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+              url(${
+                !!postData?.thumbnailImageURL ? postData.thumbnailImageURL : altImage
+              }) center/cover no-repeat`,
+              color: "#eee",
+            }}
+          >
+            <div className="pb-1" style={{ paddingTop: "140px" }}>
+              {postData?.category?.length ? (
+                <span>{`${postData.category[0]} - ${postData.category[1]}`}</span>
+              ) : null}
+            </div>
+            {postData?.title ? <h2 className="fs-1 fw-normal mb-2">{postData?.title}</h2> : null}
+            {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
+            {postData?.createdAt ? <span>{` ∙  ${getDate(postData?.createdAt)}`}</span> : null}
+            <span
+              className="pe-auto"
+              style={{ cursor: "pointer" }}
+              hidden={hidden}
+              onClick={onEdit}
+            >
+              ∙ Edit
+            </span>
+            <span
+              className="pe-auto"
+              style={{ cursor: "pointer" }}
+              hidden={hidden}
+              onClick={onDelete}
+            >
+              ∙ Delete
+            </span>
+          </div>
+        </div>
+        <article className="py-3" data-color-mode="light">
           <MDPreview
             source={postData?.detail}
             rehypePlugins={[
@@ -215,7 +203,7 @@ const PostDetail = () => {
               ],
             ]}
           />
-        </PostBox>
+        </article>
       </main>
     </>
   );

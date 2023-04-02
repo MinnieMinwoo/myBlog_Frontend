@@ -4,39 +4,14 @@ import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { useModal } from "../../states/ModalState";
 import { useToast } from "../../states/ToastState";
-import { Stack, Button } from "react-bootstrap";
-import styled from "styled-components";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
 import { getCategoryList, setMainCategoryData } from "../../logic/getSetCategoryInfo";
 
 import AlertModal from "../Share/AlertModal";
 import AlertToast from "../Share/AlertToast";
-import PostSubCategory from "./PostSubCategory";
+import PostCategorySection from "./PostCategorySection";
 import { CategoryNameForm as inputForm } from "./PostCategoryForm";
-
-const HeaderBox = styled.div`
-  margin-bottom: 20px;
-
-  h2 {
-    font-weight: bold;
-    display: inline-block;
-  }
-
-  h3 {
-    color: #333;
-    font-weight: 600;
-    display: inline-block;
-  }
-
-  span {
-    font-size: 18px;
-  }
-
-  button {
-    width: 100px;
-  }
-`;
 
 const PostCategoryList = () => {
   const userData = useRecoilValue(loginData);
@@ -104,26 +79,26 @@ const PostCategoryList = () => {
     <div className="PostCategoryList my-4 mx-md-4 px-md-4">
       <AlertModal />
       <AlertToast />
-      <HeaderBox>
-        <Stack direction="horizontal" gap={1}>
-          <h2>{"Categories"}</h2>
-          <span className="text-primary">({categoryList.length})</span>
+      <div className="mb-3">
+        <div className="hstack gap-1">
+          <h2 className="fw-bold d-inline-block">{"Categories"}</h2>
+          <span className="text-primary fs-5">({categoryList.length})</span>
           {isEdit ? (
-            <Button
+            <button
+              className="btn btn-outline-primary ms-auto"
+              style={{ width: "100px" }}
               name="addMainCategory"
-              className="ms-auto"
-              variant="outline-primary"
               onClick={onCategoryModal}
             >
               Add
-            </Button>
+            </button>
           ) : null}
-          <Button className={isEdit ? "" : "ms-auto"} onClick={onEdit}>
+          <button className={`btn btn-primary ${isEdit ? null : "ms-auto"}`} onClick={onEdit}>
             {isEdit ? "Complete" : "Edit"}
-          </Button>
-        </Stack>
-      </HeaderBox>
-      <PostSubCategory
+          </button>
+        </div>
+      </div>
+      <PostCategorySection
         isEdit={isEdit}
         categoryData={categoryList}
         setCategoryData={setCategoryList}

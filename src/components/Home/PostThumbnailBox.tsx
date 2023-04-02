@@ -22,8 +22,7 @@ const PostThumbnailBox = ({ postList }: { postList: PostData[] }) => {
               {post.thumbnailImageURL !== "" ? (
                 <div>
                   <img
-                    className="img-fluid w-100 mb-3"
-                    style={{ aspectRatio: "16 / 9", objectFit: "cover" }}
+                    className="img-fluid w-100 mb-3 ratio ratio-16x9 object-fit-cover"
                     src={post.thumbnailImageURL}
                     alt="post"
                   />

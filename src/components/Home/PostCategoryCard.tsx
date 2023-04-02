@@ -4,8 +4,6 @@ import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { useModal } from "../../states/ModalState";
 import { useToast } from "../../states/ToastState";
-import { Card, Stack, Button } from "react-bootstrap";
-import styled from "styled-components";
 
 import altImage from "../../assets/images/altThumbnail.jpg";
 import {
@@ -16,33 +14,6 @@ import {
 } from "../../logic/getSetCategoryInfo";
 import { CategoryImageForm, CategoryNameForm as inputForm } from "./PostCategoryForm";
 import { deleteImg } from "../../logic/getSetImage";
-
-const CategoryContainer = styled(Card)`
-  display: inline-block;
-  margin: 10px;
-  width: calc(100% - 20px);
-  @media screen and (min-width: 768px) and (max-width: 1199px) {
-    width: calc(50% - 20px);
-  }
-  @media (min-width: 1200px) {
-    width: calc(33% - 20px);
-  }
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  img {
-    width: 100%;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-    object-position: center;
-  }
-  a {
-    font-size: 18px;
-    font-weight: 500;
-    color: #111;
-    text-decoration: none;
-  }
-`;
 
 interface Props {
   isEdit: boolean;
@@ -187,45 +158,56 @@ const PostCategoryCard = ({
   };
 
   return (
-    <CategoryContainer key={index}>
-      <Link to={`${categoryData[id].mainField}/${categoryData[id].subField[index]}`}>
-        <Card.Img src={imgLink} onError={onError} alt="Thumbnail" />
-      </Link>
-      <Card.Body>
-        <Card.Title
-          as={Link}
+    <div className="PostCategoryCard p-2 col col-12 col-md-6 col-xl-4">
+      <div className="card" key={index}>
+        <Link
+          className="ratio ratio-16x9"
           to={`${categoryData[id].mainField}/${categoryData[id].subField[index]}`}
-        >{`${categoryData[id].subField[index]}`}</Card.Title>
-        <Stack direction="horizontal" hidden={!isEdit}>
-          <Button
-            id={`${id},${index},1`}
-            name="editSubCategory"
-            variant="outline-secondary"
-            onClick={onCategoryModal}
+        >
+          <img
+            className="card-img-top img-fluid object-fit-cover"
+            src={imgLink}
+            onError={onError}
+            alt="Thumbnail"
+          />
+        </Link>
+        <div className="card-body">
+          <Link
+            className="card-title fs-5 fw-semibold text-decoration-none"
+            style={{ color: "#111" }}
+            to={`${categoryData[id].mainField}/${categoryData[id].subField[index]}`}
           >
-            ✎
-          </Button>
-          <Button
-            id={`${id},${index},2`}
-            name="editCategoryImage"
-            variant="outline-info"
-            className="ms-auto"
-            onClick={onCategoryModal}
-          >
-            🖼️
-          </Button>
-          <Button
-            id={`${id},${index},3`}
-            name="deleteSubCategory"
-            variant="outline-danger"
-            className="ms-auto"
-            onClick={onCategoryModal}
-          >
-            🗑️
-          </Button>
-        </Stack>
-      </Card.Body>
-    </CategoryContainer>
+            {`${categoryData[id].subField[index]}`}
+          </Link>
+          <div className="hstack" hidden={!isEdit}>
+            <button
+              id={`${id},${index},1`}
+              className="btn btn-outline-secondary"
+              name="editSubCategory"
+              onClick={onCategoryModal}
+            >
+              ✎
+            </button>
+            <button
+              id={`${id},${index},2`}
+              className="btn btn-outline-info ms-auto"
+              name="editCategoryImage"
+              onClick={onCategoryModal}
+            >
+              🖼️
+            </button>
+            <button
+              id={`${id},${index},3`}
+              className="btn btn-outline-danger ms-auto"
+              name="deleteSubCategory"
+              onClick={onCategoryModal}
+            >
+              🗑️
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

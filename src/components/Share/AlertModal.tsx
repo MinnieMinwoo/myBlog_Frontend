@@ -1,44 +1,51 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useModal } from "../../states/ModalState";
-import { Button, Modal } from "react-bootstrap";
-import styled from "styled-components";
-
-const ModalDialog = styled(Modal.Dialog)`
-  margin: 0;
-`;
+import { Modal } from "react-bootstrap";
 
 const AlertModal = () => {
   const { modalDataState, closeModal, closeModalWithCallback } = useModal();
+  const modalRef = useRef<HTMLDivElement>(null);
 
   return (
     <Modal
-      size="lg"
+      className="AlertModal modal fade modal-lg"
+      id="AlertModal"
+      tabIndex={-1}
+      aria-labelledby="AlertModalLabel"
+      ref={modalRef}
       centered
       show={modalDataState.isOpen}
       onHide={modalDataState.isConfirm ? closeModal : closeModalWithCallback}
-      className="AlertModal"
     >
-      <ModalDialog>
-        <Modal.Header closeButton>
-          <Modal.Title>{modalDataState.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{modalDataState.content}</Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={modalDataState.isConfirm ? closeModal : closeModalWithCallback}
-          >
-            {modalDataState.isConfirm ? "Cancel" : "Close"}
-          </Button>
-          <Button
-            hidden={!modalDataState.isConfirm}
-            variant={modalDataState.buttonColor}
-            onClick={closeModalWithCallback}
-          >
-            Confirm
-          </Button>
-        </Modal.Footer>
-      </ModalDialog>
+      <div className="modal-dialog modal-dialog-centered m-0">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">{modalDataState.title}</h5>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            />
+          </div>
+          <div className="modal-body">{modalDataState.content}</div>
+          <div className="modal-footer">
+            <button
+              className="btn btn-secondary"
+              onClick={modalDataState.isConfirm ? closeModal : closeModalWithCallback}
+            >
+              {modalDataState.isConfirm ? "Cancel" : "Close"}
+            </button>
+            <button
+              className={`btn btn-${modalDataState.buttonColor}`}
+              hidden={!modalDataState.isConfirm}
+              onClick={closeModalWithCallback}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
     </Modal>
   );
 };

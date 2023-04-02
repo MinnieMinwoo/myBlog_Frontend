@@ -64,6 +64,7 @@ const HomeProfile = () => {
         style={{
           width: "50px",
           height: "50px",
+          fontSize: "0",
         }}
         src={userData.photoURL ? userData.photoURL : altImage}
         alt="Profile"

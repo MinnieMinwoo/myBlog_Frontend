@@ -3,8 +3,6 @@ import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { useModal } from "../../states/ModalState";
 import { useToast } from "../../states/ToastState";
-import styled from "styled-components";
-import { Col, Stack, Button } from "react-bootstrap";
 
 import {
   setSubCategoryData,
@@ -14,41 +12,13 @@ import {
 import PostCategoryCard from "./PostCategoryCard";
 import { CategoryNameForm as inputForm } from "./PostCategoryForm";
 
-const CategorySection = styled.section`
-  padding: 30px 0;
-  border-top: 1px solid #eee;
-`;
-
-const HeaderBox = styled.div`
-  margin-bottom: 20px;
-
-  h2 {
-    font-weight: bold;
-    display: inline-block;
-  }
-
-  h3 {
-    color: #333;
-    font-weight: 600;
-    display: inline-block;
-  }
-
-  span {
-    font-size: 18px;
-  }
-
-  button {
-    width: 100px;
-  }
-`;
-
 interface Props {
   isEdit: boolean;
   categoryData: CategoryData[];
   setCategoryData: React.Dispatch<React.SetStateAction<CategoryData[]>>;
 }
 
-const PostSubCategory = ({ isEdit, categoryData, setCategoryData }: Props) => {
+const PostCategorySection = ({ isEdit, categoryData, setCategoryData }: Props) => {
   const userData = useRecoilValue(loginData);
   const categoryRef = useRef<HTMLInputElement>(null);
   const { openModal } = useModal();
@@ -75,7 +45,6 @@ const PostSubCategory = ({ isEdit, categoryData, setCategoryData }: Props) => {
       }
     }
 
-    console.log(name);
     try {
       switch (name) {
         case "addSubCategory":
@@ -153,61 +122,65 @@ const PostSubCategory = ({ isEdit, categoryData, setCategoryData }: Props) => {
   };
 
   return (
-    <Col sm>
+    <div className="PostCategorySection col">
       {categoryData.map((data, id) => {
         return (
-          <CategorySection key={id}>
-            <HeaderBox>
-              <Stack direction="horizontal" gap={1}>
-                <h3>{data.mainField}</h3>
-                <span className="text-secondary">({data.subField.length})</span>
-                {isEdit ? (
-                  <>
-                    <Button
-                      id={`${id},1`}
-                      name="addSubCategory"
-                      variant="outline-primary"
-                      className="ms-auto"
-                      onClick={onCategoryModal}
-                    >
-                      Add
-                    </Button>
-                    <Button
-                      id={`${id},2`}
-                      name="editMainCategory"
-                      variant="outline-secondary"
-                      onClick={onCategoryModal}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      id={`${id},3`}
-                      name="deleteMainCategory"
-                      variant="danger"
-                      onClick={onCategoryModal}
-                    >
-                      Delete
-                    </Button>
-                  </>
-                ) : null}
-              </Stack>
-            </HeaderBox>
-            {data.subField.map((e, subID) => (
-              <PostCategoryCard
-                key={subID}
-                isEdit={isEdit}
-                imgLink={data.thumbnailLink[subID]}
-                mainID={id}
-                subID={subID}
-                categoryData={categoryData}
-                setCategoryData={setCategoryData}
-              />
-            ))}
-          </CategorySection>
+          <section className="pt-3 pb-4" style={{ borderTop: "1px solid #eee" }} key={id}>
+            <div className="hstack gap-1 mb-1">
+              <h3 className="fw-semibold d-inline-block" style={{ color: "#333" }}>
+                {data.mainField}
+              </h3>
+              <span className="text-secondary fs-5">({data.subField.length})</span>
+              {isEdit ? (
+                <>
+                  <button
+                    className="btn btn-outline-primary ms-auto"
+                    style={{ width: "100px" }}
+                    id={`${id},1`}
+                    name="addSubCategory"
+                    onClick={onCategoryModal}
+                  >
+                    Add
+                  </button>
+                  <button
+                    className="btn btn-outline-secondary"
+                    style={{ width: "100px" }}
+                    id={`${id},2`}
+                    name="editMainCategory"
+                    onClick={onCategoryModal}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-danger"
+                    style={{ width: "100px" }}
+                    id={`${id},3`}
+                    name="deleteMainCategory"
+                    onClick={onCategoryModal}
+                  >
+                    Delete
+                  </button>
+                </>
+              ) : null}
+            </div>
+            <div className="container p-0 d-flex flex-wrap w-100">
+              {data.subField.map((e, subID) => (
+                <PostCategoryCard
+                  key={subID}
+                  isEdit={isEdit}
+                  imgLink={data.thumbnailLink[subID]}
+                  mainID={id}
+                  subID={subID}
+                  categoryData={categoryData}
+                  setCategoryData={setCategoryData}
+                />
+              ))}
+            </div>
+          </section>
         );
       })}
-    </Col>
+    </div>
   );
 };
 
-export default PostSubCategory;
+export default PostCategorySection;
