@@ -42,7 +42,6 @@ Make my own blog project.
 - Typescript
 - Recoil
 - Bootstrap
-- styled-components
 - react-md-editor
 - Jest
 - React Testing Library
