@@ -35,12 +35,7 @@ const Header = ({ title, userName, outlet, isWarningAlert = false }: Props) => {
         <div className="container">
           <div className="navbar-brand">
             <a href="/" onClick={isWarningAlert ? onExitModal : onExit}>
-              <img
-                className="me-2 pe-auto"
-                style={{ width: "40px", height: "40px", cursor: "pointer" }}
-                src={image}
-                alt="blog logo"
-              />
+              <img className="me-2 pe-auto w-40px h-40px pe-on" src={image} alt="blog logo" />
             </a>
             {title ?? ""}
             {userName && (

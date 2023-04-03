@@ -38,8 +38,7 @@ export const CategoryImageForm = (
       <div className="vstack gap-2">
         <div className="w-100 ratio ratio-16x9">
           <img
-            className="img img-fluid object-fit-cover border rounded"
-            style={{ fontSize: "0" }}
+            className="img img-fluid object-fit-cover border rounded fs-0"
             ref={thumbnailRef}
             src={
               thumbnailRef.current?.src

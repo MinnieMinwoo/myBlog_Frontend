@@ -4,52 +4,13 @@ import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { uuidv4 } from "@firebase/util";
 import MDEditor, { commands, ICommand } from "@uiw/react-md-editor";
-import styled from "styled-components";
 
 import { useModal } from "../../states/ModalState";
 import { useToast } from "../../states/ToastState";
 
 import { uploadImg } from "../../logic/getSetImage";
-import blogIcon from "../../assets/images/logo.png";
 import Header from "../Share/Header";
-
-const OnDragCheck = styled.div`
-  &.Drag {
-    opacity: 0.3;
-  }
-`;
-
-const WriteAnimation = styled.div`
-  animation-name: init;
-  animation-duration: 1s;
-  animation-duration: linear;
-  @keyframes init {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-`;
-
-const InputBar = styled.input`
-  width: 100%;
-  font-size: 36px;
-  margin-bottom: 20px;
-  color: #777;
-  border: 0;
-  border-bottom: 1px solid #eee;
-  &:focus {
-    outline: none;
-    border-bottom: 2px solid #777;
-  }
-`;
-
-const Editor = styled(MDEditor)`
-  min-height: 200px;
-  height: calc(100vh - 260px) !important;
-`;
+import "../../styles/OnWrite.css";
 
 interface Props {
   isEdit: boolean;
@@ -158,9 +119,9 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
   };
 
   return (
-    <OnDragCheck className={isDragging ? "OnWrite Drag" : "OnWrite"}>
+    <div className={isDragging ? "OnWrite post-drag" : "OnWrite"}>
       <Header title={isEdit ? "Edit post" : "Write your story"} isWarningAlert={true} />
-      <WriteAnimation>
+      <div className="post-init-animation">
         <div className="OnWrite mt-3 col col-sm-10 offset-sm-1 col-lg-8 offset-lg-2 col-xxl-6 offset-xxl-3">
           <section onDragEnter={onDrag} onDragLeave={onDrag} onDragOver={onDrag} onDrop={onDrag}>
             <input
@@ -171,7 +132,8 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
               defaultValue={""}
               onChange={onInputImgChange}
             />
-            <InputBar
+            <input
+              className="w-100 fs-1 mb-3 text-777 post-input-bar"
               placeholder="Write post title"
               value={postContent.title}
               onChange={onTitleChange}
@@ -179,7 +141,8 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
               required
             />
             <div ref={inputRef}>
-              <Editor
+              <MDEditor
+                className="post-editor"
                 data-color-mode="light"
                 value={postContent.postData}
                 commands={[
@@ -209,8 +172,8 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
             </button>
           </section>
         </div>
-      </WriteAnimation>
-    </OnDragCheck>
+      </div>
+    </div>
   );
 };
 

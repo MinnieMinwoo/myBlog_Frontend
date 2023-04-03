@@ -7,8 +7,7 @@ const AlertModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!modalDataState.isOpen || !(modalRef.current instanceof HTMLDivElement))
-      return;
+    if (!modalDataState.isOpen || !(modalRef.current instanceof HTMLDivElement)) return;
     const showModal = new Modal(modalRef.current);
     showModal.show();
   }, [modalDataState]);
@@ -30,9 +29,7 @@ const AlertModal = () => {
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onClick={
-                modalDataState.isConfirm ? closeModal : closeModalWithCallback
-              }
+              onClick={modalDataState.isConfirm ? closeModal : closeModalWithCallback}
             />
           </div>
           <div className="modal-body">{modalDataState.content}</div>
@@ -41,9 +38,7 @@ const AlertModal = () => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onClick={
-                modalDataState.isConfirm ? closeModal : closeModalWithCallback
-              }
+              onClick={modalDataState.isConfirm ? closeModal : closeModalWithCallback}
             >
               {modalDataState.isConfirm ? "Cancel" : "Close"}
             </button>

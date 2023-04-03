@@ -125,17 +125,14 @@ const PostCategorySection = ({ isEdit, categoryData, setCategoryData }: Props) =
     <div className="PostCategorySection col">
       {categoryData.map((data, id) => {
         return (
-          <section className="pt-3 pb-4" style={{ borderTop: "1px solid #eee" }} key={id}>
+          <section className="pt-3 pb-4 bt-light" key={id}>
             <div className="hstack gap-1 mb-1">
-              <h3 className="fw-semibold d-inline-block" style={{ color: "#333" }}>
-                {data.mainField}
-              </h3>
+              <h3 className="fw-semibold d-inline-block text-333">{data.mainField}</h3>
               <span className="text-secondary fs-5">({data.subField.length})</span>
               {isEdit ? (
                 <>
                   <button
-                    className="btn btn-outline-primary ms-auto"
-                    style={{ width: "100px" }}
+                    className="btn btn-outline-primary w-100px ms-auto"
                     id={`${id},1`}
                     name="addSubCategory"
                     onClick={onCategoryModal}
@@ -143,8 +140,7 @@ const PostCategorySection = ({ isEdit, categoryData, setCategoryData }: Props) =
                     Add
                   </button>
                   <button
-                    className="btn btn-outline-secondary"
-                    style={{ width: "100px" }}
+                    className="btn btn-outline-secondary w-100px "
                     id={`${id},2`}
                     name="editMainCategory"
                     onClick={onCategoryModal}
@@ -152,8 +148,7 @@ const PostCategorySection = ({ isEdit, categoryData, setCategoryData }: Props) =
                     Edit
                   </button>
                   <button
-                    className="btn btn-danger"
-                    style={{ width: "100px" }}
+                    className="btn btn-danger w-100px "
                     id={`${id},3`}
                     name="deleteMainCategory"
                     onClick={onCategoryModal}

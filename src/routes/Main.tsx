@@ -6,10 +6,7 @@ import MainSection from "../components/Main/MainSection";
 
 const Main = () => {
   return (
-    <div
-      className="Main d-flex flex-column min-vh-100 overflow-x-hidden"
-      style={{ minHeight: "100vh" }}
-    >
+    <div className="Main d-flex flex-column min-vh-100 overflow-x-hidden">
       <Header />
       <MainSection />
       <Footer />

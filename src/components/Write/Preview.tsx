@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
-import styled from "styled-components";
 import { uuidv4 } from "@firebase/util";
 
 import { useToast } from "../../states/ToastState";
@@ -10,77 +9,7 @@ import altImage from "../../assets/images/altThumbnail.jpg";
 import { deleteImg, uploadImg } from "../../logic/getSetImage";
 import { getCategoryList } from "../../logic/getSetCategoryInfo";
 
-const PreviewContainer = styled.div`
-  display: flex;
-  position: absolute;
-  visibility: hidden;
-  background-color: #fff;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-
-  &.open {
-    visibility: visible;
-    animation-name: open;
-    animation-duration: 0.5s;
-    animation-duration: linear;
-    @keyframes open {
-      0% {
-        height: 0%;
-      }
-      100% {
-        height: 100%;
-      }
-    }
-  }
-
-  &.close {
-    visibility: hidden;
-    animation-name: close;
-    animation-duration: 0.5s;
-    animation-duration: linear;
-    @keyframes close {
-      0% {
-        height: 100%;
-        visibility: visible;
-      }
-      99.9% {
-        height: 0.1%;
-        visibility: visible;
-      }
-      100% {
-        height: 0%;
-        visibility: hidden;
-      }
-    }
-  }
-`;
-
-const LeftContainer = styled.div`
-  padding: 0 30px;
-  border-right: 1px solid #eee;
-  align-self: center;
-`;
-
-const RightContainer = styled.div`
-  padding: 0 30px;
-  align-self: center;
-`;
-
-const ButtonContainer = styled.div`
-  float: right;
-`;
-const ImageContainer = styled.img`
-  background-color: #eee;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  object-position: center center;
-`;
-
-const ThumbnailText = styled.div`
-  height: 200px;
-`;
+import "../../styles/Preview.css";
 
 interface Props {
   isEdit: boolean;
@@ -178,28 +107,23 @@ const Preview = ({
     const index = value.split(",").map(Number);
     setPostContent((prev) => ({
       ...prev,
-      category:
-        [
-          categoryData[index[0]].mainField,
-          categoryData[index[0]].subField[index[1]],
-        ] ?? [],
+      category: [categoryData[index[0]].mainField, categoryData[index[0]].subField[index[1]]] ?? [],
     }));
   };
 
   return (
-    <PreviewContainer
-      className={`Preview row ${isPreview ? "open" : firstOpen ? "close" : ""}`}
+    <div
+      className={`Preview d-flex position-fixed w-100 h-100 bg-fff z-index-1 ${
+        isPreview ? "scrollOpen" : firstOpen ? "scrollClose" : "hidden"
+      }`}
     >
-      <LeftContainer className="col-10 offset-1 col-md-5 offset-md-1 col-xxl-4 offset-xxl-2">
+      <div></div>
+      <div className="col-10 offset-1 col-md-5 offset-md-1 col-xxl-4 offset-xxl-2 px-4 align-self-center be-light">
         <div className="vstack gap-3">
           <h3>Preview</h3>
-          <ImageContainer
-            className="img-fluid img-thumbnail"
-            src={
-              postContent.thumbnailImgLink
-                ? postContent.thumbnailImgLink
-                : altImage
-            }
+          <img
+            className="img-fluid img-thumbnail ratio-16x9 object-fit-cover w-100 bg-eee"
+            src={postContent.thumbnailImgLink ? postContent.thumbnailImgLink : altImage}
             alt="Thumbnail"
           />
           <input
@@ -223,25 +147,21 @@ const Preview = ({
             </button>
           </div>
           <h3>{postContent.title}</h3>
-          <ThumbnailText className="input-group input-group-lg">
+          <div className="input-group input-group-lg h-200px">
             <textarea
               className="form-control"
               value={postContent.thumbnailData}
               maxLength={150}
               onChange={onEditDescription}
             />
-          </ThumbnailText>
+          </div>
           <p>{postContent.thumbnailData.length}/150</p>
         </div>
-      </LeftContainer>
-      <RightContainer className="col-10 offset-1 col-md-5 col-xxl-4">
+      </div>
+      <div className="col-10 col-md-5 col-xxl-4 px-4 align-self-center">
         <div className="vstack gap-1">
           <h4>Category Setting</h4>
-          <select
-            className="form-select"
-            value={categoryIndex}
-            onChange={onCategoryChange}
-          >
+          <select className="form-select" value={categoryIndex} onChange={onCategoryChange}>
             <option value={""}>None</option>
             {categoryData &&
               categoryData.map((category, id) => {
@@ -253,16 +173,16 @@ const Preview = ({
               })}
           </select>
         </div>
-        <ButtonContainer className="hstack gap-3">
+        <div className="hstack gap-3 float-end">
           <button className="btn btn-outline-primary" onClick={onPreview}>
             Cancel
           </button>
           <button className="btn btn-primary" onClick={onSubmit}>
             {isEdit ? "Edit" : "Write Up"}
           </button>
-        </ButtonContainer>
-      </RightContainer>
-    </PreviewContainer>
+        </div>
+      </div>
+    </div>
   );
 };
 

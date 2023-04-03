@@ -19,15 +19,12 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const nickname = await (signIn
-        ? signInEmail(email, password)
-        : signUpEmail(email, password));
+      const nickname = await (signIn ? signInEmail(email, password) : signUpEmail(email, password));
       if (nickname) {
         navigate(`/home/${nickname}`);
       } else {
         const errorTitle = "Email Verification";
-        const errorText =
-          "Please complete email verification if you want to login.";
+        const errorText = "Please complete email verification if you want to login.";
         openModal(errorTitle, errorText);
       }
     } catch (error) {
@@ -55,8 +52,7 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
             errorText = "The email address you entered already exists.";
             break;
           default:
-            errorText =
-              "Server does not work properly. Please try again later.";
+            errorText = "Server does not work properly. Please try again later.";
             break;
         }
       } else {
@@ -110,8 +106,7 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
           </div>
           <button
             type="submit"
-            className="btn btn-primary col-8 offset-2"
-            style={{ height: "36px" }}
+            className="btn btn-primary col-8 offset-2 h-36px"
             disabled={isLoading}
           >
             {isLoading ? (

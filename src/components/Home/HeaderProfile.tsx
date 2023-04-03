@@ -3,18 +3,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginData } from "../../states/LoginState";
-import styled from "styled-components";
 
 import { signOutUser } from "../../logic/authSetting";
 import { useModal } from "../../states/ModalState";
 import altImage from "../../assets/images/altThumbnail.jpg";
 
-const ButtonContainer = styled.div`
-  transform: translate(-75px, 50px);
-  @media (max-width: 575px) {
-    transform: translate(-96px, 50px);
-  }
-`;
+import "../../styles/HeaderProfile.css";
 
 const HomeProfile = () => {
   const [userData, setUserData] = useRecoilState(loginData);
@@ -58,25 +52,16 @@ const HomeProfile = () => {
   return (
     <div className="HeaderProfile d-inline-block">
       <img
-        className="img-thumbnail rounded-circle"
-        style={{
-          width: "50px",
-          height: "50px",
-          fontSize: "0",
-        }}
+        className="img-thumbnail rounded-circle w-50px h-50px fs-0"
         src={userData.photoURL ? userData.photoURL : altImage}
         alt="Profile"
         role="button"
         onClick={onToggle}
       />
       {isHidden ? null : (
-        <ButtonContainer
-          className="btn-group-vertical mt-2 position-absolute"
+        <div
+          className="btn-group-vertical mt-2 position-absolute w-98px z-index-1 header-profile-translate"
           role="group"
-          style={{
-            width: "98px",
-            zIndex: "1",
-          }}
         >
           <button className="btn btn-primary" name="write" onClick={onClick}>
             Post
@@ -87,7 +72,7 @@ const HomeProfile = () => {
           <button className="btn btn-primary" name="logout" onClick={onClick}>
             Sign Out
           </button>
-        </ButtonContainer>
+        </div>
       )}
     </div>
   );

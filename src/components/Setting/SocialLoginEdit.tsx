@@ -87,8 +87,7 @@ const SocialLoginEdit = () => {
   const SocialButton = ({ name, img }: { name: string; img: string }) => {
     return (
       <img
-        className="img-fluid img-thumbnail ms-2"
-        style={{ width: "50px", height: "50px" }}
+        className="img-fluid img-thumbnail ms-2 w-50px h-50px"
         src={img}
         alt={name}
         role="button"
@@ -99,35 +98,16 @@ const SocialLoginEdit = () => {
 
   return (
     <>
-      <div
-        className="SettingData px-3 py-4"
-        style={{ borderBottom: "1px solid #eee" }}
-      >
-        <h3
-          className="d-inline-block fs-5"
-          style={{ width: "170px", color: "#111" }}
-        >
-          Social Login
-        </h3>
+      <div className="SettingData px-3 py-4 bb-light">
+        <h3 className="d-inline-block w-170px fs-5 text-111">Social Login</h3>
         <span className="d-inline-block float-end">
           <div className="hstack">
-            <SocialButton
-              name="google"
-              img={userData.isGoogleLink ? google : googleGray}
-            />
-            <SocialButton
-              name="facebook"
-              img={userData.isFacebookLink ? facebook : facebookGray}
-            />
-            <SocialButton
-              name="twitter"
-              img={userData.isTwitterLink ? twitter : twitterGray}
-            />
+            <SocialButton name="google" img={userData.isGoogleLink ? google : googleGray} />
+            <SocialButton name="facebook" img={userData.isFacebookLink ? facebook : facebookGray} />
+            <SocialButton name="twitter" img={userData.isTwitterLink ? twitter : twitterGray} />
           </div>
         </span>
-        <p className="mt-2 mb-0" style={{ fontSize: "14px", color: "#777" }}>
-          You can set up social login method.
-        </p>
+        <p className="mt-2 mb-0 fs-14px text-777">You can set up social login method.</p>
       </div>
     </>
   );

@@ -173,8 +173,7 @@ const PostCategoryCard = ({
         </Link>
         <div className="card-body">
           <Link
-            className="card-title fs-5 fw-semibold text-decoration-none"
-            style={{ color: "#111" }}
+            className="card-title fs-5 fw-semibold text-decoration-none text-111"
             to={`${categoryData[id].mainField}/${categoryData[id].subField[index]}`}
           >
             {`${categoryData[id].subField[index]}`}

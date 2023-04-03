@@ -7,8 +7,7 @@ export const AlertToast = () => {
   const toastRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!toastDataState.isOpen || !(toastRef.current instanceof HTMLDivElement))
-      return;
+    if (!toastDataState.isOpen || !(toastRef.current instanceof HTMLDivElement)) return;
     const showToast = new Toast(toastRef.current);
     showToast.show();
     setTimeout(closeToast, 3500);
@@ -18,13 +17,8 @@ export const AlertToast = () => {
     <>
       {toastDataState.isOpen ? (
         <div
-          className={`toast position-absolute text-bg-${toastDataState.background}`}
+          className={`toast position-absolute t-70px l-40px .z-index-5 text-bg-${toastDataState.background}`}
           id="AlertToast"
-          style={{
-            top: "70px",
-            right: "40px",
-            zIndex: "5",
-          }}
           data-bs-delay="3000"
           ref={toastRef}
         >

@@ -35,13 +35,8 @@ const ProfileImageEdit = () => {
   };
 
   return (
-    <div className="ProfileImageEdit px-4 vstack gap-3" style={{ flexBasis: "210px" }}>
-      <img
-        className="img-thumbnail rounded-circle"
-        style={{ width: "128px", height: "128px" }}
-        src={imageLink}
-        alt="Profile"
-      />
+    <div className="ProfileImageEdit px-4 vstack gap-3 flex-basis-210px">
+      <img className="img-thumbnail rounded-circle w-128px h-128px" src={imageLink} alt="Profile" />
       <input
         hidden
         type="file"

@@ -13,16 +13,13 @@ const CategorySideContent = ({ data }: Props) => {
 
   return (
     <div className="CategorySideContent">
-      <p className="my-1 mx-0" style={{ color: "#555" }}>
-        {data.mainField}
-      </p>
+      <p className="my-1 mx-0 text-555">{data.mainField}</p>
       {data.subField && (
-        <ul className="m-0 list-unstyled" style={{ padding: "5px 0 3px 0" }}>
+        <ul className="m-0 list-unstyled ps-5px pe-3px py-1">
           {data.subField.map((content, id) => (
-            <li key={id} className="ps-2" style={{ borderLeft: "2px solid #eee" }}>
+            <li key={id} className="ps-2 bs-light-lg">
               <Link
-                className="fs-6 text-decoration-none"
-                style={{ color: "#777" }}
+                className="fs-6 text-decoration-none text-777"
                 to={`/home/${params.userID}/category/${data.mainField}/${content}`}
               >
                 {content}

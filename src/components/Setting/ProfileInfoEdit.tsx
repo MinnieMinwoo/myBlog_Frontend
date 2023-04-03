@@ -40,16 +40,9 @@ const ProfileInfoEdit = () => {
   return (
     <div className="ProfileInfoEdit container px-4">
       <div className="vstack gap-2" hidden={!hidden}>
-        <p className="fs-2 fw-semibold m-0" style={{ color: "#111" }}>
-          {userData.nickname}
-        </p>
-        <div style={{ color: "#333" }}>{userData.description}</div>
-        <button
-          type="button"
-          className="btn btn-outline-primary"
-          style={{ width: "96px" }}
-          onClick={onToggle}
-        >
+        <p className="fs-2 fw-semibold m-0 text-111">{userData.nickname}</p>
+        <div className="text-333">{userData.description}</div>
+        <button type="button" className="btn btn-outline-primary w-100px" onClick={onToggle}>
           Edit
         </button>
       </div>
@@ -79,7 +72,7 @@ const ProfileInfoEdit = () => {
             onChange={onChange}
           />
         </div>
-        <button type="submit" style={{ width: "96px" }} className="btn btn-primary">
+        <button type="submit" className="btn btn-primary w-100px">
           Save
         </button>
       </form>

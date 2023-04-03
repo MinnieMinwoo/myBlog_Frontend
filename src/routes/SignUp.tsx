@@ -43,8 +43,7 @@ const SignUp = () => {
             errorText = "The email address you entered already exists.";
             break;
           default:
-            errorText =
-              "Server does not work properly. Please try again later.";
+            errorText = "Server does not work properly. Please try again later.";
             break;
         }
       } else {
@@ -101,16 +100,12 @@ const SignUp = () => {
               </div>
               <button
                 type="submit"
-                className="btn btn-primary col-8 offset-2"
-                style={{ height: "36px" }}
+                className="btn btn-primary col-8 offset-2 h-36px"
                 disabled={isLoading}
               >
                 {isLoading ? (
                   <div className="d-flex justify-content-center">
-                    <div
-                      className="spinner-border spinner-border-sm"
-                      role="status"
-                    >
+                    <div className="spinner-border spinner-border-sm" role="status">
                       <span className="visually-hidden">Loading...</span>
                     </div>
                   </div>

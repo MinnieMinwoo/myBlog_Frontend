@@ -6,10 +6,7 @@ import { useModal } from "../../states/ModalState";
 import { useToast } from "../../states/ToastState";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
-import {
-  getCategoryList,
-  setMainCategoryData,
-} from "../../logic/getSetCategoryInfo";
+import { getCategoryList, setMainCategoryData } from "../../logic/getSetCategoryInfo";
 
 import PostCategorySection from "./PostCategorySection";
 import { CategoryNameForm as inputForm } from "./PostCategoryForm";
@@ -17,10 +14,7 @@ import { CategoryNameForm as inputForm } from "./PostCategoryForm";
 const PostCategoryList = () => {
   const userData = useRecoilValue(loginData);
   const [isEdit, setIsEdit] = useState(false);
-  type CategoryState = [
-    CategoryData[],
-    React.Dispatch<React.SetStateAction<CategoryData[]>>
-  ];
+  type CategoryState = [CategoryData[], React.Dispatch<React.SetStateAction<CategoryData[]>>];
   const [categoryList, setCategoryList] = useOutletContext<CategoryState>();
   const categoryRef = useRef<HTMLInputElement>(null);
   const params = useParams();
@@ -48,15 +42,10 @@ const PostCategoryList = () => {
     const uid = userData.uid;
 
     // handle exception
-    if (!uid || !targetCategory)
-      return openToast("Error", "Using corrupt data.", "danger");
+    if (!uid || !targetCategory) return openToast("Error", "Using corrupt data.", "danger");
     for (const category of categoryList) {
       if (category.mainField === targetCategory)
-        return openToast(
-          "Error",
-          "You entered duplicated category name.",
-          "warning"
-        );
+        return openToast("Error", "You entered duplicated category name.", "warning");
     }
 
     try {
@@ -92,18 +81,14 @@ const PostCategoryList = () => {
           <span className="text-primary fs-5">({categoryList.length})</span>
           {isEdit ? (
             <button
-              className="btn btn-outline-primary ms-auto"
-              style={{ width: "100px" }}
+              className="btn btn-outline-primary ms-auto w-100px"
               name="addMainCategory"
               onClick={onCategoryModal}
             >
               Add
             </button>
           ) : null}
-          <button
-            className={`btn btn-primary ${isEdit ? null : "ms-auto"}`}
-            onClick={onEdit}
-          >
+          <button className={`btn btn-primary ${isEdit ? null : "ms-auto"}`} onClick={onEdit}>
             {isEdit ? "Complete" : "Edit"}
           </button>
         </div>

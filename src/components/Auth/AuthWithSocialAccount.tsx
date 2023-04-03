@@ -55,18 +55,9 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
 
   const SocialButton = ({ name, img }: { name: string; img: string }) => {
     return (
-      <button
-        className="btn btn-light w-100 text-start"
-        value={name}
-        onClick={onClick}
-      >
-        <img
-          className="img-fluid offset-1 me-4"
-          style={{ width: "40px", height: "40px" }}
-          src={img}
-          alt={name}
-        />
-        <span className="fw-semibold fs-6" style={{ color: "#333" }}>{`Sign ${
+      <button className="btn btn-light w-100 text-start" value={name} onClick={onClick}>
+        <img className="img-fluid offset-1 me-4 w-40px h-40px" src={img} alt={name} />
+        <span className="fw-semibold fs-6 text-333">{`Sign ${
           signIn ? "in" : "up"
         } with ${name}`}</span>
       </button>

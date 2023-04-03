@@ -10,6 +10,8 @@ import { getUserData } from "./logic/getSetUserInfo";
 import AlertToast from "./components/Share/AlertToast";
 import AlertModal from "./components/Share/AlertModal";
 
+import "./styles/App.css";
+
 const App = () => {
   const [init, setInit] = useRecoilState(isInit);
   const setUserData = useSetRecoilState(loginData);
@@ -19,11 +21,7 @@ const App = () => {
     try {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
-          let [isGoogleLink, isFacebookLink, isTwitterLink] = [
-            false,
-            false,
-            false,
-          ];
+          let [isGoogleLink, isFacebookLink, isTwitterLink] = [false, false, false];
           user.providerData.forEach((element) => {
             if (element.providerId === "google.com") isGoogleLink = true;
             if (element.providerId === "facebook.com") isFacebookLink = true;

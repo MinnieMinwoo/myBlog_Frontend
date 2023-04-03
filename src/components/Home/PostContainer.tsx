@@ -10,6 +10,8 @@ import { useToast } from "../../states/ToastState";
 import PostThumbnailBox from "./PostThumbnailBox";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
+import "../../styles/PostContainer.css";
+
 const Dummy = () => {
   const repeat = 3;
   return (
@@ -19,10 +21,7 @@ const Dummy = () => {
         <span className="fs-5 placeholder col-1 bg-primary" />
       </div>
       {[...Array(repeat)].map((e, index) => (
-        <div
-          className="mb-3 d-flex vstack gap-1 placeholder-wave placeholder-lg"
-          key={index}
-        >
+        <div className="mb-3 d-flex vstack gap-1 placeholder-wave placeholder-lg" key={index}>
           <hr />
           <h3 className="placeholder col-3 bg-secondary" />
           <div>
@@ -72,8 +71,7 @@ const PostContainer = () => {
   const observeRef = useRef<HTMLDivElement>(null);
 
   const onPagination = async (entries: IntersectionObserverEntry[]) => {
-    if (!entries[0].isIntersecting || !postIndex.current || !params.userID)
-      return;
+    if (!entries[0].isIntersecting || !postIndex.current || !params.userID) return;
     if (isPagination || isLastPost) return;
     setIsPagination(true);
     const uid = await getUserUID(params.userID);
@@ -106,13 +104,10 @@ const PostContainer = () => {
       </div>
       <PostThumbnailBox postList={postList} />
       {isLastPost || isLoading ? null : (
-        <div
-          className="spinner-border text-secondary"
-          style={{ marginLeft: "47%" }}
-          ref={observeRef}
-          role="status"
-        >
-          <span className="visually-hidden">Loading...</span>
+        <div className="page-spinner-center">
+          <div className="spinner-border text-secondary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
         </div>
       )}
     </section>

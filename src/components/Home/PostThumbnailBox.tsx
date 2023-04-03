@@ -13,8 +13,7 @@ const PostThumbnailBox = ({ postList }: { postList: PostData[] }) => {
       {postList.map((post) => (
         <div className="w-100" key={post.id}>
           <Link
-            className="PostItem px-0 py-4 d-flex text-decoration-none"
-            style={{ borderTop: "1px solid #eee" }}
+            className="PostItem px-0 py-4 d-flex text-decoration-none bt-light"
             key={post.id}
             to={`/home/${param.userID}/${post.id}`}
           >
@@ -28,13 +27,9 @@ const PostThumbnailBox = ({ postList }: { postList: PostData[] }) => {
                   />
                 </div>
               ) : null}
-              <h3 className="overflow-hidden fw-semibold" style={{ color: "#111" }}>
-                {post.title}
-              </h3>
-              <p className="mb-1 text-break" style={{ color: "#555" }}>
-                {post.thumbnailData}
-              </p>
-              <span style={{ color: "#999", fontSize: "14px" }}>{getDate(post.createdAt)}</span>
+              <h3 className="overflow-hidden fw-semibold text-111">{post.title}</h3>
+              <p className="mb-1 text-break text-555">{post.thumbnailData}</p>
+              <span className="fs-14px text-999">{getDate(post.createdAt)}</span>
             </div>
           </Link>
         </div>

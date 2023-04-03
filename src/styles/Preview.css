@@ -1,0 +1,37 @@
+.scrollOpen {
+  visibility: visible;
+  animation-name: open;
+  animation-duration: 0.5s;
+  animation-duration: linear;
+}
+
+@keyframes open {
+  0% {
+    transform: translate(0, 100%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.scrollClose {
+  visibility: hidden;
+  animation-name: close;
+  animation-duration: 0.5s;
+  animation-duration: linear;
+}
+
+@keyframes close {
+  0% {
+    transform: translate(0, 0);
+    visibility: visible;
+  }
+  99.9% {
+    transform: translate(0, 99.9%);
+    visibility: visible;
+  }
+  100% {
+    transform: translate(0, 100%);
+    visibility: hidden;
+  }
+}

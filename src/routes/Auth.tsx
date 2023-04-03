@@ -22,20 +22,12 @@ const Auth = () => {
         {isEmail ? null : <AuthWithSocialAccount signIn={signIn} setIsEmail={setIsEmail} />}
         {isEmail ? <AuthWithEmail signIn={signIn} /> : null}
         {isEmail ? null : (
-          <button
-            className="btn btn-primary col-8 offset-2"
-            style={{ height: "36px" }}
-            onClick={toggleAccount}
-          >
+          <button className="btn btn-primary col-8 offset-2 h-36px" onClick={toggleAccount}>
             {signIn ? "Create Account" : "Sign In"}
           </button>
         )}
         {isEmail ? (
-          <button
-            className="btn btn-secondary col-8 offset-2"
-            style={{ height: "36px" }}
-            onClick={toggleEmail}
-          >
+          <button className="btn btn-secondary col-8 offset-2 h-36px" onClick={toggleEmail}>
             Back
           </button>
         ) : null}

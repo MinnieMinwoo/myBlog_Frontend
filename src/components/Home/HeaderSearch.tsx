@@ -1,30 +1,16 @@
 import React from "react";
-import styled from "styled-components";
 import search from "../../assets/images/search.png";
-
-const SearchBox = styled.div`
-  display: inline-block;
-  margin-right: 15px;
-  margin-top: 32px;
-`;
-
-const SearchButton = styled.button`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 1px solid #eee;
-  background-image: url(${search});
-  background-color: #fff;
-  background-size: 16px;
-  background-position: center;
-  background-repeat: no-repeat;
-`;
 
 const HeaderSearch = () => {
   return (
-    <SearchBox className="SearchBox">
-      <SearchButton />
-    </SearchBox>
+    <div className="SearchBox d-inline-block me-3 mt-4">
+      <img
+        className="img-thumbnail rounded-circle w-50px h-50px fs-0"
+        src={search}
+        alt="search"
+        role="button"
+      />
+    </div>
   );
 };
 

@@ -18,21 +18,13 @@ const SettingData = ({
   buttonColor,
 }: Props) => {
   return (
-    <div className="SettingData px-3 py-4" style={{ borderBottom: "1px solid #eee" }}>
-      <h3 className="d-inline-block fs-5" style={{ width: "170px", color: "#111" }}>
-        {title}
-      </h3>
-      <span style={{ color: "#333" }}>{currentData}</span>
-      <button
-        className={`btn btn-${buttonColor ?? "primary"} float-end`}
-        style={{ width: "96px" }}
-        onClick={onClick}
-      >
+    <div className="SettingData px-3 py-4 bb-light">
+      <h3 className="d-inline-block fs-5 w-170px text-111">{title}</h3>
+      <span className="text-333">{currentData}</span>
+      <button className={`btn btn-${buttonColor ?? "primary"} float-end w-98px`} onClick={onClick}>
         {buttonMessage}
       </button>
-      <p className="mt-2 mb-0" style={{ fontSize: "14px", color: "#777" }}>
-        {description}
-      </p>
+      <p className="mt-2 mb-0 fs-14px text-777">{description}</p>
     </div>
   );
 };
