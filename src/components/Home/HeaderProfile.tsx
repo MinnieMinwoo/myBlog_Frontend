@@ -52,7 +52,7 @@ const HomeProfile = () => {
   return (
     <div className="HeaderProfile d-inline-block">
       <img
-        className="img-thumbnail rounded-circle w-50px h-50px fs-0"
+        className="img-thumbnail rounded-circle w-50px h-50px-i fs-0"
         src={userData.photoURL ? userData.photoURL : altImage}
         alt="Profile"
         role="button"

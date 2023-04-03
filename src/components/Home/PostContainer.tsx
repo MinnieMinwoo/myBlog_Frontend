@@ -105,7 +105,7 @@ const PostContainer = () => {
       <PostThumbnailBox postList={postList} />
       {isLastPost || isLoading ? null : (
         <div className="page-spinner-center">
-          <div className="spinner-border text-secondary" role="status">
+          <div className="spinner-border text-secondary" role="status" ref={observeRef}>
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>

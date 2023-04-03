@@ -66,6 +66,10 @@
   height: 50px;
 }
 
+.h-50px-i {
+  height: 50px !important;
+}
+
 .h-60px {
   height: 60px;
 }
