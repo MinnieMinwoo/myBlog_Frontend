@@ -55,11 +55,6 @@ const Header = ({ title, userName, outlet, isWarningAlert = false }: Props) => {
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link disabled" to="/">
-                    Tag
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link disabled" to="/">
                     About
                   </Link>
                 </li>

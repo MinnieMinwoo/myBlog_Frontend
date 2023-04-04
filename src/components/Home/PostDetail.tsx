@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { useToast } from "../../states/ToastState";
 import { useModal } from "../../states/ModalState";
@@ -106,6 +106,30 @@ const PostDetail = () => {
     );
   };
 
+  const onFacebook = (event: React.MouseEvent) => {
+    event?.preventDefault();
+    window.open(
+      `http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`,
+      "_blank",
+      "width=800, height=600"
+    );
+  };
+
+  const onTwitter = (event: React.MouseEvent) => {
+    event?.preventDefault();
+    window.open(
+      `https://twitter.com/intent/tweet?text=${"Share our story"}&url=${window.location.href}`,
+      "_blank",
+      "width=800, height=600"
+    );
+  };
+
+  const onCopy = async (event: React.MouseEvent) => {
+    event?.preventDefault();
+    await navigator.clipboard.writeText(window.location.href);
+    openToast("Complete", "The link has been copied");
+  };
+
   return (
     <>
       {onLoading ? <Dummy /> : null}
@@ -156,6 +180,56 @@ const PostDetail = () => {
             ]}
           />
         </article>
+        <div>
+          <div className="hstack mb-4">
+            <button className="btn btn-outline-primary w-100px h-50px me-3">
+              ♡{`(${postData?.likes ?? 0})`}
+            </button>
+            <div className="dropdown-center">
+              <button
+                className="btn btn-outline-secondary dropdown-toggle w-100px h-50px"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Share
+              </button>
+              <ul className="dropdown-menu">
+                <li>
+                  <a
+                    className="dropdown-item"
+                    href={`http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
+                    onClick={onFacebook}
+                  >
+                    Facebook
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="dropdown-item"
+                    href={`https://twitter.com/intent/tweet?text=${"Share our story"}&url=${
+                      window.location.href
+                    }`}
+                    role="button"
+                    onClick={onTwitter}
+                  >
+                    Twitter
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="dropdown-item"
+                    href={window.location.href}
+                    role="button"
+                    onClick={onCopy}
+                  >
+                    Copy link
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </main>
     </>
   );
