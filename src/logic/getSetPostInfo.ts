@@ -160,7 +160,7 @@ export const getPostData = async (docId: string): Promise<PostDetail> => {
     return {
       ...postPreview,
       id: docId,
-      likes: postDetail?.likes ?? 0,
+      likes: postDetail?.likes ?? [],
       detail: postDetail?.detail ?? "",
       nickname: nickname,
       imageList: postDetail?.imageList ?? [],
@@ -184,7 +184,7 @@ export const setPost = async (postData: postEditData, userData: UserData): Promi
   const dataObj = {
     imageList: postData.imageList,
     detail: postData.postData,
-    likes: 0,
+    likes: [],
   };
   try {
     const docs = await addDoc(collection(dbService, "posts"), thumbnailObj);
@@ -211,6 +211,19 @@ export const updatePost = async (id: string, postData: postEditData) => {
     const thumbnailRef = doc(dbService, "posts", id);
     const detailRef = doc(dbService, `posts/${id}/detail`, id);
     await updateDoc(thumbnailRef, thumbnailObj);
+    await updateDoc(detailRef, detailObj);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateLikes = async (id: string, likes: string[]) => {
+  const detailObj = {
+    likes: likes,
+  };
+
+  try {
+    const detailRef = doc(dbService, `posts/${id}/detail`, id);
     await updateDoc(detailRef, detailObj);
   } catch (error) {
     throw error;

@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { loginData } from "../../states/LoginState";
 import { useToast } from "../../states/ToastState";
 import { useModal } from "../../states/ModalState";
 import { getAuth } from "firebase/auth";
@@ -9,7 +10,7 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 import toc from "@jsdevtools/rehype-toc";
 
 import getDate from "../../logic/getDate";
-import { getPostData, deletePost } from "../../logic/getSetPostInfo";
+import { getPostData, deletePost, updateLikes } from "../../logic/getSetPostInfo";
 import { isLoadingData } from "../../states/LoadingState";
 import { deleteImg } from "../../logic/getSetImage";
 import altImage from "../../assets/images/altThumbnail.jpg";
@@ -51,6 +52,7 @@ const Dummy = () => {
   );
 };
 const PostDetail = () => {
+  const userData = useRecoilValue(loginData);
   const [postData, setPostData] = useState<PostDetail>();
   const [hidden, setHidden] = useState(true);
   const [onLoading, setOnLoading] = useRecoilState(isLoadingData);
@@ -104,6 +106,26 @@ const PostDetail = () => {
       },
       false
     );
+  };
+
+  const onLike = async () => {
+    if (!postData) return;
+    if (!userData.uid) navigate("/auth/");
+    else {
+      let newLikes = [...(postData?.likes ?? [])];
+      if (newLikes.includes(userData.uid)) newLikes.splice(newLikes.indexOf(userData.uid), 1);
+      else newLikes.push(userData.uid);
+      try {
+        await updateLikes(postData?.id, newLikes);
+        setPostData((prev) => {
+          if (!prev) return;
+          else return { ...prev, likes: newLikes };
+        });
+      } catch (error) {
+        console.log(error);
+        openToast("Error", "Like action failed", "warning");
+      }
+    }
   };
 
   const onFacebook = (event: React.MouseEvent) => {
@@ -182,8 +204,13 @@ const PostDetail = () => {
         </article>
         <div>
           <div className="hstack mb-4">
-            <button className="btn btn-outline-primary w-100px h-50px me-3">
-              ♡{`(${postData?.likes ?? 0})`}
+            <button
+              className={`btn btn${
+                postData && userData?.uid && postData.likes.includes(userData.uid) ? "" : "-outline"
+              }-primary w-100px h-50px me-3`}
+              onClick={onLike}
+            >
+              ♡{`(${postData?.likes.length ?? 0})`}
             </button>
             <div className="dropdown-center">
               <button

@@ -7,8 +7,6 @@ export const AlertToast = () => {
   const toastRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log(toastDataState.isOpen);
-    console.log(toastRef.current);
     if (!toastDataState.isOpen || !(toastRef.current instanceof HTMLDivElement)) return;
     const showToast = new Toast(toastRef.current);
     showToast.show();

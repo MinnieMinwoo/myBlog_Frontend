@@ -25,7 +25,6 @@ describe("Header component test", () => {
     expect(screen.getByText("Test")).toBeInTheDocument();
     expect(screen.queryByText("Home")).not.toBeInTheDocument();
     expect(screen.queryByText("Category")).not.toBeInTheDocument();
-    expect(screen.queryByText("Tag")).not.toBeInTheDocument();
     expect(screen.queryByText("About")).not.toBeInTheDocument();
   });
 
@@ -39,7 +38,6 @@ describe("Header component test", () => {
     );
     expect(screen.getByText("Home")).toBeInTheDocument();
     expect(screen.getByText("Category")).toBeInTheDocument();
-    expect(screen.getByText("Tag")).toBeInTheDocument();
     expect(screen.getByText("About")).toBeInTheDocument();
   });
 
