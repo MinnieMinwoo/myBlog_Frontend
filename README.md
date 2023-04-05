@@ -6,7 +6,7 @@ Make my own blog project.
 
 - Auth
 
-  - Email with verification
+  - Sign in / up email with verification
   - Social login with google, facebook, twitter
 
 - Blog home
@@ -15,11 +15,15 @@ Make my own blog project.
   - View post thumbnail With images
   - Get post data using infinite scroll
   - Sort posts by category
+  - View post tags
 
 - Post read
 
   - Read post written by markdown
   - View table on contents in sidebar
+  - Can like posts
+  - Share post link on facebook, twitter
+  - Copy post link on read
 
 - Post edit & write
 
@@ -27,6 +31,7 @@ Make my own blog project.
   - Write blog posts using markdown
   - Drag & Drop image to fit the cursor during post edit
   - Set category group
+  - Set tags group by comma
 
 - Setting
   - Edit profile images
