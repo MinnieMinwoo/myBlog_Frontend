@@ -16,10 +16,19 @@ interface Props {
   isEdit: boolean;
   postContent: postEditData;
   setPostContent: React.Dispatch<React.SetStateAction<postEditData>>;
+  postDetail: string;
+  setPostDetail: React.Dispatch<React.SetStateAction<string>>;
   onPreview: () => void;
 }
 
-const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
+const OnWrite = ({
+  isEdit,
+  postContent,
+  setPostContent,
+  postDetail,
+  setPostDetail,
+  onPreview,
+}: Props) => {
   const userData = useRecoilValue(loginData);
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
@@ -144,7 +153,7 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
               <MDEditor
                 className="post-editor"
                 data-color-mode="light"
-                value={postContent.postData}
+                value={postDetail}
                 commands={[
                   commands.title,
                   commands.bold,
@@ -157,10 +166,7 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
                   commands.fullscreen,
                 ]}
                 onChange={(value = "") => {
-                  setPostContent((prev) => ({
-                    ...prev,
-                    postData: value,
-                  }));
+                  setPostDetail(value);
                 }}
               />
             </div>

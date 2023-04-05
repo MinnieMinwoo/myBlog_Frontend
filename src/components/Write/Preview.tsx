@@ -149,11 +149,13 @@ const Preview = ({
       <div className="col-10 offset-1 col-md-5 offset-md-1 col-xxl-4 offset-xxl-2 px-4 align-self-center be-light">
         <div className="vstack gap-3">
           <h3>Preview</h3>
-          <img
-            className="img-fluid img-thumbnail ratio-16x9 object-fit-cover w-100 bg-eee"
-            src={postContent.thumbnailImgLink ? postContent.thumbnailImgLink : altImage}
-            alt="Thumbnail"
-          />
+          <div className="ratio ratio-16x9">
+            <img
+              className="img-thumbnail object-fit-cover bg-eee"
+              src={postContent.thumbnailImgLink ? postContent.thumbnailImgLink : altImage}
+              alt="Thumbnail"
+            />
+          </div>
           <input
             hidden
             type="file"
@@ -191,12 +193,8 @@ const Preview = ({
           <h4>Tag</h4>
           <div className="col">
             <div className="mb-3">
-              {postContent.tag.map((tag, index) => (
-                <button
-                  key={tag[index]}
-                  className="btn btn-outline-primary me-2"
-                  onClick={onTagDelete}
-                >
+              {postContent.tag.map((tag) => (
+                <button key={tag} className="btn btn-outline-primary me-2" onClick={onTagDelete}>
                   {tag}
                 </button>
               ))}
