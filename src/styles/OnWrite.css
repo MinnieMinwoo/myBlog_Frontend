@@ -31,3 +31,14 @@
     opacity: 1;
   }
 }
+
+.on-write-layout {
+  position: inherit;
+}
+
+@media (max-width: 767px) {
+  .on-write-layout {
+    position: absolute;
+    width: 100%;
+  }
+}

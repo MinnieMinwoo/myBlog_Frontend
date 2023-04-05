@@ -173,13 +173,9 @@ export const getPostData = async (docId: string): Promise<PostDetail> => {
 export const setPost = async (postData: postEditData, userData: UserData): Promise<string> => {
   // eslint-disable-next-line no-useless-escape
   const thumbnailObj = {
-    title: postData.title,
+    ...postData,
     createdBy: userData.uid,
     createdAt: Date.now(),
-    tag: "",
-    category: postData.category,
-    thumbnailData: postData.thumbnailData,
-    thumbnailImageURL: postData.thumbnailImgLink,
   };
   const dataObj = {
     imageList: postData.imageList,
@@ -198,7 +194,7 @@ export const setPost = async (postData: postEditData, userData: UserData): Promi
 export const updatePost = async (id: string, postData: postEditData) => {
   const thumbnailObj = {
     title: postData.title,
-    tag: "",
+    tag: postData.tag,
     category: postData.category,
     thumbnailData: postData.thumbnailData,
     thumbnailImageURL: postData.thumbnailImgLink,

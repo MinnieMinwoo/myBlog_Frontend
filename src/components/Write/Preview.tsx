@@ -111,13 +111,41 @@ const Preview = ({
     }));
   };
 
+  const [tagText, setTagText] = useState("");
+  const onTagChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value },
+    } = event;
+    if (value.includes(",")) {
+      const inputSplit = value.split(",");
+      const tagArray = [...postContent.tag, ...inputSplit.slice(0, inputSplit.length - 1)];
+      const tagArrayFilter = tagArray.filter((e, i) => !tagArray.slice(0, i).includes(e));
+      setTagText(inputSplit[inputSplit.length - 1]);
+      setPostContent((prev) => ({ ...prev, tag: tagArrayFilter }));
+    } else {
+      setTagText(value);
+    }
+  };
+
+  const onTagDelete = (event: React.MouseEvent<HTMLElement>) => {
+    if (!(event.target instanceof HTMLElement)) return;
+    const { innerText } = event.target as HTMLElement;
+    const currentTag = [...postContent.tag];
+    setPostContent((prev) => ({
+      ...prev,
+      tag: [
+        ...currentTag.slice(0, currentTag.indexOf(innerText)),
+        ...currentTag.slice(currentTag.indexOf(innerText) + 1),
+      ],
+    }));
+  };
+
   return (
     <div
-      className={`Preview d-flex position-fixed w-100 h-100 bg-fff z-index-1 ${
+      className={`Preview preview-layout bg-fff z-index-1 ${
         isPreview ? "scrollOpen" : firstOpen ? "scrollClose" : "hidden"
-      }`}
+      }${isPreview ? "" : " preview-overflow"}`}
     >
-      <div></div>
       <div className="col-10 offset-1 col-md-5 offset-md-1 col-xxl-4 offset-xxl-2 px-4 align-self-center be-light">
         <div className="vstack gap-3">
           <h3>Preview</h3>
@@ -159,7 +187,31 @@ const Preview = ({
         </div>
       </div>
       <div className="col-10 col-md-5 col-xxl-4 px-4 align-self-center">
-        <div className="vstack gap-1">
+        <div className="vstack gap-1 mb-3">
+          <h4>Tag</h4>
+          <div className="col">
+            <div className="mb-3">
+              {postContent.tag.map((tag, index) => (
+                <button
+                  key={tag[index]}
+                  className="btn btn-outline-primary me-2"
+                  onClick={onTagDelete}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+            <input
+              className="form-control b-0-i"
+              placeholder="Separate tags with spots."
+              value={tagText}
+              onChange={onTagChange}
+              maxLength={50}
+              hidden={postContent.tag.length >= 5}
+            />
+          </div>
+        </div>
+        <div className="vstack gap-1 mb-3">
           <h4>Category Setting</h4>
           <select className="form-select" value={categoryIndex} onChange={onCategoryChange}>
             <option value={""}>None</option>

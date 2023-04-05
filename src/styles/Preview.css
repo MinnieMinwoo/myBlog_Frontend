@@ -35,3 +35,33 @@
     visibility: hidden;
   }
 }
+
+.preview-layout {
+  position: fixed;
+  display: flex;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .preview-layout {
+    position: absolute;
+    display: block;
+    padding: 30px 0;
+  }
+
+  .preview-overflow {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .preview-layout > div {
+    border-right: 0;
+    margin: auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .preview-layout {
+    height: 100%;
+  }
+}

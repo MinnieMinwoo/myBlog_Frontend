@@ -119,7 +119,7 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
   };
 
   return (
-    <div className={isDragging ? "OnWrite post-drag" : "OnWrite"}>
+    <div className={`OnWrite on-write-layout ${isDragging ? "post-drag" : ""}`}>
       <Header title={isEdit ? "Edit post" : "Write your story"} isWarningAlert={true} />
       <div className="post-init-animation">
         <div className="OnWrite mt-3 col col-sm-10 offset-sm-1 col-lg-8 offset-lg-2 col-xxl-6 offset-xxl-3">

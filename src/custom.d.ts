@@ -9,7 +9,7 @@ interface PostData {
   createdAt: number;
   createdBy: string;
   category?: string[];
-  tag: string;
+  tag: string[];
   thumbnailData: string;
   thumbnailImageURL: string;
   title: string;
@@ -29,6 +29,7 @@ interface postEditData {
   thumbnailImgLink: string;
   thumbnailData: string;
   imageList: string[];
+  tag: string[];
 }
 
 interface UserData {

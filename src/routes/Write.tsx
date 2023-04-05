@@ -23,6 +23,7 @@ const Write = () => {
     thumbnailImgLink: "",
     thumbnailData: "",
     imageList: [],
+    tag: [],
   });
   const [isPreview, setIsPreview] = useState(false);
   const { openModal } = useModal();
@@ -51,6 +52,7 @@ const Write = () => {
             thumbnailImgLink: post.thumbnailImageURL,
             thumbnailData: post.thumbnailData,
             imageList: post.imageList,
+            tag: post.tag,
           }));
         })
         .catch((error) => {

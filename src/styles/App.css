@@ -10,6 +10,10 @@
 .flex-basis-210px {
   flex-basis: 210px;
 }
+/* border */
+.b-0-i {
+  border: 0 !important;
+}
 
 /* padding */
 .ps-5px {

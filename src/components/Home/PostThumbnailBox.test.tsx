@@ -11,7 +11,7 @@ describe("Post thumbnailBox test", () => {
       createdAt: 1621814400000, //2021-5-24
       createdBy: "testUser",
       category: [],
-      tag: "",
+      tag: [],
       thumbnailData: "test message1",
       thumbnailImageURL: "",
       title: "test1",
@@ -21,7 +21,7 @@ describe("Post thumbnailBox test", () => {
       createdAt: 1664582400000, //2022-10-1
       createdBy: "testUser",
       category: [],
-      tag: "",
+      tag: [],
       thumbnailData: "test message2",
       thumbnailImageURL: "",
       title: "test2",
@@ -31,7 +31,7 @@ describe("Post thumbnailBox test", () => {
       createdAt: 1676419200000, //2023-2-15
       createdBy: "testUser",
       category: [],
-      tag: "",
+      tag: [],
       thumbnailData: "test message3",
       thumbnailImageURL: "https://picsum.photos/200/300",
       title: "test3",
