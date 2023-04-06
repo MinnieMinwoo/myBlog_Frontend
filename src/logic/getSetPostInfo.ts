@@ -170,7 +170,7 @@ export const getPostData = async (docId: string): Promise<PostDetail> => {
   }
 };
 
-export const setPost = async (postData: postEditData, userData: UserData): Promise<string> => {
+export const setPost = async (postData: PostEditData, userData: UserData): Promise<string> => {
   // eslint-disable-next-line no-useless-escape
   const thumbnailObj = {
     title: postData.title,
@@ -195,7 +195,7 @@ export const setPost = async (postData: postEditData, userData: UserData): Promi
   }
 };
 
-export const updatePost = async (id: string, postData: postEditData, postDetail: string) => {
+export const updatePost = async (id: string, postData: PostEditData, postDetail: string) => {
   const thumbnailObj = {
     title: postData.title,
     tag: postData.tag,

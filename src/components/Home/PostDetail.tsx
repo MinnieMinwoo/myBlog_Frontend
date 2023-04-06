@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/heading-has-content */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
@@ -14,8 +14,9 @@ import { getPostData, deletePost, updateLikes } from "../../logic/getSetPostInfo
 import { isLoadingData } from "../../states/LoadingState";
 import { deleteImg } from "../../logic/getSetImage";
 import altImage from "../../assets/images/altThumbnail.jpg";
-
 import "../../styles/PostDetail.css";
+
+const CommentContainer = lazy(() => import("./CommentContainer"));
 
 const Dummy = () => {
   const repeat = 5;
@@ -202,7 +203,7 @@ const PostDetail = () => {
             ]}
           />
         </article>
-        <div>
+        <section>
           <div className="hstack mb-4">
             <button
               className={`btn btn${
@@ -256,7 +257,10 @@ const PostDetail = () => {
               </ul>
             </div>
           </div>
-        </div>
+        </section>
+        <Suspense fallback={<></>}>
+          <CommentContainer postAuthor={postData?.createdBy ?? ""} />
+        </Suspense>
       </main>
     </>
   );

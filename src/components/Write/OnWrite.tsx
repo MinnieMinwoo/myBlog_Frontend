@@ -14,8 +14,8 @@ import "../../styles/OnWrite.css";
 
 interface Props {
   isEdit: boolean;
-  postContent: postEditData;
-  setPostContent: React.Dispatch<React.SetStateAction<postEditData>>;
+  postContent: PostEditData;
+  setPostContent: React.Dispatch<React.SetStateAction<PostEditData>>;
   postDetail: string;
   setPostDetail: React.Dispatch<React.SetStateAction<string>>;
   onPreview: () => void;

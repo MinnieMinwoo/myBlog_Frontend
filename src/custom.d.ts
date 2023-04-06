@@ -22,7 +22,7 @@ interface PostDetail extends PostData {
   imageList: string[];
 }
 
-interface postEditData {
+interface PostEditData {
   title: string;
   category: string[];
   postData: string;
@@ -30,6 +30,17 @@ interface postEditData {
   thumbnailData: string;
   imageList: string[];
   tag: string[];
+}
+
+interface CommentData {
+  index: string;
+  createAt: number;
+  createBy: string;
+  nickName: string;
+  profileImage: string;
+  isNested: boolean;
+  nestedTarget?: string;
+  detail: string;
 }
 
 interface UserData {

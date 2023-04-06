@@ -15,6 +15,10 @@
   object-fit: cover;
 }
 
+.textarea-fixed {
+  resize: none;
+}
+
 /* border */
 .b-0-i {
   border: 0 !important;

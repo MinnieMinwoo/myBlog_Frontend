@@ -16,7 +16,7 @@ import Loading from "../components/Share/Loading";
 const Write = () => {
   const [loading, setLoading] = useRecoilState(isLoadingData);
   const userData = useRecoilValue(loginData);
-  const [postContent, setPostContent] = useState<postEditData>({
+  const [postContent, setPostContent] = useState<PostEditData>({
     title: "",
     category: [],
     postData: "**Write your post**",

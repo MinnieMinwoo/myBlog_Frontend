@@ -14,8 +14,8 @@ import "../../styles/Preview.css";
 interface Props {
   isEdit: boolean;
   isPreview: boolean;
-  postContent: postEditData;
-  setPostContent: React.Dispatch<React.SetStateAction<postEditData>>;
+  postContent: PostEditData;
+  setPostContent: React.Dispatch<React.SetStateAction<PostEditData>>;
   onPreview: () => void;
   onSubmit: () => void;
 }
