@@ -195,7 +195,7 @@ export const setPost = async (postData: PostEditData, userData: UserData): Promi
   }
 };
 
-export const updatePost = async (id: string, postData: PostEditData, postDetail: string) => {
+export const updatePost = async (id: string, postData: PostEditData) => {
   const thumbnailObj = {
     title: postData.title,
     tag: postData.tag,
@@ -204,7 +204,7 @@ export const updatePost = async (id: string, postData: PostEditData, postDetail:
     thumbnailImageURL: postData.thumbnailImgLink,
   };
   const detailObj = {
-    detail: postDetail,
+    detail: postData.postData,
     imageList: postData.imageList,
   };
   try {

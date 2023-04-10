@@ -25,7 +25,6 @@ const Write = () => {
     imageList: [],
     tag: [],
   });
-  const [postDetail, setPostDetail] = useState("**Write your post**");
   const [isPreview, setIsPreview] = useState(false);
   const { openModal } = useModal();
   const navigate = useNavigate();
@@ -49,12 +48,12 @@ const Write = () => {
             ...prev,
             title: post.title,
             category: post.category ?? [],
+            postData: post.detail,
             thumbnailImgLink: post.thumbnailImageURL,
             thumbnailData: post.thumbnailData,
             imageList: post.imageList,
             tag: post.tag,
           }));
-          setPostDetail(post.detail);
         })
         .catch((error) => {
           console.log(error);
@@ -84,7 +83,7 @@ const Write = () => {
     try {
       let postID: string;
       if (params["*"]) {
-        await updatePost(params["*"], postContent, postDetail);
+        await updatePost(params["*"], postContent);
         postID = params["*"];
       } else {
         postID = await setPost(postContent, userData);
@@ -123,8 +122,6 @@ const Write = () => {
         isEdit={Boolean(params["*"])}
         postContent={postContent}
         setPostContent={setPostContent}
-        postDetail={postDetail}
-        setPostDetail={setPostDetail}
         onPreview={onPreview}
       />
     </div>
