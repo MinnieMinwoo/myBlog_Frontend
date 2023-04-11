@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/myBlog_Frontend/static/css/main.b252fa05.css",
-    "main.js": "/myBlog_Frontend/static/js/main.51922756.js",
+    "main.css": "/myBlog_Frontend/static/css/main.114fb70e.css",
+    "main.js": "/myBlog_Frontend/static/js/main.a980a89d.js",
     "static/css/905.2f25b5fd.chunk.css": "/myBlog_Frontend/static/css/905.2f25b5fd.chunk.css",
     "static/js/905.5f6601ef.chunk.js": "/myBlog_Frontend/static/js/905.5f6601ef.chunk.js",
-    "static/js/441.1045e689.chunk.js": "/myBlog_Frontend/static/js/441.1045e689.chunk.js",
-    "static/js/818.83e8dad4.chunk.js": "/myBlog_Frontend/static/js/818.83e8dad4.chunk.js",
+    "static/js/441.7e1b6810.chunk.js": "/myBlog_Frontend/static/js/441.7e1b6810.chunk.js",
+    "static/js/818.9887d807.chunk.js": "/myBlog_Frontend/static/js/818.9887d807.chunk.js",
     "static/css/927.6384d691.chunk.css": "/myBlog_Frontend/static/css/927.6384d691.chunk.css",
-    "static/js/927.e2714114.chunk.js": "/myBlog_Frontend/static/js/927.e2714114.chunk.js",
-    "static/css/993.9c320617.chunk.css": "/myBlog_Frontend/static/css/993.9c320617.chunk.css",
-    "static/js/993.7d0fda19.chunk.js": "/myBlog_Frontend/static/js/993.7d0fda19.chunk.js",
-    "static/js/639.3f95a5b3.chunk.js": "/myBlog_Frontend/static/js/639.3f95a5b3.chunk.js",
+    "static/js/927.0d873d89.chunk.js": "/myBlog_Frontend/static/js/927.0d873d89.chunk.js",
+    "static/css/993.48b129eb.chunk.css": "/myBlog_Frontend/static/css/993.48b129eb.chunk.css",
+    "static/js/993.90bdfb3d.chunk.js": "/myBlog_Frontend/static/js/993.90bdfb3d.chunk.js",
+    "static/js/639.60087c94.chunk.js": "/myBlog_Frontend/static/js/639.60087c94.chunk.js",
     "static/css/792.68d59297.chunk.css": "/myBlog_Frontend/static/css/792.68d59297.chunk.css",
-    "static/js/792.8bab8e27.chunk.js": "/myBlog_Frontend/static/js/792.8bab8e27.chunk.js",
+    "static/js/792.5bde04df.chunk.js": "/myBlog_Frontend/static/js/792.5bde04df.chunk.js",
     "static/js/35.4e0be01e.chunk.js": "/myBlog_Frontend/static/js/35.4e0be01e.chunk.js",
-    "static/css/723.95372581.chunk.css": "/myBlog_Frontend/static/css/723.95372581.chunk.css",
+    "static/css/723.753a11fa.chunk.css": "/myBlog_Frontend/static/css/723.753a11fa.chunk.css",
     "static/js/723.0731706c.chunk.js": "/myBlog_Frontend/static/js/723.0731706c.chunk.js",
-    "static/js/52.067ccf8c.chunk.js": "/myBlog_Frontend/static/js/52.067ccf8c.chunk.js",
-    "static/js/729.08681f69.chunk.js": "/myBlog_Frontend/static/js/729.08681f69.chunk.js",
+    "static/js/52.7c2eee28.chunk.js": "/myBlog_Frontend/static/js/52.7c2eee28.chunk.js",
+    "static/js/729.75440a51.chunk.js": "/myBlog_Frontend/static/js/729.75440a51.chunk.js",
     "static/css/541.cf780a5f.chunk.css": "/myBlog_Frontend/static/css/541.cf780a5f.chunk.css",
     "static/js/541.30d5a3de.chunk.js": "/myBlog_Frontend/static/js/541.30d5a3de.chunk.js",
     "static/js/858.c32bfd2f.chunk.js": "/myBlog_Frontend/static/js/858.c32bfd2f.chunk.js",
@@ -31,7 +31,7 @@
     "index.html": "/myBlog_Frontend/index.html"
   },
   "entrypoints": [
-    "static/css/main.b252fa05.css",
-    "static/js/main.51922756.js"
+    "static/css/main.114fb70e.css",
+    "static/js/main.a980a89d.js"
   ]
 }
