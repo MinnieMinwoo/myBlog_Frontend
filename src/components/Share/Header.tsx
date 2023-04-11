@@ -54,7 +54,7 @@ const Header = ({ title, userName, outlet, isWarningAlert = false }: Props) => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link disabled" to="/">
+                  <Link className="nav-link" to={`${userName ? `/home/${userName}/about` : "/"}`}>
                     About
                   </Link>
                 </li>

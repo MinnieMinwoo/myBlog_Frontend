@@ -12,6 +12,7 @@ const PostContainer = lazy(() => import("./components/Home/PostContainer"));
 const PostCategoryList = lazy(() => import("./components/Home/PostCategoryList"));
 const PostDetail = lazy(() => import("./components/Home/PostDetail"));
 const PostCategoryDetail = lazy(() => import("./components/Home/PostCategoryDetail"));
+const About = lazy(() => import("./components/Home/About"));
 
 const AppRouter = () => {
   return (
@@ -26,6 +27,7 @@ const AppRouter = () => {
               path="/home/:userID/category/:mainName/:subName"
               element={<PostCategoryDetail />}
             />
+            <Route path="/home/:userID/about" element={<About />} />
             <Route path="/home/:userID/:docID" element={<PostDetail />} />
           </Route>
           <Route path="/auth" element={<Auth />} />
