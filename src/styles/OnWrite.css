@@ -42,3 +42,7 @@
     width: 100%;
   }
 }
+
+.w-md-editor-bar {
+  display: none;
+}

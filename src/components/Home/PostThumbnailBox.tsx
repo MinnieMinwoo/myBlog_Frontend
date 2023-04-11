@@ -34,7 +34,7 @@ const PostThumbnailBox = ({ postList }: { postList: PostData[] }) => {
               <p className="mb-1 text-break text-555">{post.thumbnailData}</p>
               <div className="col">
                 {post.tag.map((tag) => (
-                  <button key={tag} className="btn btn-outline-primary" onClick={onTagSearch}>
+                  <button key={tag} className="btn btn-outline-primary me-1" onClick={onTagSearch}>
                     {tag}
                   </button>
                 ))}

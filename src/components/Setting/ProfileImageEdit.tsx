@@ -45,10 +45,10 @@ const ProfileImageEdit = () => {
         src={imageLink}
         onChange={onChange}
       />
-      <button type="button" className="btn btn-primary" onClick={onUpload}>
+      <button type="button" className="btn btn-primary w-128px" onClick={onUpload}>
         Upload Image
       </button>
-      <button type="button" className="btn btn-outline-primary" onClick={onDelete}>
+      <button type="button" className="btn btn-outline-primary w-128px" onClick={onDelete}>
         Delete Image
       </button>
     </div>

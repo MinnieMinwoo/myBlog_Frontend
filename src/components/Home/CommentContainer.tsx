@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { uuidv4 } from "@firebase/util";
-import { getComments } from "../../logic/getSetCommentInfo";
+import { getComments, updateComments } from "../../logic/getSetCommentInfo";
 import CommentBox from "./CommentBox";
 import { loginData } from "../../states/LoginState";
 import CommentEdit from "./CommentEdit";
@@ -19,42 +19,46 @@ const CommentContainer = ({ postAuthor }: { postAuthor: string }) => {
   }, [params.docID]);
 
   const onNewComment = (value: string, index?: string) => {
-    if (!userData.uid || !value) return;
-    const commentData: CommentData = {
+    if (!userData.uid || !value || !params.docID) return;
+    let commentData: CommentData = {
       index: uuidv4(),
       createAt: new Date().getTime(),
       createBy: userData.uid,
       nickName: userData.nickname ?? userData.uid,
       profileImage: userData.photoURL ?? "",
       isNested: index ? true : false,
-      nestedTarget: index ?? undefined,
       detail: value,
     };
-    setComments((prev) => [...prev, commentData]);
+    if (index) commentData.nestedTarget = index;
+    const newComments = [...comments, commentData];
+    setComments(newComments);
+    updateComments(params.docID, newComments);
   };
 
   const onEditComment = (value: string, target?: string) => {
-    console.log(value);
-    console.log(target);
-    let commentArray = [...comments];
+    if (!userData.uid || !value || !params.docID) return;
+    let newComments = [...comments];
     let index = -1;
-    for (let i = 0; i < commentArray.length; i++) {
-      if (commentArray[i].index === target) {
+    for (let i = 0; i < newComments.length; i++) {
+      if (newComments[i].index === target) {
         index = i;
         break;
       }
     }
     if (index === -1) return;
-    commentArray[index].detail = value;
-    setComments(commentArray);
+    newComments[index].detail = value;
+    setComments(newComments);
+    updateComments(params.docID, newComments);
   };
 
   const onDeleteComment = (target: string) => {
-    const commentData = comments.filter(
+    if (!userData.uid || !params.docID) return;
+    const newComments = comments.filter(
       (comment) =>
         comment.index !== target && (!comment.nestedTarget || comment.nestedTarget !== target)
     );
-    setComments(commentData);
+    setComments(newComments);
+    updateComments(params.docID, newComments);
   };
 
   return (

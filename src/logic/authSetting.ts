@@ -26,10 +26,11 @@ export const signInEmail = async (email: string, password: string): Promise<stri
       const data = await signInWithEmailAndPassword(auth, email, password);
       if (!data.user.emailVerified) {
         const actionCodeSettings = {
-          url: "http://localhost:3000/myBlog_Frontend#/",
+          url: process.env.TEST_DOMAIN as string,
           handleCodeInApp: true,
         };
         await sendEmailVerification(data.user, actionCodeSettings);
+        await signOut(auth);
         resolve(null);
       }
       const nickname = await getUserNickname(data.user.uid);
@@ -70,10 +71,11 @@ export const signInSocialAccount = async (provider: string) => {
     if (!isEmail) throw new Error("No Account");
     if (!data.user.emailVerified) {
       const actionCodeSettings = {
-        url: "http://localhost:3000/myBlog_Frontend#/",
+        url: process.env.TEST_DOMAIN as string,
         handleCodeInApp: true,
       };
       await sendEmailVerification(data.user, actionCodeSettings);
+      await signOut(auth);
       throw new Error("Email Verification");
     }
     const nickname = await getUserNickname(data.user.uid);
@@ -90,10 +92,11 @@ export const signUpEmail = async (email: string, password: string): Promise<null
       const data = await createUserWithEmailAndPassword(auth, email, password);
       await addUserData(data.user.uid);
       const actionCodeSettings = {
-        url: "http://localhost:3000/myBlog_Frontend#/",
+        url: process.env.TEST_DOMAIN as string,
         handleCodeInApp: true,
       };
       await sendEmailVerification(data.user, actionCodeSettings);
+      await signOut(auth);
       resolve(null);
     } catch (error) {
       reject(error);
@@ -113,7 +116,7 @@ export const updateUserEmail = async (newEmail: string, password: string) => {
   }
   await updateEmail(user, newEmail);
   const actionCodeSettings = {
-    url: "http://localhost:3000/myBlog_Frontend#/",
+    url: process.env.TEST_DOMAIN as string,
     handleCodeInApp: true,
   };
   await sendEmailVerification(user, actionCodeSettings);
@@ -132,7 +135,7 @@ export const linkEmail = async (email: string, password: string) => {
     throw error;
   }
   const actionCodeSettings = {
-    url: "http://localhost:3000/myBlog_Frontend#/",
+    url: process.env.TEST_DOMAIN as string,
     handleCodeInApp: true,
   };
   await sendEmailVerification(user, actionCodeSettings);

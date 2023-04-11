@@ -14,7 +14,6 @@ import Preview from "../components/Write/Preview";
 import Loading from "../components/Share/Loading";
 
 const Write = () => {
-  const [loading, setLoading] = useRecoilState(isLoadingData);
   const userData = useRecoilValue(loginData);
   const [postContent, setPostContent] = useState<PostEditData>({
     title: "",
@@ -31,6 +30,7 @@ const Write = () => {
   const params = useParams();
 
   useOnPreventLeave();
+  const [loading, setLoading] = useRecoilState(isLoadingData);
   useEffect(() => {
     if (params["*"]) {
       setLoading(true);
@@ -79,7 +79,9 @@ const Write = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [isSubmit, setIsSubmit] = useState(false);
   const onSubmit = async () => {
+    setIsSubmit(true);
     try {
       let postID: string;
       if (params["*"]) {
@@ -94,6 +96,8 @@ const Write = () => {
       const errorTitle = "Post Submit failed";
       const errorText = "Something wrong, try again later.";
       openModal(errorTitle, errorText);
+    } finally {
+      setIsSubmit(false);
     }
   };
 
@@ -116,6 +120,7 @@ const Write = () => {
         postContent={postContent}
         setPostContent={setPostContent}
         onPreview={onPreview}
+        isSubmit={isSubmit}
         onSubmit={onSubmit}
       />
       <OnWrite

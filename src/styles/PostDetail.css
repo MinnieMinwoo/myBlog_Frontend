@@ -24,9 +24,12 @@
 }
 
 .page-list {
-  list-style: none;
   padding-left: 20px !important;
   border-left: 1px solid #eee;
+}
+
+.page-listItem {
+  list-style: none;
 }
 
 .page-listItem > a {
