@@ -4,6 +4,7 @@
 
 import { FirebaseError, initializeApp } from "firebase/app";
 import * as authSetting from "./authSetting";
+import { deleteUser, getAuth } from "firebase/auth";
 
 describe("auth seting test", () => {
   beforeAll(async () => {
@@ -33,4 +34,14 @@ describe("auth seting test", () => {
       "auth/invalid-email"
     );
   });
+
+  /*
+  it("sign up test", async () => {
+    await expect(
+      authSetting.signUpEmail("test1234@gmail.com", "testpassword12345" as string)
+    ).resolves.toBe(null);
+    const auth = getAuth();
+    await authSetting.deleteUser(auth.currentUser);
+  });
+  */
 });
