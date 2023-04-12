@@ -31,8 +31,12 @@ export const addUserData = async (uid: string) => {
     nickname: uid,
     description: "Hello",
   };
+  const userCategory = { order: [] };
+  const userAbout = { content: "" };
   try {
     await setDoc(doc(dbService, "users", uid), userDetail);
+    await setDoc(doc(dbService, `users/${uid}/category`, uid), userCategory);
+    await setDoc(doc(dbService, `users/${uid}/about`, uid), userAbout);
   } catch (error) {
     throw error;
   }
@@ -109,6 +113,26 @@ export const updateUserProfile = async (uid: string, nickname: string, descripti
   await updateDoc(userDocRef, profile);
 };
 
+export const getUserAbout = async (uid: string): Promise<string> => {
+  const userAboutRef = doc(dbService, `users/${uid}/about`, uid);
+  try {
+    const userAboutData = (await getDoc(userAboutRef)).data();
+    return userAboutData?.content ?? "";
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateUserAbout = async (uid: string, data: string) => {
+  const userAboutRef = doc(dbService, `users/${uid}/about`, uid);
+  const content = { content: data };
+  try {
+    await updateDoc(userAboutRef, content);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const deleteUserData = async (uid: string, password: string) => {
   const user = authService.currentUser;
   if (!user || user.uid !== uid) throw console.log("Withdrawal error: wrong uid data");
@@ -123,7 +147,11 @@ export const deleteUserData = async (uid: string, password: string) => {
   docList.forEach((doc) => {
     deletePost(doc.id);
   });
+  const userAboutRef = doc(dbService, `users/${uid}/about`, uid);
+  const userCategoryRef = doc(dbService, `users/${uid}/category`, uid);
   const userDocRef = doc(dbService, "users", uid);
+  deleteDoc(userAboutRef);
+  deleteDoc(userCategoryRef);
   await deleteDoc(userDocRef);
   if (user.photoURL) deleteImg(user.photoURL);
   await deleteUser(user);

@@ -233,9 +233,11 @@ export const updateLikes = async (id: string, likes: string[]) => {
 export const deletePost = async (docId: string): Promise<void> => {
   const docRefPre = doc(dbService, `posts`, docId);
   const docRefDetail = doc(dbService, `posts/${docId}/detail`, docId);
+  const docRefComment = doc(dbService, `posts/${docId}/comments`, docId);
   try {
     await deleteDoc(docRefDetail);
     await deleteDoc(docRefPre);
+    await deleteDoc(docRefComment);
   } catch (error) {
     throw error;
   }

@@ -257,7 +257,7 @@ const Preview = ({
             ) : isEdit ? (
               "Edit"
             ) : (
-              "Write Up"
+              "Write"
             )}
           </button>
         </div>
