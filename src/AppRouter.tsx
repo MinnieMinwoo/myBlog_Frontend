@@ -23,10 +23,7 @@ const AppRouter = () => {
           <Route path="/home/:userID" element={<Home />}>
             <Route path="/home/:userID" element={<PostContainer />} />
             <Route path="/home/:userID/category" element={<PostCategoryList />} />
-            <Route
-              path="/home/:userID/category/:mainName/:subName"
-              element={<PostCategoryDetail />}
-            />
+            <Route path="/home/:userID/category/:mainName/:subName" element={<PostCategoryDetail />} />
             <Route path="/home/:userID/about" element={<About />} />
             <Route path="/home/:userID/:docID" element={<PostDetail />} />
           </Route>

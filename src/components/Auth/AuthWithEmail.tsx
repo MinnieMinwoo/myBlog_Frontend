@@ -31,33 +31,13 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
       console.log(error);
       const errorTitle = signIn ? "Login Error" : "Sign up Error";
       let errorText;
-      if (error instanceof FirebaseError) {
-        switch (error.code) {
-          //common login & sign in
-          case "auth/invalid-email":
-            errorText = "You entered wrong email address.";
-            break;
-          //login failed
-          case "auth/user-not-found":
-            errorText = "The email address you entered does not exist.";
-            break;
-          case "auth/wrong-password":
-            errorText = "Password do not match.";
-            break;
-          //sign up failed
-          case "auth/weak-password":
-            errorText = "Password must be at least 6 characters long.";
-            break;
-          case "auth/email-already-in-use":
-            errorText = "The email address you entered already exists.";
-            break;
-          default:
-            errorText = "Server does not work properly. Please try again later.";
-            break;
-        }
-      } else {
-        errorText = "Something wrong. Please try again later.";
-      }
+      if (!(error instanceof FirebaseError)) errorText = "Something wrong. Please try again later.";
+      else if (error.code === "auth/invalid-email") errorText = "You entered wrong email address.";
+      else if (error.code === "auth/user-not-found") errorText = "The email address you entered does not exist.";
+      else if (error.code === "auth/wrong-password") errorText = "Password must be at least 6 characters long.";
+      else if (error.code === "auth/email-already-in-use") errorText = "The email address you entered already exists.";
+      else if (error.code === "auth/weak-password") errorText = "Password must be at least 6 characters long.";
+      else errorText = "Server does not work properly. Please try again later.";
       openModal(errorTitle, errorText);
     } finally {
       setIsLoading(false);
@@ -104,11 +84,7 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
               onChange={onChange}
             />
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary col-8 offset-2 h-36px"
-            disabled={isLoading}
-          >
+          <button type="submit" className="btn btn-primary col-8 offset-2 h-36px" disabled={isLoading}>
             {isLoading ? (
               <div className="d-flex justify-content-center">
                 <div className="spinner-border spinner-border-sm" role="status">

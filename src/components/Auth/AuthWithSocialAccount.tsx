@@ -24,32 +24,21 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
       target: { value },
     } = event;
 
-    switch (value) {
-      case "Email":
-        setIsEmail(true);
-        break;
-      default:
-        try {
-          const nickname = await signInSocialAccount(value.toLowerCase());
-          navigate(`/home/${nickname}`);
-        } catch (error) {
-          if (!(error instanceof Error)) return;
-          switch (error.message) {
-            case "No Account":
-              navigate("/auth/create");
-              break;
-            case "Email Verification":
-              openModal(
-                "Email Verification",
-                "Please complete email verification if you want to login."
-              );
-              break;
-            default:
-              console.log(error);
-              openModal("Something wrong", "Please try again later.");
-          }
+    if (value === "email") setIsEmail(true);
+    else {
+      try {
+        const nickname = await signInSocialAccount(value.toLowerCase());
+        navigate(`/home/${nickname}`);
+      } catch (error) {
+        if (!(error instanceof Error)) return;
+        else if (error.message === "No Account") navigate("/auth/create");
+        else if (error.message === "Email Verification") {
+          openModal("Email Verification", "Please complete email verification if you want to login.");
+        } else {
+          console.log(error);
+          openModal("Something wrong", "Please try again later.");
         }
-        break;
+      }
     }
   };
 
@@ -57,9 +46,7 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
     return (
       <button className="btn btn-light w-100 text-start" value={name} onClick={onClick}>
         <img className="img-fluid offset-1 me-4 w-40px h-40px" src={img} alt={name} />
-        <span className="fw-semibold fs-6 text-333">{`Sign ${
-          signIn ? "in" : "up"
-        } with ${name}`}</span>
+        <span className="fw-semibold fs-6 text-333">{`Sign ${signIn ? "in" : "up"} with ${name}`}</span>
       </button>
     );
   };
