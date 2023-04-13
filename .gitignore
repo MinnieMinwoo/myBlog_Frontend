@@ -23,4 +23,12 @@ yarn-debug.log*
 yarn-error.log*
 public/robots.txt
 
+# firebase
+firebase.json
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+/.firebase
+firestore.rules
+
 .env

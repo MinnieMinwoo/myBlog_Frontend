@@ -16,6 +16,7 @@ Make my own blog project.
   - Get post data using infinite scroll
   - Sort posts by category
   - View post tags
+  - About page for introduce
 
 - Post read
 
@@ -54,8 +55,8 @@ Make my own blog project.
   - Authentication
   - Firestore Database
   - Storage
-- Github Pages
+  - Hosting
 
 ## demonstration
 
-[Link](https://minnieminwoo.github.io/myBlog_Frontend/)
+[Link](https://myblog-backend.firebaseapp.com//)
