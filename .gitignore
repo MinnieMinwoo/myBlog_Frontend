@@ -30,5 +30,7 @@ firestore-debug.log
 ui-debug.log
 /.firebase
 firestore.rules
+storage.rules
+.firebaserc
 
 .env

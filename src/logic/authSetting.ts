@@ -15,9 +15,49 @@ import {
   signInWithPopup,
   UserCredential,
   linkWithCredential,
+  onAuthStateChanged,
 } from "firebase/auth";
 
-import { getUserNickname, addUserData } from "./getSetUserInfo";
+import { getUserNickname, addUserData, getUserData } from "./getSetUserInfo";
+import { useSetRecoilState } from "recoil";
+import { useEffect } from "react";
+import { loginData } from "../states/LoginState";
+
+export const useListenAuth = () => {
+  const setAuth = useSetRecoilState(loginData);
+  useEffect(() => {
+    const auth = getAuth();
+    try {
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          let [isGoogleLink, isFacebookLink, isTwitterLink] = [false, false, false];
+          user.providerData.forEach((element) => {
+            if (element.providerId === "google.com") isGoogleLink = true;
+            if (element.providerId === "facebook.com") isFacebookLink = true;
+            if (element.providerId === "twitter.com") isTwitterLink = true;
+          });
+          const userData = await getUserData(user);
+          setAuth({
+            ...userData,
+            isGoogleLink: isGoogleLink,
+            isFacebookLink: isFacebookLink,
+            isTwitterLink: isTwitterLink,
+          });
+        } else {
+          setAuth({
+            isLoggedIn: false,
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      setAuth({
+        isLoggedIn: false,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+};
 
 export const signInEmail = async (email: string, password: string): Promise<string | null> => {
   return new Promise(async (resolve, reject) => {

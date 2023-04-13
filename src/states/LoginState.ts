@@ -6,5 +6,3 @@ export const loginData = atom<UserData>({
     isLoggedIn: false,
   },
 });
-
-export const test = atom({ key: "test", default: 12 });
