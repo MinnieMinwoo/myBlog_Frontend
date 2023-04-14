@@ -6,11 +6,14 @@ import { getComments, updateComments } from "../../logic/getSetCommentInfo";
 import CommentBox from "./CommentBox";
 import { loginData } from "../../states/LoginState";
 import CommentEdit from "./CommentEdit";
+import { useToast } from "../../states/ToastState";
 
 const CommentContainer = ({ postAuthor }: { postAuthor: string }) => {
   const params = useParams();
-  const [comments, setComments] = useState<CommentData[]>([]);
   const userData = useRecoilValue(loginData);
+  const { openToast } = useToast();
+
+  const [comments, setComments] = useState<CommentData[]>([]);
   useEffect(() => {
     if (!params.docID) return;
     getComments(params.docID).then((data) => {
@@ -18,7 +21,17 @@ const CommentContainer = ({ postAuthor }: { postAuthor: string }) => {
     });
   }, [params.docID]);
 
-  const onNewComment = (value: string, index?: string) => {
+  const commentUpload = async (id: string, newComments: CommentData[]) => {
+    setComments(newComments);
+    try {
+      await updateComments(id, newComments);
+    } catch (error) {
+      console.log(error);
+      openToast("Error", "Comment upload failed.", "warning");
+    }
+  };
+
+  const onNewComment = async (value: string, index?: string) => {
     if (!userData.uid || !value || !params.docID) return;
     let commentData: CommentData = {
       index: uuidv4(),
@@ -31,34 +44,27 @@ const CommentContainer = ({ postAuthor }: { postAuthor: string }) => {
     };
     if (index) commentData.nestedTarget = index;
     const newComments = [...comments, commentData];
-    setComments(newComments);
-    updateComments(params.docID, newComments);
+    await commentUpload(params.docID, newComments);
   };
 
-  const onEditComment = (value: string, target?: string) => {
+  const onEditComment = async (value: string, target?: string) => {
     if (!userData.uid || !value || !params.docID) return;
     let newComments = [...comments];
-    let index = -1;
-    for (let i = 0; i < newComments.length; i++) {
-      if (newComments[i].index === target) {
-        index = i;
+    for (let comment of newComments) {
+      if (comment.index === target) {
+        comment.detail = value;
+        await commentUpload(params.docID, newComments);
         break;
       }
     }
-    if (index === -1) return;
-    newComments[index].detail = value;
-    setComments(newComments);
-    updateComments(params.docID, newComments);
   };
 
-  const onDeleteComment = (target: string) => {
+  const onDeleteComment = async (target: string) => {
     if (!userData.uid || !params.docID) return;
     const newComments = comments.filter(
-      (comment) =>
-        comment.index !== target && (!comment.nestedTarget || comment.nestedTarget !== target)
+      (comment) => comment.index !== target && (!comment.nestedTarget || comment.nestedTarget !== target)
     );
-    setComments(newComments);
-    updateComments(params.docID, newComments);
+    await commentUpload(params.docID, newComments);
   };
 
   return (

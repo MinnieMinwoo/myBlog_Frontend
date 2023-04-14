@@ -19,13 +19,12 @@ const Header = ({ title, userName, outlet, isWarningAlert = false }: Props) => {
     event.preventDefault();
     navigate("/");
   };
+
   const onExitModal = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     const warningTitle = "Warning";
     const warningMessage = "Post data will not be saved when you leave the window.";
-    const confirmCallback = () => {
-      navigate("/");
-    };
+    const confirmCallback = () => navigate("/");
     openModal(warningTitle, warningMessage, confirmCallback, true);
   };
 
@@ -46,10 +45,7 @@ const Header = ({ title, userName, outlet, isWarningAlert = false }: Props) => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link
-                    className="nav-link"
-                    to={`${userName ? `/home/${userName}/category` : "/"}`}
-                  >
+                  <Link className="nav-link" to={`${userName ? `/home/${userName}/category` : "/"}`}>
                     Category
                   </Link>
                 </li>

@@ -20,15 +20,17 @@ import {
 
 import { getUserNickname, addUserData, getUserData } from "./getSetUserInfo";
 import { useSetRecoilState } from "recoil";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { loginData } from "../states/LoginState";
 
 export const useListenAuth = () => {
   const setAuth = useSetRecoilState(loginData);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const auth = getAuth();
-    try {
-      onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, async (user) => {
+      try {
         if (user) {
           let [isGoogleLink, isFacebookLink, isTwitterLink] = [false, false, false];
           user.providerData.forEach((element) => {
@@ -48,15 +50,19 @@ export const useListenAuth = () => {
             isLoggedIn: false,
           });
         }
-      });
-    } catch (error) {
-      console.log(error);
-      setAuth({
-        isLoggedIn: false,
-      });
-    }
+      } catch (error) {
+        console.log(error);
+        setAuth({
+          isLoggedIn: false,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  return isLoading;
 };
 
 export const signInEmail = async (email: string, password: string): Promise<string | null> => {

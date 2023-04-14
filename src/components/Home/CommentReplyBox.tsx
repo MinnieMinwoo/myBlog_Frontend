@@ -14,25 +14,14 @@ interface Props {
   onDeleteComment: (target: string) => void;
 }
 
-const CommentReplyBox = ({
-  reply,
-  postAuthor,
-  commentAuthor,
-  onEditComment,
-  onDeleteComment,
-}: Props) => {
+const CommentReplyBox = ({ reply, postAuthor, commentAuthor, onEditComment, onDeleteComment }: Props) => {
   const userData = useRecoilValue(loginData);
   const { openModal } = useModal();
+
   const onDelete = () => {
-    openModal(
-      "Warning",
-      "If you really want to delete this reply?",
-      () => {
-        onDeleteComment(reply.index);
-      },
-      true,
-      "danger"
-    );
+    const [title, content] = ["Warning", "If you really want to delete this reply?"];
+    const callbackFunction = () => onDeleteComment(reply.index);
+    openModal(title, content, callbackFunction, true, "danger");
   };
 
   const [isEdit, setIsEdit] = useState(false);
@@ -60,9 +49,7 @@ const CommentReplyBox = ({
               </span>
             </>
           ) : null}
-          {!isEdit &&
-          userData.uid &&
-          [reply.createBy, postAuthor, commentAuthor].includes(userData.uid) ? (
+          {!isEdit && userData.uid && [reply.createBy, postAuthor, commentAuthor].includes(userData.uid) ? (
             <span className="fs-14px text-777 pe-on" role="button" onClick={onDelete}>
               {" · Delete "}
             </span>

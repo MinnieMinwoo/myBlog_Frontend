@@ -53,18 +53,19 @@ const Dummy = () => {
   );
 };
 const PostDetail = () => {
-  const userData = useRecoilValue(loginData);
-  const [postData, setPostData] = useState<PostDetail>();
-  const [hidden, setHidden] = useState(true);
-  const [onLoading, setOnLoading] = useRecoilState(isLoadingData);
   const { openModal, closeModal } = useModal();
   const { openToast } = useToast();
   const navigate = useNavigate();
   const params = useParams();
 
+  const [onLoading, setOnLoading] = useRecoilState(isLoadingData);
+  const userData = useRecoilValue(loginData);
+  const [postData, setPostData] = useState<PostDetail>();
+  const [hidden, setHidden] = useState(true);
+
   useEffect(() => {
     setOnLoading(true);
-    if (!params.docID) throw console.log("wrong url data");
+    if (!params.docID) throw console.log("wrong url data"); //todo: 404 page
     const docID = params.docID;
     getPostData(docID)
       .then((postDetail) => {
@@ -82,22 +83,31 @@ const PostDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onEdit = () => {
-    navigate(`/write/${params.docID}`);
-  };
-
+  const onEdit = () => navigate(`/write/${params.docID}`);
   const onDelete = () => {
     openModal("Warning", "Do you really want delete This post?", onDeletePost, true, "danger");
   };
 
+  const tocPlugins = [
+    toc,
+    {
+      headings: ["h1", "h2", "h3"],
+      cssClasses: {
+        toc: "page-outline",
+        list: "page-list",
+        listItem: "page-listItem",
+        link: "page-link",
+      },
+    },
+  ];
+
   const onDeletePost = async () => {
     if (!params.docID) throw window.alert("wrong url data");
     await deletePost(params.docID);
-    postData?.thumbnailImageURL && deleteImg(postData.thumbnailImageURL);
-    postData?.imageList &&
-      postData.imageList.forEach((data) => {
-        deleteImg(data);
-      });
+    if (postData?.thumbnailImageURL) {
+      deleteImg(postData.thumbnailImageURL);
+      postData.imageList.forEach((data) => deleteImg(data));
+    }
     closeModal();
     openModal(
       "Delete post complete",
@@ -129,22 +139,17 @@ const PostDetail = () => {
     }
   };
 
+  const faceBookLink = `http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`;
+  const twitterLink = `http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`;
+
   const onFacebook = (event: React.MouseEvent) => {
     event?.preventDefault();
-    window.open(
-      `http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`,
-      "_blank",
-      "width=800, height=600"
-    );
+    window.open(faceBookLink, "_blank", "width=800, height=600");
   };
 
   const onTwitter = (event: React.MouseEvent) => {
     event?.preventDefault();
-    window.open(
-      `https://twitter.com/intent/tweet?text=${"Share our story"}&url=${window.location.href}`,
-      "_blank",
-      "width=800, height=600"
-    );
+    window.open(twitterLink, "_blank", "width=800, height=600");
   };
 
   const onCopy = async (event: React.MouseEvent) => {
@@ -162,16 +167,12 @@ const PostDetail = () => {
             className="w-100 h-100 px-4 py-0 position-relative"
             style={{
               background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-              url(${
-                !!postData?.thumbnailImageURL ? postData.thumbnailImageURL : altImage
-              }) center/cover no-repeat`,
+              url(${!!postData?.thumbnailImageURL ? postData.thumbnailImageURL : altImage}) center/cover no-repeat`,
               color: "#eee",
             }}
           >
             <div className="pb-1 pt-140px">
-              {postData?.category?.length ? (
-                <span>{`${postData.category[0]} - ${postData.category[1]}`}</span>
-              ) : null}
+              {postData?.category?.length ? <span>{`${postData.category[0]} - ${postData.category[1]}`}</span> : null}
             </div>
             {postData?.title ? <h2 className="fs-1 fw-normal mb-2">{postData?.title}</h2> : null}
             {postData?.nickname ? <span>{`by ${postData.nickname}`}</span> : null}
@@ -185,23 +186,7 @@ const PostDetail = () => {
           </div>
         </div>
         <article className="py-3" data-color-mode="light">
-          <MarkdownPreview
-            source={postData?.detail}
-            rehypePlugins={[
-              [
-                toc,
-                {
-                  headings: ["h1", "h2", "h3"],
-                  cssClasses: {
-                    toc: "page-outline",
-                    list: "page-list",
-                    listItem: "page-listItem",
-                    link: "page-link",
-                  },
-                },
-              ],
-            ]}
-          />
+          <MarkdownPreview source={postData?.detail} rehypePlugins={[tocPlugins] as any[]} />
         </article>
         <section>
           <div className="hstack mb-4">
@@ -224,33 +209,17 @@ const PostDetail = () => {
               </button>
               <ul className="dropdown-menu">
                 <li>
-                  <a
-                    className="dropdown-item"
-                    href={`http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
-                    onClick={onFacebook}
-                  >
+                  <a className="dropdown-item" href={faceBookLink} role="button" onClick={onFacebook}>
                     Facebook
                   </a>
                 </li>
                 <li>
-                  <a
-                    className="dropdown-item"
-                    href={`https://twitter.com/intent/tweet?text=${"Share our story"}&url=${
-                      window.location.href
-                    }`}
-                    role="button"
-                    onClick={onTwitter}
-                  >
+                  <a className="dropdown-item" href={twitterLink} role="button" onClick={onTwitter}>
                     Twitter
                   </a>
                 </li>
                 <li>
-                  <a
-                    className="dropdown-item"
-                    href={window.location.href}
-                    role="button"
-                    onClick={onCopy}
-                  >
+                  <a className="dropdown-item" href={window.location.href} role="button" onClick={onCopy}>
                     Copy link
                   </a>
                 </li>

@@ -15,26 +15,13 @@ interface Props {
   onEditComment: (value: string, index?: string) => void;
   onDeleteComment: (target: string) => void;
 }
-const CommentBox = ({
-  comment,
-  reply,
-  postAuthor,
-  onNewReply,
-  onEditComment,
-  onDeleteComment,
-}: Props) => {
+const CommentBox = ({ comment, reply, postAuthor, onNewReply, onEditComment, onDeleteComment }: Props) => {
   const userData = useRecoilValue(loginData);
   const { openModal } = useModal();
   const onDelete = () => {
-    openModal(
-      "Warning",
-      "If you really want to delete this comment?",
-      () => {
-        onDeleteComment(comment.index);
-      },
-      true,
-      "danger"
-    );
+    const [title, content] = ["Warning", "If you really want to delete this comment?"];
+    const callbackFunction = () => onDeleteComment(comment.index);
+    openModal(title, content, callbackFunction, true, "danger");
   };
 
   const [showReplyBox, setShowReplyBox] = useState(false);

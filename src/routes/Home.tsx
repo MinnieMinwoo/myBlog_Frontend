@@ -28,11 +28,7 @@ const Home = () => {
   return (
     <div className="Home d-flex flex-column min-vh-100 overflow-hidden">
       <header className="home_header">
-        <Header
-          title={`${params.userID}'s Blog`}
-          userName={params.userID}
-          outlet={<HeaderProfile />}
-        />
+        <Header title={`${params.userID}'s Blog`} userName={params.userID} outlet={<HeaderProfile />} />
       </header>
       <section className="home_section flex-grow-1">
         <div className="row">
@@ -40,9 +36,7 @@ const Home = () => {
             <Outlet context={[categoryList, setCategoryList]} />
           </div>
           <div className="col">
-            {params["docID"] ? null : (
-              <CategorySideBar categoryList={categoryList} setCategoryList={setCategoryList} />
-            )}
+            {params["docID"] ? null : <CategorySideBar categoryList={categoryList} setCategoryList={setCategoryList} />}
           </div>
         </div>
       </section>

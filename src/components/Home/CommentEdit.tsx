@@ -22,8 +22,9 @@ const CommentEdit = ({ title, text, target, submitCallback, closeCallback }: Pro
     event.preventDefault();
     target ? submitCallback(value, target) : submitCallback(value);
     setValue(text);
-    closeCallback && closeCallback();
+    if (closeCallback) closeCallback();
   };
+
   return (
     <>
       <form onSubmit={onSubmit} className="CommentEdit">
@@ -41,11 +42,7 @@ const CommentEdit = ({ title, text, target, submitCallback, closeCallback }: Pro
           Submit
         </button>
         {closeCallback ? (
-          <button
-            type="button"
-            className="btn btn-outline-secondary me-2 float-end"
-            onClick={closeCallback}
-          >
+          <button type="button" className="btn btn-outline-secondary me-2 float-end" onClick={closeCallback}>
             Cancel
           </button>
         ) : null}

@@ -8,6 +8,7 @@ import getDate from "../../logic/getDate";
 const PostThumbnailBox = ({ postList }: { postList: PostData[] }) => {
   const param = useParams();
   const isLoading = useRecoilValue(isLoadingData);
+  // todo: make tag search function
   const onTagSearch = (event: React.MouseEvent) => {
     event.preventDefault();
   };
@@ -23,11 +24,7 @@ const PostThumbnailBox = ({ postList }: { postList: PostData[] }) => {
             <div className="vstack gap-1">
               {post.thumbnailImageURL !== "" ? (
                 <div className="w-100 ratio ratio-16x9 mb-3">
-                  <img
-                    className="img-fluid object-fit-cover"
-                    src={post.thumbnailImageURL}
-                    alt="post"
-                  />
+                  <img className="img-fluid object-fit-cover" src={post.thumbnailImageURL} alt="post" />
                 </div>
               ) : null}
               <h3 className="overflow-hidden fw-semibold text-111">{post.title}</h3>
@@ -39,7 +36,6 @@ const PostThumbnailBox = ({ postList }: { postList: PostData[] }) => {
                   </button>
                 ))}
               </div>
-
               <span className="fs-14px text-999">{getDate(post.createdAt)}</span>
             </div>
           </Link>

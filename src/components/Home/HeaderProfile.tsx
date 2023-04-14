@@ -23,29 +23,19 @@ const HomeProfile = () => {
   const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     if (!("name" in event.target)) return;
     const { name } = event.target;
-    switch (name) {
-      case "write":
-        navigate("/write");
-        break;
-      case "setting":
-        navigate("/setting");
-        break;
-      case "logout":
-        try {
-          await signOutUser();
-          setUserData({
-            isLoggedIn: false,
-          });
-          navigate("/", { replace: false });
-        } catch (error) {
-          console.log(error);
-          const errorTitle = "Logout Error";
-          const errorText = "Something wrong. Please try again later";
-          openModal(errorTitle, errorText);
-        }
-        break;
-      default:
-        break;
+    if (name === "write") navigate("/write");
+    else if (name === "setting") navigate("/setting");
+    else if (name === "logout") {
+      try {
+        await signOutUser();
+        setUserData({
+          isLoggedIn: false,
+        });
+        navigate("/", { replace: false });
+      } catch (error) {
+        console.log(error);
+        openModal("Logout Error", "Something wrong. Please try again later");
+      }
     }
   };
 

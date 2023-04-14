@@ -37,15 +37,18 @@ const Dummy = () => {
 };
 
 const PostContainer = () => {
-  const [isLoading, setIsLoading] = useRecoilState(isLoadingData);
-  const [postList, setPostList] = useState<PostData[]>([]);
-  const [postNum, setPostNum] = useState(0);
   const { openToast } = useToast();
   const params = useParams();
 
+  const [isLoading, setIsLoading] = useRecoilState(isLoadingData);
+  const [postList, setPostList] = useState<PostData[]>([]);
+  const [postNum, setPostNum] = useState(0);
+  const [isLastPost, setIsLastPost] = useState(false);
+  const postIndex = useRef<QueryDocumentSnapshot<DocumentData>>();
+
   useEffect(() => {
     setIsLoading(true);
-    if (!params.userID) throw console.log("no params");
+    if (!params.userID) throw console.log("no params"); // todo: make 404 page
     getUserUID(params.userID)
       .then(async (uid) => {
         const count = await getUserPostNumber(uid);
@@ -66,8 +69,6 @@ const PostContainer = () => {
   }, []);
 
   const [isPagination, setIsPagination] = useState(false);
-  const [isLastPost, setIsLastPost] = useState(false);
-  const postIndex = useRef<QueryDocumentSnapshot<DocumentData>>();
   const observeRef = useRef<HTMLDivElement>(null);
 
   const onPagination = async (entries: IntersectionObserverEntry[]) => {
@@ -88,9 +89,9 @@ const PostContainer = () => {
       threshold: 0.1,
     });
     const currentRef = observeRef.current;
-    currentRef && observer.observe(currentRef);
+    if (currentRef) observer.observe(currentRef);
     return () => {
-      currentRef && observer.unobserve(currentRef);
+      if (currentRef) observer.unobserve(currentRef);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [observeRef.current]);

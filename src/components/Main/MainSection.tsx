@@ -9,11 +9,9 @@ const MainSection = () => {
   const userData = useRecoilValue(loginData);
   const navigate = useNavigate();
   const onClick = () => {
-    if (userData.isLoggedIn === true) {
-      navigate(`/home/${userData.nickname}`);
-    } else {
-      navigate("/auth");
-    }
+    console.log(userData);
+    const link = userData.isLoggedIn ? `/home/${userData.nickname}` : "/auth";
+    navigate(link);
   };
 
   return (
