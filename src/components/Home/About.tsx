@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
@@ -13,13 +13,13 @@ import { useToast } from "../../states/ToastState";
 const About = () => {
   const params = useParams();
   const [aboutData, setAboutData] = useState("");
-  const uidData = useRef("");
+  const [uidData, setUidData] = useState("");
   const { openToast } = useToast();
   useEffect(() => {
     if (!params.userID) throw console.log("no params");
     getUserUID(params.userID)
       .then(async (uid) => {
-        uidData.current = uid;
+        setUidData(uid);
         const data = await getUserAbout(uid);
         setAboutData(data);
       })
@@ -49,7 +49,7 @@ const About = () => {
     <div className="px-md-3 my-4 mx-md-4">
       <section className="pb-3 bb-light">
         <h2 className="d-inline-block fw-bold">{isEdit ? "Edit page" : "About"}</h2>
-        {uidData.current === userData.uid ? (
+        {uidData === userData.uid ? (
           <button className="btn btn-outline-primary float-end mt-1 me-3" onClick={onClick}>
             {isEdit ? "Complete" : "Edit"}
           </button>

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { isLoadingData } from "../../states/LoadingState";
 
@@ -96,12 +96,18 @@ const PostContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [observeRef.current]);
 
+  const navigate = useNavigate();
+  const onClickWrite = () => navigate("/write");
+
   return (
     <section className="PostContainer px-md-3 my-4 mx-md-4">
       {isLoading ? <Dummy /> : null}
       <div className="PostHeader mb-3 hstack gap-1" hidden={isLoading}>
         <h2 className="fw-bold d-inline-block">Posts</h2>
         <span className="text-primary fs-5">{`(${String(postNum)})`}</span>
+        <button className="btn btn-outline-primary ms-auto" type="button" onClick={onClickWrite}>
+          Write
+        </button>
       </div>
       <PostThumbnailBox postList={postList} />
       {isLastPost || isLoading ? null : (

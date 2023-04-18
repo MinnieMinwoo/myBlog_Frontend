@@ -99,6 +99,10 @@
   height: 128px;
 }
 
+.h-128px-i {
+  height: 128px !important;
+}
+
 .h-200px {
   height: 200px;
 }

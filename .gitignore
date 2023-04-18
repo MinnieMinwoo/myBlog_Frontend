@@ -34,3 +34,4 @@ storage.rules
 .firebaserc
 
 .env
+/.idea

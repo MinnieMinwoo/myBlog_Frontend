@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { updateUserImage } from "../../logic/getSetUserInfo";
+import altImage from "../../assets/images/altThumbnail.jpg";
 
 const ProfileImageEdit = () => {
   const [userData, setUserData] = useRecoilState(loginData);
@@ -15,11 +16,7 @@ const ProfileImageEdit = () => {
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!userData.uid) throw window.alert("no user uid data");
     if (!event.target.files) throw window.alert("no files exist");
-    const imageURL = await updateUserImage(
-      Boolean(userData.photoURL),
-      userData.uid,
-      event.target.files[0]
-    );
+    const imageURL = await updateUserImage(Boolean(userData.photoURL), userData.uid, event.target.files[0]);
     setUserData((prev) => ({
       ...prev,
       photoURL: imageURL,
@@ -36,15 +33,12 @@ const ProfileImageEdit = () => {
 
   return (
     <div className="ProfileImageEdit px-4 vstack gap-3 flex-basis-210px">
-      <img className="img-thumbnail rounded-circle w-128px h-128px" src={imageLink} alt="Profile" />
-      <input
-        hidden
-        type="file"
-        accept="image/*"
-        ref={inputRef}
-        src={imageLink}
-        onChange={onChange}
+      <img
+        className="img-thumbnail rounded-circle w-128px h-128px-i"
+        src={imageLink ? imageLink : altImage}
+        alt="Profile"
       />
+      <input hidden type="file" accept="image/*" ref={inputRef} src={imageLink} onChange={onChange} />
       <button type="button" className="btn btn-primary w-128px" onClick={onUpload}>
         Upload Image
       </button>

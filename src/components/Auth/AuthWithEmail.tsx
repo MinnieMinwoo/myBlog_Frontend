@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import { isLoadingData } from "../../states/LoadingState";
 import { FirebaseError } from "firebase/app";
 
-import { signInEmail, signUpEmail } from "../../logic/authSetting";
+import { signInEmail, signOutUser, signUpEmail } from "../../logic/authSetting";
 
 import { useModal } from "../../states/ModalState";
 
@@ -25,7 +25,11 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
       } else {
         const errorTitle = "Email Verification";
         const errorText = "Please complete email verification if you want to login.";
-        openModal(errorTitle, errorText);
+        const callBack = async () => {
+          await signOutUser();
+          navigate(`/`);
+        };
+        openModal(errorTitle, errorText, callBack);
       }
     } catch (error) {
       console.log(error);

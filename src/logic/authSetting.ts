@@ -72,7 +72,7 @@ export const signInEmail = async (email: string, password: string): Promise<stri
       const data = await signInWithEmailAndPassword(auth, email, password);
       if (!data.user.emailVerified) {
         const actionCodeSettings = {
-          url: process.env.TEST_DOMAIN as string,
+          url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
           handleCodeInApp: true,
         };
         await sendEmailVerification(data.user, actionCodeSettings);
@@ -117,7 +117,7 @@ export const signInSocialAccount = async (provider: string) => {
     if (!isEmail) throw new Error("No Account");
     if (!data.user.emailVerified) {
       const actionCodeSettings = {
-        url: process.env.TEST_DOMAIN as string,
+        url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
         handleCodeInApp: true,
       };
       await sendEmailVerification(data.user, actionCodeSettings);
@@ -138,7 +138,7 @@ export const signUpEmail = async (email: string, password: string): Promise<null
       const data = await createUserWithEmailAndPassword(auth, email, password);
       await addUserData(data.user.uid);
       const actionCodeSettings = {
-        url: process.env.TEST_DOMAIN as string,
+        url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
         handleCodeInApp: true,
       };
       await sendEmailVerification(data.user, actionCodeSettings);
@@ -162,7 +162,7 @@ export const updateUserEmail = async (newEmail: string, password: string) => {
   }
   await updateEmail(user, newEmail);
   const actionCodeSettings = {
-    url: process.env.TEST_DOMAIN as string,
+    url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
     handleCodeInApp: true,
   };
   await sendEmailVerification(user, actionCodeSettings);
@@ -181,7 +181,7 @@ export const linkEmail = async (email: string, password: string) => {
     throw error;
   }
   const actionCodeSettings = {
-    url: process.env.TEST_DOMAIN as string,
+    url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
     handleCodeInApp: true,
   };
   await sendEmailVerification(user, actionCodeSettings);

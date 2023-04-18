@@ -23,8 +23,7 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
     const {
       target: { value },
     } = event;
-
-    if (value === "email") setIsEmail(true);
+    if (value === "Email") setIsEmail(true);
     else {
       try {
         const nickname = await signInSocialAccount(value.toLowerCase());
