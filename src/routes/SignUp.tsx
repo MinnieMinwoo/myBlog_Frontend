@@ -10,6 +10,7 @@ import { linkEmail } from "../logic/authSetting";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [nickname, setNickname] = useState("");
   const [isLoading, setIsLoading] = useRecoilState(isLoadingData);
   const { openModal } = useModal();
   const navigate = useNavigate();
@@ -18,37 +19,19 @@ const SignUp = () => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      await linkEmail(email, password);
-      openModal(
-        "Email verification",
-        "Please complete email verification if you want to login.",
-        () => {
-          navigate("/");
-        }
-      );
+      await linkEmail(email, password, nickname);
+      openModal("Email verification", "Please complete email verification if you want to login.", () => {
+        navigate("/");
+      });
     } catch (error) {
       console.log(error);
       const errorTitle = "Sign up Error";
       let errorText;
-      if (error instanceof FirebaseError) {
-        switch (error.code) {
-          case "auth/invalid-email":
-            errorText = "You entered wrong email address.";
-            break;
-          //sign up failed
-          case "auth/weak-password":
-            errorText = "Password must be at least 6 characters long.";
-            break;
-          case "auth/email-already-in-use":
-            errorText = "The email address you entered already exists.";
-            break;
-          default:
-            errorText = "Server does not work properly. Please try again later.";
-            break;
-        }
-      } else {
-        errorText = "Something wrong. Please try again later.";
-      }
+      if (!(error instanceof FirebaseError)) errorText = "Something wrong. Please try again later.";
+      else if (error.code === "auth/invalid-email") errorText = "You entered wrong email address.";
+      else if (error.code === "auth/weak-password") errorText = "Password must be at least 6 characters long.";
+      else if (error.code === "auth/email-already-in-use") errorText = "The email address you entered already exists.";
+      else errorText = "Server does not work properly. Please try again later.";
       openModal(errorTitle, errorText);
     } finally {
       setIsLoading(false);
@@ -59,11 +42,9 @@ const SignUp = () => {
     const {
       target: { name, value },
     } = event;
-    if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    }
+    if (name === "email") setEmail(value);
+    else if (name === "password") setPassword(value);
+    else if (name === "nickname") setNickname(value);
   };
 
   return (
@@ -98,11 +79,20 @@ const SignUp = () => {
                   onChange={onChange}
                 />
               </div>
-              <button
-                type="submit"
-                className="btn btn-primary col-8 offset-2 h-36px"
-                disabled={isLoading}
-              >
+              <div>
+                <label className="form-label">nickname</label>
+                <input
+                  className="form-control"
+                  name="nickname"
+                  type="text"
+                  placeholder="nickname"
+                  value={nickname}
+                  autoComplete="off"
+                  required
+                  onChange={onChange}
+                />
+              </div>
+              <button type="submit" className="btn btn-primary col-8 offset-2 h-36px" disabled={isLoading}>
                 {isLoading ? (
                   <div className="d-flex justify-content-center">
                     <div className="spinner-border spinner-border-sm" role="status">

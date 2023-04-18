@@ -51,9 +51,7 @@ const Setting = () => {
             ref={emailAuthRef}
             required
           />
-          <div className="form-text">
-            Password is required when you change email address.
-          </div>
+          <div className="form-text">Password is required when you change email address.</div>
         </form>
       </>,
       async () => {
@@ -66,14 +64,12 @@ const Setting = () => {
           await updateUserEmail(newEmail, password);
           closeModal();
           setUserData({ isLoggedIn: false });
-          openModal(
-            "Email update complete",
-            "Please complete email verification if you want to login",
-            () => navigate("/")
+          openModal("Email update complete", "Please complete email verification if you want to login", () =>
+            navigate("/")
           );
         } catch (error) {
           if (error) console.log(error);
-          openModal("Error", "Withdrawal failed");
+          openModal("Error", "Email update error");
         }
       },
       true
@@ -107,11 +103,7 @@ const Setting = () => {
           await deleteUserData(userData.uid, password);
           closeModal();
           setUserData({ isLoggedIn: false });
-          openModal(
-            "Withdrawal complete",
-            "Your withdrawal has been completed",
-            () => navigate("/")
-          );
+          openModal("Withdrawal complete", "Your withdrawal has been completed", () => navigate("/"));
         } catch (error) {
           if (error) console.log(error);
           openModal("Error", "Withdrawal failed");

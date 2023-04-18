@@ -133,6 +133,6 @@ export const deleteUserData = async (uid: string, password: string) => {
   deleteDoc(userAboutRef);
   deleteDoc(userCategoryRef);
   await deleteDoc(userDocRef);
-  if (user.photoURL) deleteImg(user.photoURL);
+  if (user.photoURL && user.photoURL.includes("myblog-backend.appspot.com")) deleteImg(user.photoURL);
   await deleteUser(user);
 };

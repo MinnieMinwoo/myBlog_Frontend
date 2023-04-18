@@ -40,9 +40,10 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
       if (!(error instanceof FirebaseError)) errorText = "Something wrong. Please try again later.";
       else if (error.code === "auth/invalid-email") errorText = "You entered wrong email address.";
       else if (error.code === "auth/user-not-found") errorText = "The email address you entered does not exist.";
-      else if (error.code === "auth/wrong-password") errorText = "Password must be at least 6 characters long.";
+      else if (error.code === "auth/wrong-password") errorText = "You entered wrong password.";
       else if (error.code === "auth/email-already-in-use") errorText = "The email address you entered already exists.";
       else if (error.code === "auth/weak-password") errorText = "Password must be at least 6 characters long.";
+      else if (error.code === "auth/invalid-nickname") errorText = "You entered wrong nickname.";
       else if (error.code === "auth/nickname-already-exists") errorText = "The nickname you entered already exists.";
       else errorText = "Server does not work properly. Please try again later.";
       openModal(errorTitle, errorText);

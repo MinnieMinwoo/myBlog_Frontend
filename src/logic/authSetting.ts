@@ -136,6 +136,7 @@ export const signInSocialAccount = async (provider: string) => {
 
 export const signUpEmail = async (email: string, password: string, nickname: string): Promise<void> => {
   try {
+    if (!nickname.length) throw new FirebaseError("auth/invalid-nickname", "Invalid nickname");
     const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
     const querySnapshot = await getDocs(q);
     if (querySnapshot.size) throw new FirebaseError("auth/nickname-already-exists", "Nickname is already used");
@@ -171,23 +172,26 @@ export const updateUserEmail = async (newEmail: string, password: string) => {
   await sendEmailVerification(user, actionCodeSettings);
 };
 
-export const linkEmail = async (email: string, password: string) => {
-  const auth = getAuth();
-  if (!auth.currentUser) return;
-  const user = auth.currentUser;
-  const nickname = await getUserNickname(user.uid);
-  await addUserData(user.uid, nickname);
-  const credential = EmailAuthProvider.credential(email, password);
+export const linkEmail = async (email: string, password: string, nickname: string) => {
   try {
+    if (!nickname.length) throw new FirebaseError("auth/invalid-nickname", "Invalid nickname");
+    const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.size) throw new FirebaseError("auth/nickname-already-exists", "Nickname is already used");
+    const auth = getAuth();
+    if (!auth.currentUser) return;
+    const user = auth.currentUser;
+    await addUserData(user.uid, nickname);
+    const credential = EmailAuthProvider.credential(email, password);
     await linkWithCredential(user, credential);
+    const actionCodeSettings = {
+      url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
+      handleCodeInApp: true,
+    };
+    await sendEmailVerification(user, actionCodeSettings);
   } catch (error) {
     throw error;
   }
-  const actionCodeSettings = {
-    url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
-    handleCodeInApp: true,
-  };
-  await sendEmailVerification(user, actionCodeSettings);
 };
 
 export const linkSocialLogin = async (provider: string) => {
