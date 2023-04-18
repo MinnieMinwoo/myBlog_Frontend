@@ -11,6 +11,7 @@ import { useModal } from "../../states/ModalState";
 const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [nickname, setNickname] = useState("");
   const [isLoading, setIsLoading] = useRecoilState(isLoadingData);
   const { openModal } = useModal();
   const navigate = useNavigate();
@@ -19,17 +20,18 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const nickname = await (signIn ? signInEmail(email, password) : signUpEmail(email, password));
-      if (nickname) {
-        navigate(`/home/${nickname}`);
+      if (signIn) {
+        const userName = await signInEmail(email, password);
+        navigate(`/home/${userName}`);
       } else {
-        const errorTitle = "Email Verification";
-        const errorText = "Please complete email verification if you want to login.";
+        await signUpEmail(email, password, nickname);
+        const title = "Email Verification";
+        const message = "Please complete email verification if you want to login.";
         const callBack = async () => {
           await signOutUser();
           navigate(`/`);
         };
-        openModal(errorTitle, errorText, callBack);
+        openModal(title, message, callBack);
       }
     } catch (error) {
       console.log(error);
@@ -41,6 +43,7 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
       else if (error.code === "auth/wrong-password") errorText = "Password must be at least 6 characters long.";
       else if (error.code === "auth/email-already-in-use") errorText = "The email address you entered already exists.";
       else if (error.code === "auth/weak-password") errorText = "Password must be at least 6 characters long.";
+      else if (error.code === "auth/nickname-already-exists") errorText = "The nickname you entered already exists.";
       else errorText = "Server does not work properly. Please try again later.";
       openModal(errorTitle, errorText);
     } finally {
@@ -56,6 +59,8 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
       setEmail(value);
     } else if (name === "password") {
       setPassword(value);
+    } else if (name === "nickname") {
+      setNickname(value);
     }
   };
 
@@ -88,6 +93,21 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
               onChange={onChange}
             />
           </div>
+          {signIn ? null : (
+            <div>
+              <label className="form-label">Nickname</label>
+              <input
+                className="form-control"
+                name="nickname"
+                type="text"
+                placeholder="nickname"
+                value={nickname}
+                autoComplete="off"
+                required
+                onChange={onChange}
+              />
+            </div>
+          )}
           <button type="submit" className="btn btn-primary col-8 offset-2 h-36px" disabled={isLoading}>
             {isLoading ? (
               <div className="d-flex justify-content-center">

@@ -1,22 +1,6 @@
 import { authService, dbService } from "./firebase";
-import {
-  query,
-  collection,
-  where,
-  doc,
-  getDoc,
-  setDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-} from "firebase/firestore";
-import {
-  User,
-  updateProfile,
-  deleteUser,
-  reauthenticateWithCredential,
-  EmailAuthProvider,
-} from "firebase/auth";
+import { query, collection, where, doc, getDoc, setDoc, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
+import { User, updateProfile, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 
 import { deleteImg, uploadImg } from "./getSetImage";
 import { getUserAllPost, deletePost } from "./getSetPostInfo";
@@ -26,9 +10,9 @@ interface DocData {
   description?: string;
 }
 
-export const addUserData = async (uid: string) => {
+export const addUserData = async (uid: string, nickname: string) => {
   const userDetail: DocData = {
-    nickname: uid,
+    nickname: nickname,
     description: "Hello",
   };
   const userCategory = { order: [] };
@@ -81,11 +65,7 @@ export const getUserNickname = async (uid: string): Promise<string> => {
   }
 };
 
-export const updateUserImage = async (
-  isOwnImage: boolean,
-  uid: string,
-  file: File
-): Promise<string> => {
+export const updateUserImage = async (isOwnImage: boolean, uid: string, file: File): Promise<string> => {
   if (isOwnImage) deleteImg(`$profile/${uid}`);
   if (!authService.currentUser) throw console.log("no user data");
   try {

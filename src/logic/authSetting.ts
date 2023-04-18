@@ -18,10 +18,13 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
-import { getUserNickname, addUserData, getUserData } from "./getSetUserInfo";
+import { getUserNickname, addUserData, getUserData, getUserUID } from "./getSetUserInfo";
 import { useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { loginData } from "../states/LoginState";
+import { query, collection, where, getDocs } from "firebase/firestore";
+import { dbService } from "./firebase";
+import { FirebaseError } from "firebase/app";
 
 export const useListenAuth = () => {
   const setAuth = useSetRecoilState(loginData);
@@ -131,34 +134,34 @@ export const signInSocialAccount = async (provider: string) => {
   }
 };
 
-export const signUpEmail = async (email: string, password: string): Promise<null> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const auth = getAuth();
-      const data = await createUserWithEmailAndPassword(auth, email, password);
-      await addUserData(data.user.uid);
-      const actionCodeSettings = {
-        url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
-        handleCodeInApp: true,
-      };
-      await sendEmailVerification(data.user, actionCodeSettings);
-      await signOut(auth);
-      resolve(null);
-    } catch (error) {
-      reject(error);
-    }
-  });
+export const signUpEmail = async (email: string, password: string, nickname: string): Promise<void> => {
+  try {
+    const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.size) throw new FirebaseError("auth/nickname-already-exists", "Nickname is already used");
+    const auth = getAuth();
+    const data = await createUserWithEmailAndPassword(auth, email, password);
+    await addUserData(data.user.uid, nickname);
+    const actionCodeSettings = {
+      url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
+      handleCodeInApp: true,
+    };
+    await sendEmailVerification(data.user, actionCodeSettings);
+    await signOut(auth);
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const updateUserEmail = async (newEmail: string, password: string) => {
   const auth = getAuth();
   const user = auth.currentUser;
-  if (!user?.email) throw console.log("Email update error: wrong email data");
+  if (!user?.email) throw new Error("Entered invalid email data");
   const credential = EmailAuthProvider.credential(user.email, password);
   try {
     await reauthenticateWithCredential(user, credential);
-  } catch {
-    throw console.log("Password error: wrong password");
+  } catch (error) {
+    throw error;
   }
   await updateEmail(user, newEmail);
   const actionCodeSettings = {
@@ -172,8 +175,8 @@ export const linkEmail = async (email: string, password: string) => {
   const auth = getAuth();
   if (!auth.currentUser) return;
   const user = auth.currentUser;
-
-  await addUserData(user.uid);
+  const nickname = await getUserNickname(user.uid);
+  await addUserData(user.uid, nickname);
   const credential = EmailAuthProvider.credential(email, password);
   try {
     await linkWithCredential(user, credential);
