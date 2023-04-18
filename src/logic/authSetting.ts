@@ -18,7 +18,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
-import { getUserNickname, addUserData, getUserData, getUserUID } from "./getSetUserInfo";
+import { getUserNickname, addUserData, getUserData } from "./getSetUserInfo";
 import { useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { loginData } from "../states/LoginState";
@@ -136,7 +136,8 @@ export const signInSocialAccount = async (provider: string) => {
 
 export const signUpEmail = async (email: string, password: string, nickname: string): Promise<void> => {
   try {
-    if (!nickname.length) throw new FirebaseError("auth/invalid-nickname", "Invalid nickname");
+    const reg = /^[a-zA-Z0-9!@#$%^&*()?_~]{4,20}$/;
+    if (!reg.test(nickname)) throw new FirebaseError("auth/invalid-password", "Invalid nickname");
     const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
     const querySnapshot = await getDocs(q);
     if (querySnapshot.size) throw new FirebaseError("auth/nickname-already-exists", "Nickname is already used");
@@ -174,7 +175,8 @@ export const updateUserEmail = async (newEmail: string, password: string) => {
 
 export const linkEmail = async (email: string, password: string, nickname: string) => {
   try {
-    if (!nickname.length) throw new FirebaseError("auth/invalid-nickname", "Invalid nickname");
+    const reg = /^[a-zA-Z0-9!@#$%^&*()?_~]{4,20}$/;
+    if (!reg.test(nickname)) throw new FirebaseError("auth/invalid-password", "Invalid nickname");
     const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
     const querySnapshot = await getDocs(q);
     if (querySnapshot.size) throw new FirebaseError("auth/nickname-already-exists", "Nickname is already used");

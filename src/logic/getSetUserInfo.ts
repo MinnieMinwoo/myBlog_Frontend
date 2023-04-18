@@ -81,6 +81,10 @@ export const updateUserImage = async (isOwnImage: boolean, uid: string, file: Fi
 };
 
 export const updateUserProfile = async (uid: string, nickname: string, description: string) => {
+  const reg = /^[a-zA-Z0-9!@#$%^&*()?_~]{4,20}$/;
+  console.log(nickname);
+  console.log(reg.test(nickname));
+  if (!reg.test(nickname)) throw window.alert("Profile update error: Invalid nickname");
   const q = query(collection(dbService, "users"), where("nickname", "==", nickname));
   const querySnapshot = await getDocs(q);
   if (querySnapshot.docs[0] && querySnapshot.docs[0].id !== uid)
