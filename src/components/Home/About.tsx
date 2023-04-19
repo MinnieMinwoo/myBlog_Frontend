@@ -9,6 +9,7 @@ import { getUserAbout, getUserUID, updateUserAbout } from "../../logic/getSetUse
 import { loginData } from "../../states/LoginState";
 import "../../styles/About.css";
 import { useToast } from "../../states/ToastState";
+import MetaTag from "../Share/MetaTag";
 
 const About = () => {
   const params = useParams();
@@ -47,6 +48,7 @@ const About = () => {
 
   return (
     <div className="px-md-3 my-4 mx-md-4">
+      <MetaTag title={`${params.userID}'s Blog`} description={`Check the ${params.userID}'s blog posts`} />
       <section className="pb-3 bb-light">
         <h2 className="d-inline-block fw-bold">{isEdit ? "Edit page" : "About"}</h2>
         {uidData === userData.uid ? (

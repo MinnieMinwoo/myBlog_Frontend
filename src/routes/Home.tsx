@@ -9,6 +9,7 @@ import Header from "../components/Share/Header";
 import HeaderProfile from "../components/Home/HeaderProfile";
 import Footer from "../components/Share/Footer";
 import CategorySideBar from "../components/Home/CategorySideBar";
+import MetaTag from "../components/Share/MetaTag";
 
 const Home = () => {
   const [categoryList, setCategoryList] = useState<CategoryData[]>([]);
@@ -27,6 +28,7 @@ const Home = () => {
 
   return (
     <div className="Home d-flex flex-column min-vh-100 overflow-hidden">
+      <MetaTag title={`${params.userID}'s Blog`} description={`Check the ${params.userID}'s blog posts`} />
       <header className="home_header">
         <Header title={`${params.userID}'s Blog`} userName={params.userID} outlet={<HeaderProfile />} />
       </header>

@@ -79,6 +79,10 @@
   height: 40px;
 }
 
+.h-40px-i {
+  height: 40px !important;
+}
+
 .h-50px {
   height: 50px;
 }

@@ -4,11 +4,13 @@ import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 
 import "../../styles/MainSection.css";
+import { signOutUser } from "../../logic/authSetting";
 
 const MainSection = () => {
   const userData = useRecoilValue(loginData);
   const navigate = useNavigate();
-  const onClick = () => {
+  const onClick = async () => {
+    if (userData.isLoggedIn && !userData.nickname) await signOutUser();
     const link = userData.isLoggedIn ? `/home/${userData.nickname}` : "/auth";
     navigate(link);
   };

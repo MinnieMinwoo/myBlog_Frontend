@@ -8,6 +8,7 @@ import facebook from "../../assets/images/facebook.png";
 import twitter from "../../assets/images/twitter.png";
 import email from "../../assets/images/email.png";
 import { useModal } from "../../states/ModalState";
+import { FirebaseError } from "firebase/app";
 
 interface Props {
   signIn: boolean;
@@ -19,9 +20,9 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
   const { openModal } = useModal();
 
   const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (!(event.target instanceof HTMLButtonElement)) return;
+    if (!(event.currentTarget instanceof HTMLButtonElement)) return;
     const {
-      target: { value },
+      currentTarget: { value },
     } = event;
     if (value === "Email") setIsEmail(true);
     else {
@@ -35,6 +36,7 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
           openModal("Email Verification", "Please complete email verification if you want to login.");
         } else {
           console.log(error);
+          if (error instanceof FirebaseError && error.code === "auth/popup-closed-by-user") return;
           openModal("Something wrong", "Please try again later.");
         }
       }
@@ -44,8 +46,10 @@ const AuthWithSocialAccount = ({ signIn, setIsEmail }: Props) => {
   const SocialButton = ({ name, img }: { name: string; img: string }) => {
     return (
       <button className="btn btn-light w-100 text-start" value={name} onClick={onClick}>
-        <img className="img-fluid offset-1 me-4 w-40px h-40px" src={img} alt={name} />
-        <span className="fw-semibold fs-6 text-333">{`Sign ${signIn ? "in" : "up"} with ${name}`}</span>
+        <img className="img-fluid offset-1 me-4 w-40px h-40px-i" src={img} alt={name} />
+        <span className="fw-semibold fs-6 text-333" onClick={onClick}>{`Sign ${
+          signIn ? "in" : "up"
+        } with ${name}`}</span>
       </button>
     );
   };

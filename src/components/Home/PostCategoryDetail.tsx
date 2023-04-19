@@ -12,6 +12,7 @@ import PostThumbnailBox from "./PostThumbnailBox";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
 import altImage from "../../assets/images/altThumbnail.jpg";
+import MetaTag from "../Share/MetaTag";
 
 const Dummy = () => {
   const repeat = 3;
@@ -113,6 +114,7 @@ const PostCategoryDetail = () => {
       ) : (
         <>
           <main className="read_section" hidden={isLoading}>
+            <MetaTag title={`${params.userID}'s Blog`} description={`Check the ${params.userID}'s blog posts`} />
             <section
               className="bg-image w-100 bg-opacity-50 px-4 mb-4 h-340px text-eee"
               style={{

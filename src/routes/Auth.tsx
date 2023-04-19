@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import AuthWithEmail from "../components/Auth/AuthWithEmail";
 import AuthWithSocialAccount from "../components/Auth/AuthWithSocialAccount";
+import MetaTag from "../components/Share/MetaTag";
 
 const Auth = () => {
   const [signIn, setSignIn] = useState(true);
@@ -17,6 +18,7 @@ const Auth = () => {
 
   return (
     <div className="Auth position-absolute top-50 start-50 translate-middle col-10 col-md-6 col-lg-4">
+      <MetaTag title="myBlog" description="Login page" />
       <div className="vstack gap-3 ">
         <h1>MyBlog</h1>
         {isEmail ? null : <AuthWithSocialAccount signIn={signIn} setIsEmail={setIsEmail} />}

@@ -6,6 +6,7 @@ import { useModal } from "../states/ModalState";
 import { FirebaseError } from "firebase/app";
 
 import { linkEmail } from "../logic/authSetting";
+import MetaTag from "../components/Share/MetaTag";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -49,6 +50,7 @@ const SignUp = () => {
 
   return (
     <div className="SignUp position-absolute top-50 start-50 translate-middle col-10 col-md-6 col-lg-4">
+      <MetaTag title="myBlog - sign up" description="Sign up for use blog" />
       <div className="vstack gap-3 ">
         <h1>Create Account</h1>
         <div className="vstack gap-3">

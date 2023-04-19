@@ -12,6 +12,7 @@ import { useOnPreventLeave } from "../logic/useOnPreventLeave";
 import OnWrite from "../components/Write/OnWrite";
 import Preview from "../components/Write/Preview";
 import Loading from "../components/Share/Loading";
+import MetaTag from "../components/Share/MetaTag";
 
 const Write = () => {
   const userData = useRecoilValue(loginData);
@@ -114,6 +115,7 @@ const Write = () => {
   return (
     <div className="Write">
       {loading ? <Loading /> : null}
+      <MetaTag title="myBlog - write" description="Write your post" />
       <Preview
         isEdit={Boolean(params["*"])}
         isPreview={isPreview}

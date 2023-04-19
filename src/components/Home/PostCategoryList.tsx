@@ -10,6 +10,7 @@ import { getCategoryList, setMainCategoryData } from "../../logic/getSetCategory
 
 import PostCategorySection from "./PostCategorySection";
 import { CategoryNameForm as inputForm } from "./PostCategoryForm";
+import MetaTag from "../Share/MetaTag";
 
 const PostCategoryList = () => {
   const userData = useRecoilValue(loginData);
@@ -75,6 +76,7 @@ const PostCategoryList = () => {
 
   return (
     <div className="PostCategoryList my-4 mx-md-4 px-md-4">
+      <MetaTag title={`${params.userID}'s Blog`} description={`Check the ${params.userID}'s blog posts`} />
       <div className="mb-3">
         <div className="hstack gap-1">
           <h2 className="fw-bold d-inline-block">{"Categories"}</h2>
@@ -93,11 +95,7 @@ const PostCategoryList = () => {
           </button>
         </div>
       </div>
-      <PostCategorySection
-        isEdit={isEdit}
-        categoryData={categoryList}
-        setCategoryData={setCategoryList}
-      />
+      <PostCategorySection isEdit={isEdit} categoryData={categoryList} setCategoryData={setCategoryList} />
     </div>
   );
 };

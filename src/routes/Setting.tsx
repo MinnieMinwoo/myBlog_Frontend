@@ -14,6 +14,7 @@ import SettingData from "../components/Setting/SettingData";
 import Header from "../components/Share/Header";
 import { updateUserEmail } from "../logic/authSetting";
 import SocialLoginEdit from "../components/Setting/SocialLoginEdit";
+import MetaTag from "../components/Share/MetaTag";
 
 const Setting = () => {
   const [userData, setUserData] = useRecoilState(loginData);
@@ -117,6 +118,7 @@ const Setting = () => {
   return (
     <>
       {loading ? <Loading /> : null}
+      <MetaTag title="myBlog - setting" description="User setting page" />
       <Header title="Setting" />
       <main className="EditProfile">
         <section className="py-4 col col-lg-10 offset-lg-1 col-xxl-8 offset-xxl-2">

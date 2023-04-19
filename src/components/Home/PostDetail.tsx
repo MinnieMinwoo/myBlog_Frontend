@@ -15,6 +15,7 @@ import { isLoadingData } from "../../states/LoadingState";
 import { deleteImg } from "../../logic/getSetImage";
 import altImage from "../../assets/images/altThumbnail.jpg";
 import "../../styles/PostDetail.css";
+import MetaTag from "../Share/MetaTag";
 
 const CommentContainer = lazy(() => import("./CommentContainer"));
 
@@ -162,6 +163,11 @@ const PostDetail = () => {
     <>
       {onLoading ? <Dummy /> : null}
       <main className="read_section" hidden={onLoading}>
+        <MetaTag
+          title={postData?.title ?? "myBlog"}
+          description={postData?.thumbnailData ?? "Make your own blog"}
+          image={postData?.thumbnailImageURL}
+        />
         <div className="w-100 h-340px">
           <div
             className="w-100 h-100 px-4 py-0 position-relative"

@@ -53,7 +53,7 @@ const ProfileInfoEdit = () => {
             className="form-control"
             type="text"
             name="nickname"
-            placeholder="nickname"
+            placeholder="Nicknames must be written in 4-20 digits using only English, numbers, and special characters."
             value={nickname}
             maxLength={20}
             onChange={onChange}

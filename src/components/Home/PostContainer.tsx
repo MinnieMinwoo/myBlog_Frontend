@@ -11,6 +11,7 @@ import PostThumbnailBox from "./PostThumbnailBox";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
 import "../../styles/PostContainer.css";
+import MetaTag from "../Share/MetaTag";
 
 const Dummy = () => {
   const repeat = 3;
@@ -101,6 +102,7 @@ const PostContainer = () => {
 
   return (
     <section className="PostContainer px-md-3 my-4 mx-md-4">
+      <MetaTag title={`${params.userID}'s Blog`} description={`Check the ${params.userID}'s blog posts`} />
       {isLoading ? <Dummy /> : null}
       <div className="PostHeader mb-3 hstack gap-1" hidden={isLoading}>
         <h2 className="fw-bold d-inline-block">Posts</h2>
