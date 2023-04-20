@@ -141,7 +141,7 @@ const PostDetail = () => {
   };
 
   const faceBookLink = `http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`;
-  const twitterLink = `http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`;
+  const twitterLink = `https://twitter.com/intent/tweet?text=Share your story&url=${window.location.href}`;
 
   const onFacebook = (event: React.MouseEvent) => {
     event?.preventDefault();
