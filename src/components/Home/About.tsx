@@ -63,6 +63,9 @@ const About = () => {
             className="post-editor"
             data-color-mode="light"
             value={aboutData}
+            textareaProps={{
+              placeholder: "Write your story",
+            }}
             commands={[
               commands.title,
               commands.bold,

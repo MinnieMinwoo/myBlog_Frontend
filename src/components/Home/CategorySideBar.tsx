@@ -28,7 +28,7 @@ const CategorySideBar = ({ categoryList, setCategoryList }: Props) => {
   return (
     <aside className="CategorySideBar d-none d-lg-block ps-4 my-5 bs-light">
       <nav className="category_navigation">
-        <p className="fs-6 fw-bold text-decoration-none mb-3 text-555">Categories</p>
+        <p className="fs-6 fw-bold text-decoration-none mb-3 text-dark">Categories</p>
         {categoryList.map((element, id) => (
           <CategorySideContent key={id} data={element} />
         ))}

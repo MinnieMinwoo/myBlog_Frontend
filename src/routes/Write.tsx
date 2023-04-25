@@ -19,7 +19,7 @@ const Write = () => {
   const [postContent, setPostContent] = useState<PostEditData>({
     title: "",
     category: [],
-    postData: "**Write your post**",
+    postData: "",
     thumbnailImgLink: "",
     thumbnailData: "",
     imageList: [],

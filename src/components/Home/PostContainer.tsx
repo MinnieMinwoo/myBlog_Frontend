@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { isLoadingData } from "../../states/LoadingState";
 
 import { getUserPostNumber, getUserPostList } from "../../logic/getSetPostInfo";
@@ -12,6 +12,7 @@ import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
 import "../../styles/PostContainer.css";
 import MetaTag from "../Share/MetaTag";
+import { loginData } from "../../states/LoginState";
 
 const Dummy = () => {
   const repeat = 3;
@@ -42,6 +43,7 @@ const PostContainer = () => {
   const params = useParams();
 
   const [isLoading, setIsLoading] = useRecoilState(isLoadingData);
+  const userData = useRecoilValue(loginData);
   const [postList, setPostList] = useState<PostData[]>([]);
   const [postNum, setPostNum] = useState(0);
   const [isLastPost, setIsLastPost] = useState(false);
@@ -107,9 +109,11 @@ const PostContainer = () => {
       <div className="PostHeader mb-3 hstack gap-1" hidden={isLoading}>
         <h2 className="fw-bold d-inline-block">Posts</h2>
         <span className="text-primary fs-5">{`(${String(postNum)})`}</span>
-        <button className="btn btn-outline-primary ms-auto" type="button" onClick={onClickWrite}>
-          Write
-        </button>
+        {params.userID === userData.nickname ? (
+          <button className="btn btn-outline-primary ms-auto" type="button" onClick={onClickWrite}>
+            Write
+          </button>
+        ) : null}
       </div>
       <PostThumbnailBox postList={postList} />
       {isLastPost || isLoading ? null : (

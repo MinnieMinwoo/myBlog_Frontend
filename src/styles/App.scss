@@ -214,3 +214,14 @@
 .hidden {
   visibility: hidden;
 }
+
+/* color */
+$primary: #0f3e8e;
+$secondary: #ebebeb;
+$success: #02acc5;
+$info: #b9c1e8;
+$warning: #f8b700;
+$danger: #f37060;
+$light: #f9f9f9;
+$dark: #002859;
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";

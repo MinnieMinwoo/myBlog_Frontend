@@ -28,7 +28,7 @@ import { FirebaseError } from "firebase/app";
 
 export const useListenAuth = () => {
   const setAuth = useSetRecoilState(loginData);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const auth = getAuth();
@@ -41,6 +41,7 @@ export const useListenAuth = () => {
             if (element.providerId === "facebook.com") isFacebookLink = true;
             if (element.providerId === "twitter.com") isTwitterLink = true;
           });
+          setIsLoading(true);
           const userData = await getUserData(user);
           setAuth({
             ...userData,

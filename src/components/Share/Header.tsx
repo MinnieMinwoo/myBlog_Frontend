@@ -30,36 +30,42 @@ const Header = ({ title, userName, outlet, isWarningAlert = false }: Props) => {
 
   return (
     <header className="Header">
-      <nav className="navbar bg-light">
+      <nav className="navbar bg-white">
         <div className="container">
           <div className="navbar-brand">
             <a href="/" onClick={isWarningAlert ? onExitModal : onExit}>
               <img className="me-2 pe-auto w-40px h-40px pe-on" src={image} alt="blog logo" />
             </a>
             {title ?? ""}
+          </div>
+          {outlet ?? null}
+        </div>
+      </nav>
+      {userName && (
+        <nav className="navbar bg-primary py-1">
+          <div className="container">
             {userName && (
-              <ul className="navbar-nav hstack gap-3 ms-1">
+              <ul className="navbar-nav hstack gap-3 ms-1 fs-5">
                 <li className="nav-item">
-                  <Link className="nav-link" to={`${userName ? `/home/${userName}` : "/"}`}>
+                  <Link className="nav-link text-white" to={`${userName ? `/home/${userName}` : "/"}`}>
                     Home
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to={`${userName ? `/home/${userName}/category` : "/"}`}>
+                  <Link className="nav-link text-white" to={`${userName ? `/home/${userName}/category` : "/"}`}>
                     Category
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to={`${userName ? `/home/${userName}/about` : "/"}`}>
+                  <Link className="nav-link text-white" to={`${userName ? `/home/${userName}/about` : "/"}`}>
                     About
                   </Link>
                 </li>
               </ul>
             )}
           </div>
-          {outlet ?? null}
-        </div>
-      </nav>
+        </nav>
+      )}
     </header>
   );
 };

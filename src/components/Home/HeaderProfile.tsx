@@ -53,13 +53,13 @@ const HomeProfile = () => {
           className="btn-group-vertical mt-2 position-absolute w-98px z-index-1 header-profile-translate"
           role="group"
         >
-          <button className="btn btn-primary" name="write" onClick={onClick}>
+          <button className="btn btn-success text-white" name="write" onClick={onClick}>
             Post
           </button>
-          <button className="btn btn-primary" name="setting" onClick={onClick}>
+          <button className="btn btn-success text-white" name="setting" onClick={onClick}>
             Setting
           </button>
-          <button className="btn btn-primary" name="logout" onClick={onClick}>
+          <button className="btn btn-success text-white" name="logout" onClick={onClick}>
             Sign Out
           </button>
         </div>

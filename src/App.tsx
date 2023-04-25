@@ -4,7 +4,7 @@ import AppRouter from "./AppRouter";
 import AlertToast from "./components/Share/AlertToast";
 import AlertModal from "./components/Share/AlertModal";
 
-import "./styles/App.css";
+import "./styles/App.scss";
 import { useListenAuth } from "./logic/authSetting";
 import Loading from "./components/Share/Loading";
 import MetaTag from "./components/Share/MetaTag";
@@ -15,15 +15,12 @@ const App = () => {
   return (
     <div className={`App`}>
       <MetaTag title="myBlog" description="Make your own blog" />
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          <AlertModal />
-          <AlertToast />
-          <AppRouter />
-        </>
-      )}
+      {isLoading ? <Loading /> : null}
+      <>
+        <AlertModal />
+        <AlertToast />
+        <AppRouter />
+      </>
     </div>
   );
 };

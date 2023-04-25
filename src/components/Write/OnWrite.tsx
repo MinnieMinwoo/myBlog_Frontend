@@ -95,9 +95,7 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
       const textCursor = textarea.selectionStart;
       setPostContent((prev) => ({
         ...prev,
-        postData: `${currentText.slice(0, textCursor)}![](${imageLink})${currentText.slice(
-          textCursor
-        )}`,
+        postData: `${currentText.slice(0, textCursor)}![](${imageLink})${currentText.slice(textCursor)}`,
         imageList: [...prev.imageList, imageLink],
       }));
     } catch (error) {
@@ -124,14 +122,7 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
       <div className="post-init-animation">
         <div className="OnWrite mt-3 col col-sm-10 offset-sm-1 col-lg-8 offset-lg-2 col-xxl-6 offset-xxl-3">
           <section onDragEnter={onDrag} onDragLeave={onDrag} onDragOver={onDrag} onDrop={onDrag}>
-            <input
-              hidden
-              type="file"
-              accept="image/*"
-              ref={imageRef}
-              defaultValue={""}
-              onChange={onInputImgChange}
-            />
+            <input hidden type="file" accept="image/*" ref={imageRef} defaultValue={""} onChange={onInputImgChange} />
             <input
               className="w-100 fs-1 mb-3 text-777 post-input-bar"
               placeholder="Write post title"
@@ -145,6 +136,9 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
                 className="post-editor"
                 data-color-mode="light"
                 value={postContent.postData}
+                textareaProps={{
+                  placeholder: "Write your story",
+                }}
                 commands={[
                   commands.title,
                   commands.bold,

@@ -13,7 +13,7 @@ const CategorySideContent = ({ data }: Props) => {
 
   return (
     <div className="CategorySideContent">
-      <p className="my-1 mx-0 text-555">{data.mainField}</p>
+      <p className="my-1 mx-0 text-primary">{data.mainField}</p>
       {data.subField && (
         <ul className="m-0 list-unstyled ps-5px pe-3px py-1">
           {data.subField.map((content, id) => (
