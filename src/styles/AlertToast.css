@@ -1,10 +1,12 @@
-.toast-align {
-  @media (max-width: 575px) {
+@media (max-width: 575px) {
+  .toast-align {
     top: 20px;
     left: 50%;
     transform: translate(-50%, 0);
   }
-  @media (min-width: 576px) {
+}
+@media (min-width: 576px) {
+  .toast-align {
     top: 40px;
     right: 40px;
   }
