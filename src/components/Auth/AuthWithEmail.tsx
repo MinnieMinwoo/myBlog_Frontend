@@ -101,7 +101,7 @@ const AuthWithEmail = ({ signIn }: { signIn: boolean }) => {
                 className="form-control"
                 name="nickname"
                 type="text"
-                placeholder="Nicknames must be written in 4-20 digits using only English, numbers, and special characters."
+                placeholder="4-20 digits of English, numbers and special characters"
                 value={nickname}
                 autoComplete="off"
                 required

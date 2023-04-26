@@ -16,6 +16,7 @@ import {
   UserCredential,
   linkWithCredential,
   onAuthStateChanged,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 import { getUserNickname, addUserData, getUserData } from "./getSetUserInfo";
@@ -251,6 +252,19 @@ export const signOutUser = async () => {
   const auth = getAuth();
   try {
     await signOut(auth);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const passwordResetEmail = async (email: string) => {
+  const auth = getAuth();
+  const actionCodeSettings = {
+    url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
+    handleCodeInApp: true,
+  };
+  try {
+    await sendPasswordResetEmail(auth, email, actionCodeSettings);
   } catch (error) {
     throw error;
   }

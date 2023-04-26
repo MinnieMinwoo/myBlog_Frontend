@@ -122,7 +122,7 @@ const PostCategorySection = ({ isEdit, categoryData, setCategoryData }: Props) =
           <section className="pt-3 pb-4 bt-light" key={id}>
             <div className="hstack gap-1 mb-1">
               <h3 className="fw-semibold d-inline-block text-333">{data.mainField}</h3>
-              <span className="text-success fs-5">({data.subField.length})</span>
+              <span className="text-info fs-5">({data.subField.length})</span>
               {isEdit ? (
                 <>
                   <button

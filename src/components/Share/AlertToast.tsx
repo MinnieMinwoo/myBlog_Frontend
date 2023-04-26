@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useToast } from "../../states/ToastState";
 import { Toast } from "bootstrap";
+import "../../styles/AlertToast.css";
 
 export const AlertToast = () => {
   const { toastDataState, closeToast } = useToast();
@@ -17,7 +18,7 @@ export const AlertToast = () => {
     <>
       {toastDataState.isOpen ? (
         <div
-          className={`toast position-fixed t-40px r-40px z-index-5 text-bg-${toastDataState.background}`}
+          className={`toast position-fixed toast-align z-index-5 text-bg-${toastDataState.background}`}
           id="AlertToast"
           data-bs-delay="3000"
           ref={toastRef}

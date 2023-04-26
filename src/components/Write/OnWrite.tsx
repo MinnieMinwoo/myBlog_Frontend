@@ -136,6 +136,7 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
                 className="post-editor"
                 data-color-mode="light"
                 value={postContent.postData}
+                visibleDragbar={false}
                 textareaProps={{
                   placeholder: "Write your story",
                 }}

@@ -206,7 +206,7 @@ const PostDetail = () => {
             </button>
             <div className="dropdown-center">
               <button
-                className="btn btn-outline-secondary dropdown-toggle w-100px h-50px"
+                className="btn btn-outline-info dropdown-toggle w-100px h-50px"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
