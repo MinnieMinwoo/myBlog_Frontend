@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import NotFound from "./routes/NotFound";
 
 const Loading = lazy(() => import("./components/Share/Loading"));
 const Main = lazy(() => import("./routes/Main"));
@@ -31,6 +32,7 @@ const AppRouter = () => {
           <Route path="/auth/create" element={<SignUp />} />
           <Route path="/write/*" element={<Write />} />
           <Route path="/setting" element={<Setting />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </Router>
