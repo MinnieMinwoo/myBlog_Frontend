@@ -8,6 +8,7 @@ Make my own blog project.
 
   - Sign in / up email with verification
   - Social login with google, facebook, twitter
+  - Reset password when using email
 
 - Blog home
 
@@ -17,6 +18,8 @@ Make my own blog project.
   - Sort posts by category
   - View post tags
   - About page for introduce
+  - Search posts by title
+  - - (Search by starting point only due to firebase query policy)[https://firebase.google.com/docs/firestore/solutions/search]
 
 - Post read
 

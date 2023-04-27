@@ -16,9 +16,10 @@ import {
   QueryDocumentSnapshot,
   DocumentData,
   startAfter,
+  Query,
 } from "firebase/firestore";
 
-import { getUserNickname } from "./getSetUserInfo";
+import { getUserNickname, getUserUID } from "./getSetUserInfo";
 
 export const getUserPostNumber = async (uid: string): Promise<number> => {
   const q = query(collection(dbService, "posts"), where("createdBy", "==", uid));
@@ -30,11 +31,7 @@ export const getUserPostNumber = async (uid: string): Promise<number> => {
   }
 };
 
-export const getPostNumByCategory = async (
-  uid: string,
-  mainCategory: string,
-  subCategory: string
-): Promise<number> => {
+export const getPostNumByCategory = async (uid: string, mainCategory: string, subCategory: string): Promise<number> => {
   const q = query(
     collection(dbService, "posts"),
     where("createdBy", "==", uid),
@@ -127,6 +124,54 @@ export const getPostListByCategory = async (
     limit(10)
   );
   try {
+    const querySnapshot = await getDocs(q);
+    const docList: PostData[] = [];
+    querySnapshot.forEach((doc) => {
+      docList.push({
+        id: doc.id,
+        createdAt: doc.data().createdAt,
+        createdBy: doc.data().createdBy,
+        tag: doc.data().tag,
+        thumbnailData: doc.data().thumbnailData,
+        thumbnailImageURL: doc.data().thumbnailImageURL,
+        title: doc.data().title,
+      });
+    });
+    return { index: querySnapshot.docs[querySnapshot.docs.length - 1], data: docList };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getPostListByQuery = async (
+  queryData: string,
+  userName = "",
+  index?: QueryDocumentSnapshot<DocumentData>
+): Promise<{
+  index: QueryDocumentSnapshot<DocumentData>;
+  data: PostData[];
+}> => {
+  try {
+    let q: Query<DocumentData>;
+    if (userName) {
+      const uid = await getUserUID(userName);
+      q = query(
+        collection(dbService, "posts"),
+        where("createdBy", "==", uid),
+        where("title", "==", queryData),
+        orderBy("createdAt", "desc"),
+        startAfter(index ?? ""),
+        limit(10)
+      );
+    } else {
+      q = query(
+        collection(dbService, "posts"),
+        where("title", "==", queryData),
+        orderBy("createdAt", "desc"),
+        startAfter(index ?? ""),
+        limit(10)
+      );
+    }
     const querySnapshot = await getDocs(q);
     const docList: PostData[] = [];
     querySnapshot.forEach((doc) => {
