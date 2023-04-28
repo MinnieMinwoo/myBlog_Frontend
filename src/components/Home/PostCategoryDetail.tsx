@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { isLoadingData } from "../../states/LoadingState";
 import { useToast } from "../../states/ToastState";
@@ -13,6 +13,7 @@ import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
 import altImage from "../../assets/images/altThumbnail.jpg";
 import MetaTag from "../Share/MetaTag";
+import Pagination from "../Share/Pagination";
 
 const Dummy = () => {
   const repeat = 3;
@@ -47,11 +48,15 @@ const PostCategoryDetail = () => {
   const [postNum, setPostNum] = useState(0);
   const { openToast } = useToast();
   const params = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
     const { mainName, subName } = params;
-    if (!(params.userID && mainName && subName)) throw console.log("no params");
+    if (!(params.userID && mainName && subName)) {
+      navigate("/404");
+      return;
+    }
     getUserUID(params.userID)
       .then(async (uid) => {
         await Promise.all([
@@ -61,6 +66,7 @@ const PostCategoryDetail = () => {
             setPostList(data);
             postIndex.current = index;
             if (data.length !== 10) setIsLastPost(true);
+            else setIsLastPost(false);
           }),
         ]);
       })
@@ -73,39 +79,26 @@ const PostCategoryDetail = () => {
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [params]);
 
-  const [isPagination, setIsPagination] = useState(false);
   const [isLastPost, setIsLastPost] = useState(false);
   const postIndex = useRef<QueryDocumentSnapshot<DocumentData>>();
-  const observeRef = useRef<HTMLDivElement>(null);
 
-  const onPagination = async (entries: IntersectionObserverEntry[]) => {
+  const onPagination = async () => {
     const { userID, mainName, subName } = params;
     if (!userID || !mainName || !subName) return;
-    if (!entries[0].isIntersecting || !postIndex.current) return;
-    if (isPagination || isLastPost) return;
-    setIsPagination(true);
     const uid = await getUserUID(userID);
     const { index, data } = await getPostListByCategory(uid, mainName, subName, postIndex.current);
     setPostList((prev) => [...prev, ...data]);
     postIndex.current = index;
     if (data.length !== 10) setIsLastPost(true);
-    setIsPagination(false);
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(onPagination, {
-      rootMargin: "100px",
-      threshold: 0.1,
-    });
-    const currentRef = observeRef.current;
-    currentRef && observer.observe(currentRef);
-    return () => {
-      currentRef && observer.unobserve(currentRef);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [observeRef.current]);
+  const paginationCondition = () => {
+    const { userID, mainName, subName } = params;
+    if (!userID || !mainName || !subName) return false;
+    else return true;
+  };
 
   return (
     <>
@@ -113,7 +106,7 @@ const PostCategoryDetail = () => {
         <Dummy />
       ) : (
         <>
-          <main className="read_section" hidden={isLoading}>
+          <main className="read_section mb-4" hidden={isLoading}>
             <MetaTag title={`${params.userID}'s Blog`} description={`Check the ${params.userID}'s blog posts`} />
             <section
               className="bg-image w-100 bg-opacity-50 px-4 mb-4 h-340px text-eee"
@@ -128,19 +121,13 @@ const PostCategoryDetail = () => {
               }`}</span>
             </section>
             <PostThumbnailBox postList={postList} />
+            <Pagination
+              isLastPost={isLastPost}
+              postIndex={postIndex}
+              callBack={onPagination}
+              condition={paginationCondition}
+            />
           </main>
-          <div
-            id="pagination"
-            className="spinner-border text-secondary"
-            style={{
-              marginLeft: "47%",
-              display: `${isLastPost || isLoading ? "none" : "block"}`,
-            }}
-            ref={observeRef}
-            role="status"
-          >
-            <span className="visually-hidden">Loading...</span>
-          </div>
         </>
       )}
     </>

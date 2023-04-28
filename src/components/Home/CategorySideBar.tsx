@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CategorySideContent from "./CategorySideContent";
 
 import { getUserUID } from "../../logic/getSetUserInfo";
@@ -12,9 +12,13 @@ interface Props {
 
 const CategorySideBar = ({ categoryList, setCategoryList }: Props) => {
   const params = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!params.userID) throw console.log("no params");
+    if (!params.userID) {
+      navigate("/404");
+      return;
+    }
     getUserUID(params.userID)
       .then((uid) => {
         return getCategoryList(uid);

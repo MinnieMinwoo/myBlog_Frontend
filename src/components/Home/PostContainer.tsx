@@ -10,9 +10,9 @@ import { useToast } from "../../states/ToastState";
 import PostThumbnailBox from "./PostThumbnailBox";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
-import "../../styles/PostContainer.css";
 import MetaTag from "../Share/MetaTag";
 import { loginData } from "../../states/LoginState";
+import Pagination from "../Share/Pagination";
 
 const Dummy = () => {
   const repeat = 3;
@@ -48,10 +48,14 @@ const PostContainer = () => {
   const [postNum, setPostNum] = useState(0);
   const [isLastPost, setIsLastPost] = useState(false);
   const postIndex = useRef<QueryDocumentSnapshot<DocumentData>>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
-    if (!params.userID) throw console.log("no params"); // todo: make 404 page
+    if (!params.userID) {
+      navigate("/404");
+      return;
+    }
     getUserUID(params.userID)
       .then(async (uid) => {
         const count = await getUserPostNumber(uid);
@@ -60,6 +64,7 @@ const PostContainer = () => {
         setPostList(docList);
         postIndex.current = docIndex;
         if (docList.length !== 10) setIsLastPost(true);
+        else setIsLastPost(false);
       })
       .catch((error) => {
         console.log(error);
@@ -71,35 +76,16 @@ const PostContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [isPagination, setIsPagination] = useState(false);
-  const observeRef = useRef<HTMLDivElement>(null);
-
-  const onPagination = async (entries: IntersectionObserverEntry[]) => {
-    if (!entries[0].isIntersecting || !postIndex.current || !params.userID) return;
-    if (isPagination || isLastPost) return;
-    setIsPagination(true);
-    const uid = await getUserUID(params.userID);
+  const onPagination = async () => {
+    const { userID } = params;
+    if (!userID) return;
+    const uid = await getUserUID(userID);
     const { index, data } = await getUserPostList(uid, postIndex.current);
     setPostList((prev) => [...prev, ...data]);
     postIndex.current = index;
     if (data.length !== 10) setIsLastPost(true);
-    setIsPagination(false);
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(onPagination, {
-      rootMargin: "100px",
-      threshold: 0.1,
-    });
-    const currentRef = observeRef.current;
-    if (currentRef) observer.observe(currentRef);
-    return () => {
-      if (currentRef) observer.unobserve(currentRef);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [observeRef.current]);
-
-  const navigate = useNavigate();
   const onClickWrite = () => navigate("/write");
 
   return (
@@ -116,13 +102,12 @@ const PostContainer = () => {
         ) : null}
       </div>
       <PostThumbnailBox postList={postList} />
-      {isLastPost || isLoading ? null : (
-        <div className="page-spinner-center">
-          <div className="spinner-border text-secondary" role="status" ref={observeRef}>
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      )}
+      <Pagination
+        isLastPost={isLastPost}
+        postIndex={postIndex}
+        callBack={onPagination}
+        condition={() => !!params.userID}
+      />
     </section>
   );
 };

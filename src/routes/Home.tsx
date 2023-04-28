@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 import { getUserUID } from "../logic/getSetUserInfo";
 import { getCategoryList } from "../logic/getSetCategoryInfo";
@@ -15,9 +15,13 @@ import HeaderSearch from "../components/Home/HeaderSearch";
 const Home = () => {
   const [categoryList, setCategoryList] = useState<CategoryData[]>([]);
   const params = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!params.userID) throw console.log("no params");
+    if (!params.userID) {
+      navigate("/404");
+      return;
+    }
     getUserUID(params.userID)
       .then((uid) => {
         return getCategoryList(uid);

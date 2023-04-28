@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import MarkdownPreview from "@uiw/react-markdown-preview";
@@ -16,8 +16,13 @@ const About = () => {
   const [aboutData, setAboutData] = useState("");
   const [uidData, setUidData] = useState("");
   const { openToast } = useToast();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (!params.userID) throw console.log("no params");
+    if (!params.userID) {
+      navigate("/404");
+      return;
+    }
     getUserUID(params.userID)
       .then(async (uid) => {
         setUidData(uid);

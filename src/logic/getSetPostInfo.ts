@@ -158,7 +158,9 @@ export const getPostListByQuery = async (
       q = query(
         collection(dbService, "posts"),
         where("createdBy", "==", uid),
-        where("title", "==", queryData),
+        orderBy("title"),
+        where("title", ">=", queryData),
+        where("title", "<=", queryData + "\uf8ff"),
         orderBy("createdAt", "desc"),
         startAfter(index ?? ""),
         limit(10)
@@ -166,7 +168,9 @@ export const getPostListByQuery = async (
     } else {
       q = query(
         collection(dbService, "posts"),
+        orderBy("title"),
         where("title", "==", queryData),
+        where("title", "<=", queryData + "\uf8ff"),
         orderBy("createdAt", "desc"),
         startAfter(index ?? ""),
         limit(10)

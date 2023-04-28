@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { useModal } from "../../states/ModalState";
@@ -21,9 +21,13 @@ const PostCategoryList = () => {
   const params = useParams();
   const { openModal } = useModal();
   const { openToast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!params.userID) throw console.log("no params");
+    if (!params.userID) {
+      navigate("/404");
+      return;
+    }
     getUserUID(params.userID)
       .then((uid) => {
         getCategoryList(uid).then((data) => setCategoryList(data));
