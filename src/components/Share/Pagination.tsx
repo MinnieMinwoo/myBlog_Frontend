@@ -16,7 +16,6 @@ const Pagination = ({ isLastPost, postIndex, callBack, condition }: Props) => {
   const isLoading = useRecoilValue(isLoadingData);
   const observeRef = useRef<HTMLDivElement>(null);
   const onPagination = async (entries: IntersectionObserverEntry[]) => {
-    console.log(postIndex?.current, isPagination, isLastPost);
     if (!entries[0].isIntersecting || !postIndex?.current) return;
     if (isPagination || isLastPost) return;
     if (condition && !condition()) return;
@@ -36,7 +35,6 @@ const Pagination = ({ isLastPost, postIndex, callBack, condition }: Props) => {
       threshold: 0.1,
     });
     const currentRef = observeRef.current;
-    console.log(currentRef);
     if (currentRef) observer.observe(currentRef);
     return () => {
       if (currentRef) observer.unobserve(currentRef);
