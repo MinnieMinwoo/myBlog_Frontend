@@ -19,13 +19,13 @@ Make my own blog project.
   - View post tags
   - About page for introduce
   - Search posts by title
-  - - (Search by starting point only due to firebase query policy)[https://firebase.google.com/docs/firestore/solutions/search]
+    - (Search by starting point only due to firebase query policy)[https://firebase.google.com/docs/firestore/solutions/search]
 
 - Post read
 
   - Read post written by markdown
   - View table on contents in sidebar
-  - Can like posts
+  - Like posts
   - Share post link on facebook, twitter
   - Copy post link on read
 

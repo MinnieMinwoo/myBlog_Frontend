@@ -169,13 +169,14 @@ export const getPostListByQuery = async (
       q = query(
         collection(dbService, "posts"),
         orderBy("title"),
-        where("title", "==", queryData),
+        where("title", ">=", queryData),
         where("title", "<=", queryData + "\uf8ff"),
         orderBy("createdAt", "desc"),
         startAfter(index ?? ""),
         limit(10)
       );
     }
+    console.log(q);
     const querySnapshot = await getDocs(q);
     const docList: PostData[] = [];
     querySnapshot.forEach((doc) => {

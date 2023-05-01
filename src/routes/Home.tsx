@@ -10,7 +10,7 @@ import HeaderProfile from "../components/Home/HeaderProfile";
 import Footer from "../components/Share/Footer";
 import CategorySideBar from "../components/Home/CategorySideBar";
 import MetaTag from "../components/Share/MetaTag";
-import HeaderSearch from "../components/Home/HeaderSearch";
+import HeaderSearch from "../components/Share/HeaderSearch";
 
 const Home = () => {
   const [categoryList, setCategoryList] = useState<CategoryData[]>([]);

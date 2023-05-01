@@ -51,7 +51,7 @@ const Pagination = ({ isLastPost, postIndex, callBack, condition }: Props) => {
   return (
     <>
       {isLastPost || isLoading ? null : (
-        <div className="Pagination page-spinner-center">
+        <div className="Pagination page-spinner-center mb-4">
           <div className="spinner-border text-secondary" role="status" ref={observeRef}>
             <span className="visually-hidden">Loading...</span>
           </div>

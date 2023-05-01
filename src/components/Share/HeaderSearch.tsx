@@ -9,8 +9,8 @@ const HeaderSearch = () => {
     event.preventDefault();
     const { userID } = params;
     const { innerWidth } = window;
-    if (innerWidth < 768) navigate(`/search?query=&user=${userID}`);
-    else navigate(`/search?query=${query}&user=${userID}`);
+    if (innerWidth < 768) navigate(`/search?query=${query}${userID ? `&user=${userID}` : ""}`);
+    else navigate(`/search?query=${query}${userID ? `&user=${userID}` : ""}`);
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,9 +24,9 @@ const HeaderSearch = () => {
     <div className="SearchBox d-inline-block align-middle me-2 me-md-4" onSubmit={onSubmit}>
       <form className="d-flex" role="search">
         <input
-          className="form-control me-md-2 d-none d-md-inline-block"
+          className="form-control me-2 d-none d-md-inline-block"
           type="search"
-          placeholder="Search"
+          placeholder="Search posts"
           aria-label="Search"
           value={query}
           onChange={onChange}

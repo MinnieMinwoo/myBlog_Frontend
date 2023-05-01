@@ -28,7 +28,6 @@ const Search = () => {
     event.preventDefault();
     if (!query) return;
     const user = searchParams.get("user") ?? "";
-    console.log(searchParams.get("user"));
     setSearchParams({ query: query, user: user });
     getResults(query, user);
   };
@@ -59,6 +58,19 @@ const Search = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onPagination = async () => {
+    try {
+      const user = searchParams.get("user") ?? "";
+      const { index, data } = await getPostListByQuery(query, user, postIndex.current);
+      if (data.length !== 10) setIsLastPost(true);
+      setPostList((prev) => [...prev, ...data]);
+      postIndex.current = index;
+    } catch (error) {
+      console.log(error);
+      openToast("error", "Something went wrong", "warning");
+    }
+  };
+
   return (
     <div className="Search d-flex flex-column min-vh-100 overflow-hidden">
       <MetaTag title="myBlog" description="Search user posts" />
@@ -85,7 +97,7 @@ const Search = () => {
             </form>
             {query && !postList.length && <h5>No posts.</h5>}
             <PostThumbnailBox postList={postList} />
-            <Pagination isLastPost={isLastPost} postIndex={postIndex} callBack={async () => {}} />
+            <Pagination isLastPost={isLastPost} postIndex={postIndex} callBack={onPagination} />
           </div>
         </div>
       </section>
