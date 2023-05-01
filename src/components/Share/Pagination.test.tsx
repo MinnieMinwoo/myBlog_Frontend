@@ -1,8 +1,6 @@
-import React, { useRef } from "react";
-import { MemoryRouter } from "react-router-dom";
+import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import Pagination from "./Pagination";
-import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { RecoilRoot } from "recoil";
 
 describe("Loading component test", () => {
@@ -22,9 +20,7 @@ describe("Loading component test", () => {
     const dummyRef = "";
     render(
       <RecoilRoot>
-        <MemoryRouter>
-          <Pagination isLastPost={false} postIndex={dummyRef as any} callBack={async () => {}} />
-        </MemoryRouter>
+        <Pagination isLastPost={false} postIndex={dummyRef as any} callBack={async () => {}} />
       </RecoilRoot>
     );
     expect(screen.getByRole("status")).toBeInTheDocument();
@@ -34,9 +30,7 @@ describe("Loading component test", () => {
     const dummyRef = "";
     render(
       <RecoilRoot>
-        <MemoryRouter>
-          <Pagination isLastPost={true} postIndex={dummyRef as any} callBack={async () => {}} />
-        </MemoryRouter>
+        <Pagination isLastPost={true} postIndex={dummyRef as any} callBack={async () => {}} />
       </RecoilRoot>
     );
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
