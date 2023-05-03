@@ -152,7 +152,7 @@ const CategoryOrderEdit = () => {
         <h3 className="d-inline-block w-170px fs-5 text-111">Category order</h3>
         <span className="d-inline-block float-end">
           <div className="hstack">
-            <button className="btn btn-primary me-2" onClick={onClickMain} disabled={isLoading}>
+            <button className="btn btn-primary w-98px" onClick={onClickMain} disabled={isLoading}>
               {isLoading ? (
                 <>
                   <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
