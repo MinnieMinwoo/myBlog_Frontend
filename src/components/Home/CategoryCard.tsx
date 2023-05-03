@@ -12,7 +12,7 @@ import {
   setCategoryThumbnailList,
   setCategoryThumbnail,
 } from "../../logic/getSetCategoryInfo";
-import { CategoryImageForm, CategoryNameForm as inputForm } from "./PostCategoryForm";
+import { CategoryImageForm, CategoryNameForm as inputForm } from "./CategoryForm";
 import { deleteImg } from "../../logic/getSetImage";
 
 interface Props {
@@ -24,14 +24,7 @@ interface Props {
   setCategoryData: React.Dispatch<React.SetStateAction<CategoryData[]>>;
 }
 
-const PostCategoryCard = ({
-  isEdit,
-  imgLink,
-  mainID: id,
-  subID: index,
-  categoryData,
-  setCategoryData,
-}: Props) => {
+const PostCategoryCard = ({ isEdit, imgLink, mainID: id, subID: index, categoryData, setCategoryData }: Props) => {
   const userData = useRecoilValue(loginData);
   // React ref for receive modal form data
   const categoryRef = useRef<HTMLInputElement>(null);
@@ -63,12 +56,7 @@ const PostCategoryCard = ({
     try {
       switch (name) {
         case "editSubCategory":
-          await editSubCategoryData(
-            categoryData[mainID],
-            categoryData[mainID].subField[subID],
-            targetCategory,
-            uid
-          );
+          await editSubCategoryData(categoryData[mainID], categoryData[mainID].subField[subID], targetCategory, uid);
           copyArray[mainID].subField = copyArray[mainID].subField.map((element) =>
             element === categoryData[mainID].subField[subID] ? targetCategory : element
           );
@@ -77,19 +65,11 @@ const PostCategoryCard = ({
         case "editCategoryImage":
           console.log(imageRef);
           copyArray[mainID].thumbnailLink[subID] = imageRef.current;
-          await setCategoryThumbnailList(
-            copyArray[mainID].thumbnailLink,
-            copyArray[mainID].mainField,
-            uid
-          );
+          await setCategoryThumbnailList(copyArray[mainID].thumbnailLink, copyArray[mainID].mainField, uid);
           setCategoryData(copyArray);
           break;
         case "deleteSubCategory":
-          await deleteSubCategoryData(
-            categoryData[mainID],
-            categoryData[mainID].subField[subID],
-            uid
-          );
+          await deleteSubCategoryData(categoryData[mainID], categoryData[mainID].subField[subID], uid);
           copyArray[mainID] = {
             ...copyArray[mainID],
             subField: copyArray[mainID].subField.filter((e, i) => i !== subID),
@@ -160,16 +140,8 @@ const PostCategoryCard = ({
   return (
     <div className="PostCategoryCard p-2 col col-12 col-md-6 col-xl-4">
       <div className="card" key={index}>
-        <Link
-          className="ratio ratio-16x9"
-          to={`${categoryData[id].mainField}/${categoryData[id].subField[index]}`}
-        >
-          <img
-            className="card-img-top img-fluid object-fit-cover"
-            src={imgLink}
-            onError={onError}
-            alt="Thumbnail"
-          />
+        <Link className="ratio ratio-16x9" to={`${categoryData[id].mainField}/${categoryData[id].subField[index]}`}>
+          <img className="card-img-top img-fluid object-fit-cover" src={imgLink} onError={onError} alt="Thumbnail" />
         </Link>
         <div className="card-body">
           <Link

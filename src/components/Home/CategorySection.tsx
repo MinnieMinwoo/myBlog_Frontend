@@ -5,8 +5,8 @@ import { useModal } from "../../states/ModalState";
 import { useToast } from "../../states/ToastState";
 
 import { setSubCategoryData, editMainCategoryData, deleteMainCategoryData } from "../../logic/getSetCategoryInfo";
-import PostCategoryCard from "./PostCategoryCard";
-import { CategoryNameForm as inputForm } from "./PostCategoryForm";
+import PostCategoryCard from "./CategoryCard";
+import { CategoryNameForm as inputForm } from "./CategoryForm";
 
 interface Props {
   isEdit: boolean;

@@ -12,9 +12,9 @@ const Search = lazy(() => import("./routes/Search"));
 const NotFound = lazy(() => import("./routes/NotFound"));
 
 const PostContainer = lazy(() => import("./components/Home/PostContainer"));
-const PostCategoryList = lazy(() => import("./components/Home/PostCategoryList"));
+const PostCategoryList = lazy(() => import("./components/Home/CategoryList"));
 const PostDetail = lazy(() => import("./components/Home/PostDetail"));
-const PostCategoryDetail = lazy(() => import("./components/Home/PostCategoryDetail"));
+const PostCategoryDetail = lazy(() => import("./components/Home/CategoryDetail"));
 const About = lazy(() => import("./components/Home/About"));
 
 const AppRouter = () => {

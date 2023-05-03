@@ -8,8 +8,8 @@ import { useToast } from "../../states/ToastState";
 import { getUserUID } from "../../logic/getSetUserInfo";
 import { getCategoryList, setMainCategoryData } from "../../logic/getSetCategoryInfo";
 
-import PostCategorySection from "./PostCategorySection";
-import { CategoryNameForm as inputForm } from "./PostCategoryForm";
+import PostCategorySection from "./CategorySection";
+import { CategoryNameForm as inputForm } from "./CategoryForm";
 import MetaTag from "../Share/MetaTag";
 
 const PostCategoryList = () => {

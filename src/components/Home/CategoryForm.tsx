@@ -1,11 +1,9 @@
 import React from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 import altImage from "../../assets/images/altThumbnail.jpg";
 
-export const CategoryNameForm = (
-  categoryRef: React.RefObject<HTMLInputElement>,
-  defaultValue = ""
-) => {
+export const CategoryNameForm = (categoryRef: React.RefObject<HTMLInputElement>, defaultValue = "") => {
   return (
     <form>
       <label className="form-label">Write down the category name.</label>
@@ -40,13 +38,7 @@ export const CategoryImageForm = (
           <img
             className="img img-fluid object-fit-cover border rounded fs-0"
             ref={thumbnailRef}
-            src={
-              thumbnailRef.current?.src
-                ? thumbnailRef.current?.src
-                : imageRef.current
-                ? imageRef.current
-                : altImage
-            }
+            src={thumbnailRef.current?.src ? thumbnailRef.current?.src : imageRef.current ? imageRef.current : altImage}
             alt="Thumbnail"
           />
         </div>
