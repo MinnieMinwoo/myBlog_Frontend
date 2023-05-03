@@ -41,11 +41,7 @@ export const getCategoryList = async (uid: string) => {
 };
 
 /** Get Category Thumbnail*/
-export const getCategoryThumbnail = async (
-  uid: string,
-  mainCategory: string,
-  subCategory: string
-) => {
+export const getCategoryThumbnail = async (uid: string, mainCategory: string, subCategory: string) => {
   const subCategoryRef = doc(dbService, `users/${uid}/category`, mainCategory);
   try {
     const categoryList = (await getDoc(subCategoryRef)).data();
@@ -119,11 +115,7 @@ export const deleteMainCategoryData = async (name: string, uid: string) => {
 };
 
 /** Delete Sub Category Data*/
-export const deleteSubCategoryData = async (
-  mainCategory: CategoryData,
-  name: string,
-  uid: string
-) => {
+export const deleteSubCategoryData = async (mainCategory: CategoryData, name: string, uid: string) => {
   const editCateGory: CategoryData = {
     mainField: mainCategory.mainField,
     subField: [],
@@ -180,6 +172,17 @@ export const editMainCategoryData = async (
   }
 };
 
+/** Edit Main Category Order
+ */
+export const editMainCategoryOrder = async (categoryList: string[], uid: string) => {
+  try {
+    const categoryRef = doc(dbService, `users/${uid}/category`, `${uid}`);
+    await updateDoc(categoryRef, { order: categoryList });
+  } catch (error) {
+    throw error;
+  }
+};
+
 /** Edit Sub Category Data */
 export const editSubCategoryData = async (
   mainCategory: CategoryData,
@@ -199,17 +202,27 @@ export const editSubCategoryData = async (
   }
 };
 
+export const editSubCategoryOrder = async (
+  categoryList: string[],
+  imgList: string[],
+  mainField: string,
+  uid: string
+) => {
+  try {
+    const subCategoryRef = doc(dbService, `users/${uid}/category`, `${mainField}`);
+    await updateDoc(subCategoryRef, { order: categoryList, subfield: categoryList, thumbnailLink: imgList });
+  } catch (error) {
+    throw error;
+  }
+};
+
 /** Edit Thumbnail Image Data */
 export const setCategoryThumbnail = async (file: File) => {
   return uploadImg(file, `$category/${uuidv4()}`);
 };
 
 /** Update Thumbnail Image List URL */
-export const setCategoryThumbnailList = async (
-  thumbnailArray: string[],
-  mainField: string,
-  uid: string
-) => {
+export const setCategoryThumbnailList = async (thumbnailArray: string[], mainField: string, uid: string) => {
   try {
     const subCategoryRef = doc(dbService, `users/${uid}/category`, `${mainField}`);
     await updateDoc(subCategoryRef, {

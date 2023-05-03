@@ -1,6 +1,4 @@
 import React from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-
 import altImage from "../../assets/images/altThumbnail.jpg";
 
 export const CategoryNameForm = (categoryRef: React.RefObject<HTMLInputElement>, defaultValue = "") => {
