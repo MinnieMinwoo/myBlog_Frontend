@@ -15,6 +15,7 @@ import Header from "../components/Share/Header";
 import { updateUserEmail } from "../logic/authSetting";
 import SocialLoginEdit from "../components/Setting/SocialLoginEdit";
 import MetaTag from "../components/Share/MetaTag";
+import CategoryOrderEdit from "../components/Setting/CategoryOrderEdit";
 
 const Setting = () => {
   const [userData, setUserData] = useRecoilState(loginData);
@@ -138,6 +139,7 @@ const Setting = () => {
             onClick={onEmailChange}
           />
           <SocialLoginEdit />
+          <CategoryOrderEdit />
           <SettingData
             title="Withdrawal"
             description="All posts and comments you created upon withdrawal will be deleted and will not be

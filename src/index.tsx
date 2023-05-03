@@ -9,9 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <HelmetProvider>
     <RecoilRoot>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <App />
     </RecoilRoot>
   </HelmetProvider>
 );

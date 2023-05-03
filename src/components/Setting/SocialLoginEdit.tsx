@@ -87,7 +87,7 @@ const SocialLoginEdit = () => {
   const SocialButton = ({ name, img }: { name: string; img: string }) => {
     return (
       <img
-        className="img-fluid img-thumbnail ms-2 w-50px h-50px"
+        className="img-fluid img-thumbnail ms-2 w-50px h-50px-i"
         src={img}
         alt={name}
         role="button"
