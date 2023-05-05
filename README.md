@@ -54,6 +54,7 @@ Make my own blog project.
 - react-md-editor
 - Jest
 - React Testing Library
+- Cypress
 - Firebase
   - Authentication
   - Firestore Database
