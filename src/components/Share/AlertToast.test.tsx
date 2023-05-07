@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  screen,
-  render,
-  cleanup,
-  waitForElementToBeRemoved,
-  act,
-} from "@testing-library/react";
+import { screen, render, cleanup, waitForElementToBeRemoved, act } from "@testing-library/react";
 
 import AlertToast from "./AlertToast";
 import { useToast } from "../../states/ToastState";
@@ -57,6 +51,7 @@ describe("Toast test", () => {
     expect(screen.queryByText("Hello")).not.toBeInTheDocument();
     expect(screen.queryByText("Toast test")).not.toBeInTheDocument();
     toastOpen();
+    await Promise.resolve();
     const Title = screen.getByText("Hello");
     expect(screen.getByText("Toast test")).toBeInTheDocument();
     expect(Title).toBeInTheDocument();

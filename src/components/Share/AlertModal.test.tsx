@@ -1,5 +1,5 @@
 import React from "react";
-import { screen, render, cleanup, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen, render, cleanup } from "@testing-library/react";
 import { useModal } from "../../states/ModalState";
 import AlertModal from "./AlertModal";
 import { RecoilRoot } from "recoil";
@@ -36,9 +36,10 @@ const DummyComponent = ({
 
 describe("Alert modal test", () => {
   //open, close modal logic
-  const modalOpen = () => {
+  const modalOpen = async () => {
     const openButton = screen.getByRole("button", { name: "openModal" });
     userEvent.click(openButton);
+    await Promise.resolve();
   };
 
   // reset modal
@@ -46,7 +47,7 @@ describe("Alert modal test", () => {
     cleanup();
   });
 
-  it("Alert modal open test", () => {
+  it("Alert modal open test", async () => {
     render(
       <RecoilRoot>
         <DummyComponent title="Hello" content="Modal Test" />
@@ -56,7 +57,7 @@ describe("Alert modal test", () => {
     expect(screen.queryByText("Hello")).not.toBeInTheDocument();
     expect(screen.queryByText("Modal Test")).not.toBeInTheDocument();
 
-    modalOpen();
+    await modalOpen();
 
     expect(screen.getByText("Hello")).toBeInTheDocument();
     expect(screen.getByText("Modal Test")).toBeInTheDocument();
@@ -71,14 +72,14 @@ describe("Alert modal test", () => {
         <DummyComponent title="Hello" content="Modal Test" closeCallBack={callBackFunc} />
       </RecoilRoot>
     );
-    modalOpen();
+    await modalOpen();
 
     const closeButton = screen.getByText("Close");
     userEvent.click(closeButton);
     expect(callBackFunc).toBeCalledTimes(1);
   });
 
-  it("Confirm modal input test", () => {
+  it("Confirm modal input test", async () => {
     const DummyForm = (
       <form>
         <label>
@@ -92,20 +93,19 @@ describe("Alert modal test", () => {
         <DummyComponent title="Hello" content={DummyForm} isConfirm={true} />
       </RecoilRoot>
     );
-    modalOpen();
+    await modalOpen();
 
     expect(screen.getByText("Confirm").classList.contains("btn-primary")).toBe(true);
     expect(screen.getByLabelText("Input test")).toBeInTheDocument();
   });
 
-  it("Confirm modal button color test", () => {
+  it("Confirm modal button color test", async () => {
     render(
       <RecoilRoot>
         <DummyComponent title="Hello" content="Modal Test" isConfirm={true} buttonColor="warning" />
       </RecoilRoot>
     );
-    modalOpen();
-
+    await modalOpen();
     expect(screen.getByText("Confirm").classList.contains("btn-warning")).toBe(true);
   });
 });

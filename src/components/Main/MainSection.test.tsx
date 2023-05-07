@@ -26,7 +26,7 @@ describe("Main section test", () => {
     expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
-  it("navigate test on logout state", () => {
+  it("navigate test on logout state", async () => {
     render(
       <MemoryRouter>
         <Recoil.RecoilRoot>
@@ -42,12 +42,13 @@ describe("Main section test", () => {
     jest.spyOn(Recoil, "useRecoilValue").mockReturnValue(userData);
     jest.spyOn(Router, "useNavigate").mockImplementation(dummyFunction);
 
-    const button = screen.getByRole("button");
+    const button = screen.getByRole("button", { name: "Start" });
     userEvent.click(button);
+    await Promise.resolve();
     expect(dummyFunction).toBeCalledTimes(1);
   });
 
-  it("navigate test on login state", () => {
+  it("navigate test on login state", async () => {
     render(
       <MemoryRouter>
         <Recoil.RecoilRoot>
@@ -58,6 +59,7 @@ describe("Main section test", () => {
 
     const userData = {
       isLoggedIn: true,
+      nickname: "test",
     };
     const dummyFunction = jest.fn();
     jest.spyOn(Recoil, "useRecoilValue").mockReturnValue(userData);
@@ -65,6 +67,7 @@ describe("Main section test", () => {
 
     const button = screen.getByRole("button");
     userEvent.click(button);
+    await Promise.resolve();
     expect(dummyFunction).toBeCalledTimes(1);
   });
 });

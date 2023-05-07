@@ -81,6 +81,7 @@ describe("Header component test", () => {
     );
     const homeImage = screen.getByRole("img");
     userEvent.click(homeImage);
+    await Promise.resolve();
     expect(navigate).toBeCalledTimes(0);
     const confirmButton = screen.getByText("Confirm");
     userEvent.click(confirmButton);
