@@ -39,6 +39,7 @@ const Search = () => {
     setIsLoading(true);
     try {
       const { index, data } = await getPostListByQuery(query, user);
+      console.log(index);
       if (data.length === 10) setIsLastPost(false);
       setPostList(data);
       postIndex.current = index;

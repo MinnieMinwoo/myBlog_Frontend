@@ -17,6 +17,10 @@ import {
   DocumentData,
   startAfter,
   Query,
+  and,
+  or,
+  QueryConstraint,
+  QueryFilterConstraint,
 } from "firebase/firestore";
 
 import { getUserNickname, getUserUID } from "./getSetUserInfo";
@@ -157,10 +161,15 @@ export const getPostListByQuery = async (
       const uid = await getUserUID(userName);
       q = query(
         collection(dbService, "posts"),
-        where("createdBy", "==", uid),
+
         orderBy("title"),
-        where("title", ">=", queryData),
-        where("title", "<=", queryData + "\uf8ff"),
+        and(
+          where("createdBy", "==", uid),
+          or(
+            where("tag", "array-contains-any", queryData.split(" ")),
+            and(where("title", ">=", queryData), where("title", "<=", queryData + "\uf8ff"))
+          )
+        ) as unknown as QueryConstraint, // type check issue when sorting
         orderBy("createdAt", "desc"),
         startAfter(index ?? ""),
         limit(10)
@@ -169,14 +178,15 @@ export const getPostListByQuery = async (
       q = query(
         collection(dbService, "posts"),
         orderBy("title"),
-        where("title", ">=", queryData),
-        where("title", "<=", queryData + "\uf8ff"),
+        or(
+          where("tag", "array-contains-any", queryData.split(" ")),
+          and(where("title", ">=", queryData), where("title", "<=", queryData + "\uf8ff"))
+        ) as unknown as QueryConstraint, // type check issue when sorting
         orderBy("createdAt", "desc"),
         startAfter(index ?? ""),
         limit(10)
       );
     }
-    console.log(q);
     const querySnapshot = await getDocs(q);
     const docList: PostData[] = [];
     querySnapshot.forEach((doc) => {

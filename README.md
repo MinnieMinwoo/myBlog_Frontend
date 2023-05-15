@@ -18,7 +18,7 @@ Make my own blog project.
   - Sort posts by category
   - View post tags
   - About page for introduce
-  - Search posts by title
+  - Search posts by title and tag
     - (Search by starting point only due to firebase query policy)[https://firebase.google.com/docs/firestore/solutions/search]
 
 - Post read
@@ -38,6 +38,7 @@ Make my own blog project.
   - Set tags group by comma
 
 - Setting
+
   - Edit profile images
   - Edit user description
   - Edit user email address
