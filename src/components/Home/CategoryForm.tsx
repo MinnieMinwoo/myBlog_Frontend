@@ -3,7 +3,7 @@ import altImage from "../../assets/images/altThumbnail.jpg";
 
 export const CategoryNameForm = (categoryRef: React.RefObject<HTMLInputElement>, defaultValue = "") => {
   return (
-    <form>
+    <form onSubmit={(event) => event.preventDefault()}>
       <label className="form-label">Write down the category name.</label>
       <input
         className="form-control"
@@ -24,12 +24,12 @@ export const CategoryImageForm = (
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>,
   onDelete: () => void
 ) => {
-  const onUpload = () => {
+  const onUpload = (event: React.MouseEvent) => {
     inputRef.current?.click();
   };
 
   return (
-    <form>
+    <form onSubmit={(event) => event.preventDefault()}>
       <label className="form-label">Please upload the image.</label>
       <div className="vstack gap-2">
         <div className="w-100 ratio ratio-16x9">

@@ -1,12 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const ListComponent = ({ name, link }: { name: string; link: string }) => {
+    return (
+      <li className="mb-2">
+        <Link to={link} className="text-333 text-decoration-none">
+          {name}
+        </Link>
+      </li>
+    );
+  };
+
   return (
     <footer className="HomeFooter">
       <nav className="navbar bg-secondary">
-        <div className="container">
-          <p className="my-1 fs-14px text-777">2023 My own blog project</p>
-          <p className="my-1 fs-14px text-777">© Snowcat</p>
+        <div className="container align-items-start pt-2">
+          <div>
+            <p className="my-1 fs-14px text-333">2023 My own blog project</p>
+            <p className="my-1 fs-14px text-333">© Snowcat</p>
+          </div>
+          <div>
+            <h5>Links</h5>
+            <ul className="list-unstyled">
+              <ListComponent name="Home" link="/" />
+              <ListComponent name="Auth" link="/auth" />
+              <ListComponent name="Search" link="/search?query=" />
+            </ul>
+          </div>
+          <div>
+            <h5>More</h5>
+            <ul className="list-unstyled">
+              <ListComponent
+                name="Source Code"
+                link="https://github.com/MinnieMinwoo/myBlog_Frontend"
+              />
+              <ListComponent name="Contact" link="mailto:nhs075241@gmail.com" />
+            </ul>
+          </div>
+          <div>
+            <h5>Legal</h5>
+            <ul className="list-unstyled">
+              <ListComponent name="Copyright credit" link="/credit" />
+              <ListComponent name="License" link="/license" />
+            </ul>
+          </div>
         </div>
       </nav>
     </footer>
