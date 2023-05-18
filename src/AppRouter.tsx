@@ -10,6 +10,7 @@ const Write = lazy(() => import("./routes/Write"));
 const Setting = lazy(() => import("./routes/Setting"));
 const Search = lazy(() => import("./routes/Search"));
 const Credit = lazy(() => import("./routes/Credit"));
+const Terms = lazy(() => import("./routes/Terms"));
 const NotFound = lazy(() => import("./routes/NotFound"));
 
 const PostContainer = lazy(() => import("./components/Home/PostContainer"));
@@ -36,8 +37,8 @@ const AppRouter = () => {
           <Route path="/write/*" element={<Write />} />
           <Route path="/setting" element={<Setting />} />
           <Route path="/Search" element={<Search />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/credit" element={<Credit />} />
-          <Route path="/license" element={<Search />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
