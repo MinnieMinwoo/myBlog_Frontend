@@ -76,6 +76,8 @@ const PostCategorySection = ({ isEdit, categoryData, setCategoryData }: Props) =
     } catch (error) {
       console.log(error);
       openToast("Error", "Category edit failed.", "danger");
+    } finally {
+      if (categoryRef.current) categoryRef.current.value = "";
     }
   };
 

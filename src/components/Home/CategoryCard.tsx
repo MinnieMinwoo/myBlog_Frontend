@@ -63,7 +63,6 @@ const PostCategoryCard = ({ isEdit, imgLink, mainID: id, subID: index, categoryD
           setCategoryData(copyArray);
           break;
         case "editCategoryImage":
-          console.log(imageRef);
           copyArray[mainID].thumbnailLink[subID] = imageRef.current;
           await setCategoryThumbnailList(copyArray[mainID].thumbnailLink, copyArray[mainID].mainField, uid);
           setCategoryData(copyArray);
@@ -77,13 +76,15 @@ const PostCategoryCard = ({ isEdit, imgLink, mainID: id, subID: index, categoryD
           };
           setCategoryData(copyArray);
           break;
-
         default:
           return;
       }
     } catch (error) {
       console.log(error);
       openToast("Error", "Category edit failed.", "danger");
+    } finally {
+      if (categoryRef.current) categoryRef.current.value = "";
+      if (imageRef.current) imageRef.current = "";
     }
   };
 
