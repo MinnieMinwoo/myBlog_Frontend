@@ -10,6 +10,7 @@ export const CategoryNameForm = (categoryRef: React.RefObject<HTMLInputElement>,
         type="text"
         placeholder="enter category name"
         defaultValue={defaultValue}
+        key={defaultValue}
         ref={categoryRef}
         required
       />

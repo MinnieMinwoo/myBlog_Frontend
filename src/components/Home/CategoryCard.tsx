@@ -82,9 +82,6 @@ const PostCategoryCard = ({ isEdit, imgLink, mainID: id, subID: index, categoryD
     } catch (error) {
       console.log(error);
       openToast("Error", "Category edit failed.", "danger");
-    } finally {
-      if (categoryRef.current) categoryRef.current.value = "";
-      if (imageRef.current) imageRef.current = "";
     }
   };
 
@@ -113,7 +110,6 @@ const PostCategoryCard = ({ isEdit, imgLink, mainID: id, subID: index, categoryD
         isDelete = true;
         break;
       case "editCategoryImage":
-        // Form 안에 넣으면, state쓰면 작동이 이상해지는 이유?
         imageRef.current = imgLink;
         const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
           if (!event.target.files) return;

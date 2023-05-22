@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { isLoadingData } from "../../states/LoadingState";
 import { useToast } from "../../states/ToastState";
 
@@ -120,6 +120,7 @@ const PostCategoryDetail = () => {
                 postList.length && postList.length !== 1 ? "posts" : "post"
               }`}</span>
             </section>
+
             <PostThumbnailBox postList={postList} />
             <Pagination
               isLastPost={isLastPost}

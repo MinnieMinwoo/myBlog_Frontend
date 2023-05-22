@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginData } from "../../states/LoginState";
 import { uuidv4 } from "@firebase/util";
+import rehypeSanitize from "rehype-sanitize";
 import MDEditor, { commands, ICommand } from "@uiw/react-md-editor";
 
 import { useModal } from "../../states/ModalState";
@@ -151,6 +152,7 @@ const OnWrite = ({ isEdit, postContent, setPostContent, onPreview }: Props) => {
                   commands.code,
                   commands.fullscreen,
                 ]}
+                previewOptions={{ rehypePlugins: [rehypeSanitize] }}
                 onChange={(value = "") => {
                   setPostContent((prev) => ({
                     ...prev,

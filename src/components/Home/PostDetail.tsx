@@ -16,6 +16,7 @@ import { deleteImg } from "../../logic/getSetImage";
 import altImage from "../../assets/images/altThumbnail.jpg";
 import "../../styles/PostDetail.css";
 import MetaTag from "../Share/MetaTag";
+import rehypeSanitize from "rehype-sanitize";
 
 const CommentContainer = lazy(() => import("./CommentContainer"));
 
@@ -192,7 +193,7 @@ const PostDetail = () => {
           </div>
         </div>
         <article className="py-3" data-color-mode="light">
-          <MarkdownPreview source={postData?.detail} rehypePlugins={[tocPlugins] as any[]} />
+          <MarkdownPreview source={postData?.detail} rehypePlugins={[tocPlugins as any, rehypeSanitize]} />
         </article>
         <section>
           <div className="hstack mb-4">

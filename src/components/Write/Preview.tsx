@@ -21,15 +21,7 @@ interface Props {
   onSubmit: () => void;
 }
 
-const Preview = ({
-  isEdit,
-  isPreview,
-  postContent,
-  setPostContent,
-  onPreview,
-  isSubmit,
-  onSubmit,
-}: Props) => {
+const Preview = ({ isEdit, isPreview, postContent, setPostContent, onPreview, isSubmit, onSubmit }: Props) => {
   const imgRef = useRef<HTMLInputElement | null>(null);
   const userData = useRecoilValue(loginData);
   const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
@@ -170,11 +162,7 @@ const Preview = ({
             <button className="btn btn-primary" onClick={onUpload}>
               Upload Image
             </button>
-            <button
-              className="btn btn-outline-primary"
-              onClick={onDelete}
-              hidden={!postContent.thumbnailImgLink}
-            >
+            <button className="btn btn-outline-primary" onClick={onDelete} hidden={!postContent.thumbnailImgLink}>
               Delete Image
             </button>
           </div>
@@ -242,12 +230,7 @@ const Preview = ({
               "Cancel"
             )}
           </button>
-          <button
-            className="btn btn-primary w-80px h-40px"
-            type="button"
-            disabled={isSubmit}
-            onClick={onSubmit}
-          >
+          <button className="btn btn-primary w-80px h-40px" type="button" disabled={isSubmit} onClick={onSubmit}>
             {isSubmit ? (
               <div className="d-flex justify-content-center">
                 <div className="spinner-border spinner-border-sm" role="status">
@@ -267,34 +250,3 @@ const Preview = ({
 };
 
 export default Preview;
-
-/*
-
-<>
-              <button className="btn btn-outline-primary w-60px" type="button" disabled>
-                <span
-                  className="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                <span className="visually-hidden">Loading...</span>
-              </button>
-              <button className="btn btn-primary w-60px" type="button" disabled>
-                <span
-                  className="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                <span className="visually-hidden">Loading...</span>
-              </button>
-            </>
-
-<div className="hstack gap-3 float-end">
-            <button className="btn btn-outline-primary w-60px" type="button" onClick={onPreview}>
-              Cancel
-            </button>
-            <button className="btn btn-primary w-60px" type="button" onClick={onSubmit}>
-              {isEdit ? "Edit" : "Write Up"}
-            </button>
-          </div>
-*/
