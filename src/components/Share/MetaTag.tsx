@@ -24,6 +24,7 @@ const MetaTag = ({ title, description, image }: Props) => {
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image ? image : blogLogo} />
       <meta name="twitter:card" content="summary" />
+      <meta name="google-site-verification" content="1B9_D3ZgoEnoR71xGP787ut9T74e0NqBqTNpx-ZH_k0" />
     </Helmet>
   );
 };
