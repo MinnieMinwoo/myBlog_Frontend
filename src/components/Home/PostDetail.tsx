@@ -90,19 +90,6 @@ const PostDetail = () => {
     openModal("Warning", "Do you really want delete This post?", onDeletePost, true, "danger");
   };
 
-  const tocPlugins = [
-    toc,
-    {
-      headings: ["h1", "h2", "h3"],
-      cssClasses: {
-        toc: "page-outline",
-        list: "page-list",
-        listItem: "page-listItem",
-        link: "page-link",
-      },
-    },
-  ];
-
   const onDeletePost = async () => {
     if (!params.docID) throw window.alert("wrong url data");
     await deletePost(params.docID);
@@ -193,7 +180,24 @@ const PostDetail = () => {
           </div>
         </div>
         <article className="py-3" data-color-mode="light">
-          <MarkdownPreview source={postData?.detail} rehypePlugins={[tocPlugins as any, rehypeSanitize]} />
+          <MarkdownPreview
+            source={postData?.detail}
+            rehypePlugins={[
+              rehypeSanitize,
+              [
+                toc,
+                {
+                  headings: ["h1", "h2", "h3"],
+                  cssClasses: {
+                    toc: "page-outline",
+                    list: "page-list",
+                    listItem: "page-listItem",
+                    link: "page-link",
+                  },
+                },
+              ],
+            ]}
+          />
         </article>
         <section>
           <div className="hstack mb-4">
