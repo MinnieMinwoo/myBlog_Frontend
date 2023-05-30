@@ -8,6 +8,7 @@ const ProfileInfoEdit = () => {
   const [hidden, setHidden] = useState(true);
   const [nickname, setNickname] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setNickname(userData.nickname ?? "");
@@ -27,14 +28,21 @@ const ProfileInfoEdit = () => {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!userData.uid) throw window.alert("no user uid data");
-    await updateUserProfile(userData.uid, nickname, description);
-    setUserData((prev) => ({
-      ...prev,
-      nickname: nickname,
-      description: description,
-    }));
-    setHidden(true);
+    setIsLoading(true);
+    if (!userData.uid) return window.alert("no user uid data");
+    try {
+      await updateUserProfile(userData.uid, nickname, description);
+      setUserData((prev) => ({
+        ...prev,
+        nickname: nickname,
+        description: description,
+      }));
+      setHidden(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -72,9 +80,16 @@ const ProfileInfoEdit = () => {
             onChange={onChange}
           />
         </div>
-        <button type="submit" className="btn btn-primary w-100px">
-          Save
-        </button>
+        {isLoading ? (
+          <button className="btn btn-primary w-100px" type="button" disabled>
+            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span className="visually-hidden">Loading...</span>
+          </button>
+        ) : (
+          <button type="submit" className="btn btn-primary w-100px">
+            Save
+          </button>
+        )}
       </form>
     </div>
   );
