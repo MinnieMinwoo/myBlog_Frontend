@@ -16,7 +16,7 @@ import { deleteImg } from "../../logic/getSetImage";
 import altImage from "../../assets/images/altThumbnail.jpg";
 import "../../styles/PostDetail.css";
 import MetaTag from "../Share/MetaTag";
-import rehypeSanitize from "rehype-sanitize";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 
 const CommentContainer = lazy(() => import("./CommentContainer"));
 
@@ -183,7 +183,22 @@ const PostDetail = () => {
           <MarkdownPreview
             source={postData?.detail}
             rehypePlugins={[
-              rehypeSanitize,
+              [
+                rehypeSanitize,
+                {
+                  ...defaultSchema,
+                  attributes: {
+                    ...defaultSchema.attributes,
+                    span: [
+                      // @ts-ignore
+                      ...(defaultSchema.attributes.span || []),
+                      // List of all allowed tokens:
+                      ["className"],
+                    ],
+                    code: [["className"]],
+                  },
+                },
+              ],
               [
                 toc,
                 {
