@@ -25,6 +25,70 @@
       <changefreq>always</changefreq>
       <priority>0.5</priority>
    </url>
+
+   <!-- Category -->
+    <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Frontend/JavaScript</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+    <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Frontend/TypeScirpt</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+    <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Frontend/React</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+    <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Frontend/Recoil</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+    <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Frontend/Next.js</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+    <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Frontend/Jest</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+   <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Backend/Java</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+    <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Backend/Prisma</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+    <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Computer%20Science/Computer%20Architecture</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+    <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Computer%20Science/Operation%20System</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+    <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Computer%20Science/Network</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+    <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/category/Computer%20Science/Software%20Engeering</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+
+   <!-- JavaScript -->
    <url>
       <loc>https://myblog-project.firebaseapp.com/home/Minnie/UjIKzcs8XAkzTViMEs1e</loc>
       <changefreq>always</changefreq>
@@ -70,4 +134,52 @@
       <changefreq>always</changefreq>
       <priority>1.0</priority>
    </url>
+
+   <!-- TypeScript -->
+   <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/371EDxe7cgeTgfAZ4ycg</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+   <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/fg356Q2m0brbCJmi4K92</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+   <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/eFhOjeGucYWdhzwhNMMn</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+   <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/M67yPC9Jh55IWuChEhch</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+   <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/E4m4Cqn5EKCSUvRvgR9S</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+   <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/3H3Pd1Ku590GCTbO3QHB</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+   <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/qXFUWYj4XHXuF0QD31R8</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+   <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/1tm5ETqROoRp6ebDosNw</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+   <url>
+      <loc>https://myblog-project.firebaseapp.com/home/Minnie/yXBxybDxS43GrGZ6ECkF</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+
 </urlset> 
