@@ -1,16 +1,21 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoadingData } from "../../states/LoadingState";
 
 import getDate from "../../logic/getDate";
+import { getUserNickname } from "../../logic/getSetUserInfo";
 
 const PostThumbnailBox = ({ postList }: { postList: PostData[] }) => {
   const param = useParams();
+  const navigate = useNavigate();
   const isLoading = useRecoilValue(isLoadingData);
-  // todo: make tag search function
-  const onTagSearch = (event: React.MouseEvent) => {
+  const onTagSearch = (event: React.MouseEvent<HTMLButtonElement>, data: string) => {
     event.preventDefault();
+    const {
+      currentTarget: { innerText },
+    } = event;
+    navigate(`/search?query=${innerText}`);
   };
   return (
     <article className="PostItemList vstack" hidden={isLoading}>
@@ -20,6 +25,7 @@ const PostThumbnailBox = ({ postList }: { postList: PostData[] }) => {
             className="PostItem px-0 py-4 d-flex text-decoration-none bt-light"
             key={post.id}
             to={`/home/${param.userID}/${post.id}`}
+            onClick={() => console.log("test")}
           >
             <div className="vstack gap-1">
               {post.thumbnailImageURL !== "" ? (
@@ -31,7 +37,11 @@ const PostThumbnailBox = ({ postList }: { postList: PostData[] }) => {
               <p className="mb-1 text-break text-555">{post.thumbnailData}</p>
               <div className="col">
                 {post.tag.map((tag) => (
-                  <button key={tag} className="btn btn-outline-primary me-1" onClick={onTagSearch}>
+                  <button
+                    key={tag}
+                    className="btn btn-outline-primary me-1"
+                    onClick={(event) => onTagSearch(event, tag)}
+                  >
                     {tag}
                   </button>
                 ))}
