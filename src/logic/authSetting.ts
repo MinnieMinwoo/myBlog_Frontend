@@ -77,7 +77,7 @@ export const signInEmail = async (email: string, password: string): Promise<stri
       const data = await signInWithEmailAndPassword(auth, email, password);
       if (!data.user.emailVerified) {
         const actionCodeSettings = {
-          url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
+          url: `https://${process.env.REACT_APP_DOMAIN as string}`,
           handleCodeInApp: true,
         };
         await sendEmailVerification(data.user, actionCodeSettings);
@@ -122,7 +122,7 @@ export const signInSocialAccount = async (provider: string) => {
     if (!isEmail) throw new Error("No Account");
     if (!data.user.emailVerified) {
       const actionCodeSettings = {
-        url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
+        url: `https://${process.env.REACT_APP_DOMAIN as string}`,
         handleCodeInApp: true,
       };
       await sendEmailVerification(data.user, actionCodeSettings);
@@ -147,7 +147,7 @@ export const signUpEmail = async (email: string, password: string, nickname: str
     const data = await createUserWithEmailAndPassword(auth, email, password);
     await addUserData(data.user.uid, nickname);
     const actionCodeSettings = {
-      url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
+      url: `https://${process.env.REACT_APP_DOMAIN as string}`,
       handleCodeInApp: true,
     };
     await sendEmailVerification(data.user, actionCodeSettings);
@@ -169,7 +169,7 @@ export const updateUserEmail = async (newEmail: string, password: string) => {
   }
   await updateEmail(user, newEmail);
   const actionCodeSettings = {
-    url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
+    url: `https://${process.env.REACT_APP_DOMAIN as string}`,
     handleCodeInApp: true,
   };
   await sendEmailVerification(user, actionCodeSettings);
@@ -189,7 +189,7 @@ export const linkEmail = async (email: string, password: string, nickname: strin
     const credential = EmailAuthProvider.credential(email, password);
     await linkWithCredential(user, credential);
     const actionCodeSettings = {
-      url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
+      url: `https://${process.env.REACT_APP_DOMAIN as string}`,
       handleCodeInApp: true,
     };
     await sendEmailVerification(user, actionCodeSettings);
@@ -260,7 +260,7 @@ export const signOutUser = async () => {
 export const passwordResetEmail = async (email: string) => {
   const auth = getAuth();
   const actionCodeSettings = {
-    url: `https://${process.env.REACT_APP_AUTH_DOMAIN as string}`,
+    url: `https://${process.env.REACT_APP_DOMAIN as string}`,
     handleCodeInApp: true,
   };
   try {

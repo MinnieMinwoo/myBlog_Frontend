@@ -29,10 +29,7 @@ describe("auth seting test", () => {
     ).resolves.toBe("Minnie");
     await authSetting.signOutUser();
 
-    await expect(authSetting.signInEmail("1", "2")).rejects.toHaveProperty(
-      "code",
-      "auth/invalid-email"
-    );
+    await expect(authSetting.signInEmail("1", "2")).rejects.toHaveProperty("code", "auth/invalid-email");
   });
 
   /*
