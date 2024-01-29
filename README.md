@@ -64,4 +64,7 @@ Make my own blog project.
 
 ## demonstration
 
-[Link](https://myblog-backend.firebaseapp.com//)
+[Link](https://myblog-project.firebaseapp.com/)
+
+[My page](https://myblog-project.firebaseapp.com/home/Minnie)
+
